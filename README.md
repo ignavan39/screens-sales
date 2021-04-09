@@ -1,6 +1,5 @@
 # Screens Sales 📱
 
-
 ## Description
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
@@ -14,7 +13,7 @@ cms for selling screens
 ## Installation
 
 ```bash
-$ yarn 
+$ yarn
 ```
 
 ## Running the app
@@ -47,6 +46,5 @@ $ yarn test:e2e
 # test coverage
 $ yarn test:cov
 ```
-
 
 Nest is [MIT licensed](LICENSE).
