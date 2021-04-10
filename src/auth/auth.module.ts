@@ -18,7 +18,7 @@ import { LocalStrategy } from './strategies/local.strategy';
       secret: JWT_SECRET,
       signOptions: { expiresIn: '100000s' },
     }),
-    UsersModule
-  ]
+    UsersModule,
+  ],
 })
 export class AuthModule {}
