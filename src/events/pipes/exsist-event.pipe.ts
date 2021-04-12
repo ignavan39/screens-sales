@@ -1,6 +1,12 @@
-import { ArgumentMetadata, BadRequestException, Inject, Injectable, PipeTransform } from "@nestjs/common";
-import { UsersService } from "src/users/users.service";
-import { EventsService } from "../events.service";
+import {
+  ArgumentMetadata,
+  BadRequestException,
+  Inject,
+  Injectable,
+  PipeTransform,
+} from '@nestjs/common';
+import { UsersService } from 'src/users/users.service';
+import { EventsService } from '../events.service';
 
 @Injectable()
 export class CheckEventExsists implements PipeTransform {
@@ -9,8 +15,8 @@ export class CheckEventExsists implements PipeTransform {
   ) {}
 
   async transform(value, metadata: ArgumentMetadata) {
-    console.log(value)
-    const event = await this.eventsService.findOne(value.id ,value.userId);
+    console.log(value);
+    const event = await this.eventsService.findOne(value.id, value.userId);
     if (!event) {
       throw new BadRequestException('Event dont exsist');
     }

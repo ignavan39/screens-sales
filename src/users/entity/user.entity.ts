@@ -1,5 +1,11 @@
 import { Event } from 'src/events/entity/event.entity';
-import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'user' })
 export class User {
@@ -19,6 +25,6 @@ export class User {
   @Column({ nullable: true })
   fullName?: string;
 
-  @OneToMany(()=>Event,(event)=>event.user)
-  events: Event[]
+  @OneToMany(() => Event, (event) => event.user)
+  events: Event[];
 }
