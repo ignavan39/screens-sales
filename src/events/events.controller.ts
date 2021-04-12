@@ -1,4 +1,4 @@
-import { Controller, UseGuards } from '@nestjs/common';
+import { Controller, Param, UseGuards } from '@nestjs/common';
 import { Crud, CrudController, CrudRequest, Override, ParsedBody, ParsedRequest } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
@@ -42,13 +42,16 @@ import { EventOwnerGuard } from './guards/event-owner.guard';
 export class EventsController implements CrudController<Event>{
     constructor(public readonly service: EventsCrudService,private readonly customService: EventsService){}
 
+    //for admin
     @Override()
     getMany(@User() user){
         return this.customService.findMany(user.id)
     }
 
+    //Guard
+    @UseGuards(EventOwnerGuard)
     @Override()
-    getOne(@ParsedRequest() req, @User() user){
-        return this.customService.findOne(req.parsed.paramsFilter[0].value,user.id)
+    getOne(@Param('id') id){
+        return this.customService.findOne(id)
     }
 }

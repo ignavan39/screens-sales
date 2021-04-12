@@ -32,10 +32,10 @@ export class EventsService {
         })
       }
     
-      async findOne(id,userId: User['id']): Promise<Event|null> {
+      async findOne(id: Event['id']): Promise<Event|null> {
           return this.eventsRepository.findOne({
               where:{
-                  id,userId
+                  id
               }
           })
       }

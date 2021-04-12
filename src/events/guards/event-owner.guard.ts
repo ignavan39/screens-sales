@@ -15,7 +15,7 @@ import { EventsService } from '../events.service';
       const request = context.switchToHttp().getRequest();
       const userId = request.user.id;
       const eventId = request.params.id;
-      const event = await this.eventsService.findOne(eventId,userId);
+      const event = await this.eventsService.findOne(eventId);
       return userId === event.userId;
     }
   }
