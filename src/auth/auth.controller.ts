@@ -6,11 +6,9 @@ import { SignInDto } from './dto/sign-in.dto';
 import { SignUpDto } from './dto/sign-up.dto';
 import { CheckUserExsists } from './pipes/checkUserExsist.pipe';
 
-
 @Controller('auth')
 export class AuthController {
-    
-  constructor(private authService: AuthService ) {}
+  constructor(private authService: AuthService) {}
 
   @ApiBody({ type: SignInDto })
   @ApiOperation({ summary: 'Sign in with user credentials' })

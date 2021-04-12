@@ -6,22 +6,26 @@ import { User } from './entity/user.entity';
 
 @Injectable()
 export class UsersService extends TypeOrmCrudService<User> {
-    constructor(
-        @InjectRepository(User)
-        userCrudOrmRepo: Repository<User>,
-        @InjectRepository(User)
-        private userRepository: Repository<User>,
-      ) {
-          super(userCrudOrmRepo)
-      }
+  constructor(
+    @InjectRepository(User)
+    userCrudOrmRepo: Repository<User>,
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) {
+    super(userCrudOrmRepo);
+  }
 
-      async save(username: string,password: string,email: string,fullName?:string): Promise<User> {
-          return this.userRepository.save({
-              username,
-              password,
-              email,
-              fullName
-          })
-      }
-
+  async save(
+    username: string,
+    password: string,
+    email: string,
+    fullName?: string,
+  ): Promise<User> {
+    return this.userRepository.save({
+      username,
+      password,
+      email,
+      fullName,
+    });
+  }
 }
