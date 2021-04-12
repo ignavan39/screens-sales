@@ -22,7 +22,12 @@ CrudConfigService.load({
 });
 
 @Module({
-  imports: [TypeOrmModule.forRoot(ormConfig), AuthModule, UsersModule, EventsModule],
+  imports: [
+    TypeOrmModule.forRoot(ormConfig),
+    AuthModule,
+    UsersModule,
+    EventsModule,
+  ],
   controllers: [],
 })
 export class AppModule {}

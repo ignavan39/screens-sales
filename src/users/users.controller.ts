@@ -1,8 +1,5 @@
 import { Controller, UseGuards } from '@nestjs/common';
-import {
-  Crud,
-  CrudController,
-} from '@nestjsx/crud';
+import { Crud, CrudController } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { AccessGuard } from './access.guard';
 import { UpdateUserDto } from './dto/user.dto';

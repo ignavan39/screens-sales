@@ -12,11 +12,10 @@ export class EventsCrudService extends TypeOrmCrudService<Event> {
     @InjectRepository(Event)
     eventRepository: Repository<Event>,
     @InjectRepository(Event)
-    private eventCustomRepository: Repository<Event>
+    private eventCustomRepository: Repository<Event>,
   ) {
     super(eventRepository);
   }
-
 }
 
 @Injectable()

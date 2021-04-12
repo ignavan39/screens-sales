@@ -1,9 +1,9 @@
 import {
-    CanActivate,
-    ExecutionContext,
-    Inject,
-    Injectable,
-  } from '@nestjs/common';
+  CanActivate,
+  ExecutionContext,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { EventsService } from '../events.service';
   
   @Injectable()
