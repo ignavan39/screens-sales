@@ -24,21 +24,21 @@ import { UsersService } from './users.service';
       primary: true,
     },
   },
-  dto:{
-      update: UpdateUserDto,
+  dto: {
+    update: UpdateUserDto,
   },
   routes: {
-      only: ['getManyBase','getOneBase','deleteOneBase','updateOneBase'],
-      getOneBase: {
-          decorators: [UseGuards(AccessGuard)]
-      },
-      deleteOneBase: {
-          decorators: [UseGuards(AccessGuard)]
-      },
-      updateOneBase: {
-          decorators: [UseGuards(AccessGuard)]
-      }
-  }
+    only: ['getManyBase', 'getOneBase', 'deleteOneBase', 'updateOneBase'],
+    getOneBase: {
+      decorators: [UseGuards(AccessGuard)],
+    },
+    deleteOneBase: {
+      decorators: [UseGuards(AccessGuard)],
+    },
+    updateOneBase: {
+      decorators: [UseGuards(AccessGuard)],
+    },
+  },
 })
 @UseGuards(JwtAuthGuard)
 @Controller('users')

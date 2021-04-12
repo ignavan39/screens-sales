@@ -5,7 +5,6 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { CrudConfigService } from '@nestjsx/crud';
 
-
 CrudConfigService.load({
   params: {
     id: {
@@ -14,12 +13,12 @@ CrudConfigService.load({
       primary: true,
     },
   },
-  routes:{
+  routes: {
     updateOneBase: {
       allowParamsOverride: true,
     },
-  }
-})
+  },
+});
 
 @Module({
   imports: [TypeOrmModule.forRoot(ormConfig), AuthModule, UsersModule],
