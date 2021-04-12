@@ -2,10 +2,6 @@ import { Controller, UseGuards } from '@nestjs/common';
 import {
   Crud,
   CrudController,
-  CrudRequest,
-  Override,
-  ParsedBody,
-  ParsedRequest,
 } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { AccessGuard } from './access.guard';
