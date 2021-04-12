@@ -27,7 +27,7 @@ export class AuthService {
     return bcrypt.compareSync(password, hash);
   }
   async signIn(signInDto: SignInDto) {
-    // REVU: AuthGuard('local')
+    // AuthGuard('local')
     const user = await this.validateUser(signInDto.email, signInDto.password);
     if (!user) {
       throw new BadRequestException('passwords do not match');

@@ -23,7 +23,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
           throw new BadRequestException("User not found")
       }
       if (!this.authService.validatePassword(password, user.password)) {
-        throw new Error('Invalid password');
+        throw new BadRequestException('Invalid password');
       }
 
       return user;
