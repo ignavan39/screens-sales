@@ -1,3 +1,4 @@
+import { Content } from 'src/content/entity/content.entity';
 import { Event } from 'src/events/entity/event.entity';
 import { Playlist } from 'src/playlists/entity/playlist.entity';
 import { Screen } from 'src/screens/entity/screen.entity';
@@ -35,4 +36,7 @@ export class User {
 
   @OneToMany(() => Playlist, (playlist) => playlist.user)
   playlists: Playlist[];
+
+  @OneToMany(()=>Content,(content)=>content.user)
+  content: Content[]
 }
