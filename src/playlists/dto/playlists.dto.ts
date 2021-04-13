@@ -16,3 +16,18 @@ export class CreatePlaylistDto {
     @IsUUID()
     screenId: Screen['id']
 }
+
+export class UpdatePlaylistDto {
+    @ApiProperty()
+    @IsOptional()
+    name?: string
+
+    @ApiProperty()
+    @IsOptional()
+    description?: string
+
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsUUID()
+    screenId: Screen['id']
+}

@@ -2,7 +2,7 @@ import { Body, Controller, Param, UseGuards, UsePipes, ValidationPipe } from '@n
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
-import { CreatePlaylistDto } from './dto/playlists.dto';
+import { CreatePlaylistDto, UpdatePlaylistDto } from './dto/playlists.dto';
 import { Playlist } from './entity/playlist.entity';
 import { PlaylistOwnerGuard } from './guards/playlist.guard';
 import { CheckPlaylistExsist } from './pipes/playlist.pipe';
@@ -31,6 +31,10 @@ import { PlaylistCrudService, PlaylistService } from './playlists.service';
             decorators: [UseGuards(PlaylistOwnerGuard),UsePipes(CheckPlaylistExsist)],
             returnDeleted: true
         }
+    },
+    dto: {
+        create: CreatePlaylistDto,
+        update: UpdatePlaylistDto
     }
 })
 @UseGuards(JwtAuthGuard)
