@@ -20,23 +20,22 @@ export class EventsCrudService extends TypeOrmCrudService<Event> {
 
 @Injectable()
 export class EventsService {
-    constructor(
-        @InjectRepository(Event)
-        private eventsRepository: Repository<Event>
-    ){}
-    
-    async findMany(userId: User['id']): Promise<Event[]>{
-        return this.eventsRepository.find({
-            where: {userId}
-        })
-      }
-    
-      async findOne(id: Event['id']): Promise<Event|null> {
-          return this.eventsRepository.findOne({
-              where:{
-                  id
-              }
-          })
-      }
-   
+  constructor(
+    @InjectRepository(Event)
+    private eventsRepository: Repository<Event>,
+  ) {}
+
+  async findMany(userId: User['id']): Promise<Event[]> {
+    return this.eventsRepository.find({
+      where: { userId },
+    });
+  }
+
+  async findOne(id: Event['id']): Promise<Event | null> {
+    return this.eventsRepository.findOne({
+      where: {
+        id,
+      },
+    });
+  }
 }

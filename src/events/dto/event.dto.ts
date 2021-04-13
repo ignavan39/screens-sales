@@ -14,12 +14,12 @@ export class CreateEventDto {
 }
 
 export class UpdateEventDto {
-    @ApiProperty()
-    @IsOptional()
-    description: string;
+  @ApiProperty()
+  @IsOptional()
+  description: string;
 
-    @ApiProperty()
-    @IsNotEmpty()
-    @IsUUID()
-    userId: User['id'];
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsUUID()
+  userId: User['id'];
 }

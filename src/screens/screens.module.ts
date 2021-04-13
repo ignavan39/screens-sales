@@ -8,7 +8,7 @@ import { ScreensCrudService, ScreensService } from './screens.service';
 
 @Module({
   controllers: [ScreensController],
-  providers: [ScreensService,ScreensCrudService],
-  imports: [TypeOrmModule.forFeature([Screen]),EventsModule]
+  providers: [ScreensService, ScreensCrudService],
+  imports: [TypeOrmModule.forFeature([Screen]), EventsModule],
 })
 export class ScreensModule {}

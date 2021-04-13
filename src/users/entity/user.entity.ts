@@ -29,6 +29,6 @@ export class User {
   @OneToMany(() => Event, (event) => event.user)
   events: Event[];
 
-  @OneToMany(()=>Screen,(screen)=>screen.user)
-  screens: Screen[]
+  @OneToMany(() => Screen, (screen) => screen.user)
+  screens: Screen[];
 }

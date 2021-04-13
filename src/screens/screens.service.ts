@@ -8,9 +8,9 @@ import { Screen } from './entity/screen.entity';
 
 @Injectable()
 export class ScreensCrudService extends TypeOrmCrudService<Screen> {
-    constructor(@InjectRepository(Screen) screenRepository:Repository<Screen>){
-        super(screenRepository)
-    }
+  constructor(@InjectRepository(Screen) screenRepository: Repository<Screen>) {
+    super(screenRepository);
+  }
 }
 
 @Injectable()
@@ -20,12 +20,11 @@ export class ScreensService {
     private screenRepository: Repository<Screen>,
   ) {}
 
-  async findMany(eventId: Event['id']) : Promise<Screen[]> {
-      return this.screenRepository.find({
-          where: {
-            eventId
-          }
-      })
+  async findMany(eventId: Event['id']): Promise<Screen[]> {
+    return this.screenRepository.find({
+      where: {
+        eventId,
+      },
+    });
   }
 }
-
