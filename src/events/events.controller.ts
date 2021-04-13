@@ -1,4 +1,4 @@
-import { Controller, Param, UseGuards } from '@nestjs/common';
+import { Controller, Param, UseGuards, UsePipes } from '@nestjs/common';
 import { Crud, CrudController, CrudRequest, Override, ParsedBody, ParsedRequest } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
@@ -6,6 +6,7 @@ import { CreateEventDto, UpdateEventDto } from './dto/event.dto';
 import { Event } from './entity/event.entity';
 import { EventsCrudService, EventsService } from './events.service';
 import { EventOwnerGuard } from './guards/event-owner.guard';
+import { CheckEventExsists } from './pipes/exsist-event.pipe';
 
 @Crud({
   model: {
@@ -20,15 +21,15 @@ import { EventOwnerGuard } from './guards/event-owner.guard';
   },
   routes: {
     updateOneBase: {
-      decorators: [UseGuards(EventOwnerGuard)],
+      decorators: [UseGuards(EventOwnerGuard),UsePipes(CheckEventExsists)],
       returnShallow: true,
     },
     deleteOneBase: {
-      decorators: [UseGuards(EventOwnerGuard)],
+      decorators: [UseGuards(EventOwnerGuard),UsePipes(CheckEventExsists)],
       returnDeleted: true,
     },
     getOneBase: {
-      decorators: [UseGuards(EventOwnerGuard)],
+      decorators: [UseGuards(EventOwnerGuard),UsePipes(CheckEventExsists)],
     },
   },
   dto: {
@@ -48,12 +49,5 @@ export class EventsController implements CrudController<Event> {
     @Override()
     getMany(@User() user){
         return this.customService.findMany(user.id)
-    }
-
-    //Guard
-    @UseGuards(EventOwnerGuard)
-    @Override()
-    getOne(@Param('id') id){
-        return this.customService.findOne(id)
     }
 }

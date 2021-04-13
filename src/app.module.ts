@@ -5,6 +5,7 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { CrudConfigService } from '@nestjsx/crud';
 import { EventsModule } from './events/events.module';
+import { ScreensModule } from './screens/screens.module';
 
 CrudConfigService.load({
   params: {
@@ -27,6 +28,7 @@ CrudConfigService.load({
     AuthModule,
     UsersModule,
     EventsModule,
+    ScreensModule,
   ],
   controllers: [],
 })

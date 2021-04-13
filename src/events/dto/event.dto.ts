@@ -1,19 +1,25 @@
+import { ApiProperty } from '@nestjsx/crud/lib/crud';
 import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
+import { User } from 'src/users/entity/user.entity';
 
 export class CreateEventDto {
+  @ApiProperty()
   @IsNotEmpty()
   description: string;
 
+  @ApiProperty()
   @IsNotEmpty()
   @IsUUID()
-  userId: string;
+  userId: User['id'];
 }
 
 export class UpdateEventDto {
-  @IsOptional()
-  description: string;
+    @ApiProperty()
+    @IsOptional()
+    description: string;
 
-  @IsNotEmpty()
-  @IsUUID()
-  userId: string;
+    @ApiProperty()
+    @IsNotEmpty()
+    @IsUUID()
+    userId: User['id'];
 }

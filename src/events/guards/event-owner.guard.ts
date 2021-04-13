@@ -3,6 +3,7 @@ import {
   ExecutionContext,
   Inject,
   Injectable,
+  NotFoundException,
 } from '@nestjs/common';
 import { EventsService } from '../events.service';
   
@@ -16,6 +17,9 @@ import { EventsService } from '../events.service';
       const userId = request.user.id;
       const eventId = request.params.id;
       const event = await this.eventsService.findOne(eventId);
+      if(!event){
+        throw new NotFoundException("Event not found")
+      }
       return userId === event.userId;
     }
   }
