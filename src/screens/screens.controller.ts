@@ -16,8 +16,8 @@ import { Screen } from './entity/screen.entity';
 import {
   ScreenOwnerByEventGuard,
   ScreenOwnerGuard,
-} from './guards/screen-owner.guard';
-import { CheckScreenExsists } from './pipes/exsist-screen.pipe';
+} from './guards/owner.guard';
+import { CheckScreenExsists } from './pipes/screen.pipe';
 import { ScreensCrudService, ScreensService } from './screens.service';
 
 @Crud({

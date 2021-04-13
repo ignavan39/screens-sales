@@ -2,18 +2,15 @@ import { Controller, Param, UseGuards, UsePipes } from '@nestjs/common';
 import {
   Crud,
   CrudController,
-  CrudRequest,
   Override,
-  ParsedBody,
-  ParsedRequest,
 } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
 import { CreateEventDto, UpdateEventDto } from './dto/event.dto';
 import { Event } from './entity/event.entity';
 import { EventsCrudService, EventsService } from './events.service';
-import { EventOwnerGuard } from './guards/event-owner.guard';
-import { CheckEventExsists } from './pipes/exsist-event.pipe';
+import { EventOwnerGuard } from './guards/owner.guard';
+import { CheckEventExsists } from './pipes/event.pipe';
 
 @Crud({
   model: {

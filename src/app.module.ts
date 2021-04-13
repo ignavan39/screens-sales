@@ -6,6 +6,7 @@ import { UsersModule } from './users/users.module';
 import { CrudConfigService } from '@nestjsx/crud';
 import { EventsModule } from './events/events.module';
 import { ScreensModule } from './screens/screens.module';
+import { PlaylistsModule } from './playlists/playlists.module';
 
 CrudConfigService.load({
   params: {
@@ -29,6 +30,7 @@ CrudConfigService.load({
     UsersModule,
     EventsModule,
     ScreensModule,
+    PlaylistsModule,
   ],
   controllers: [],
 })

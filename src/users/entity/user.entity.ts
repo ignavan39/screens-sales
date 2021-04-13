@@ -1,4 +1,5 @@
 import { Event } from 'src/events/entity/event.entity';
+import { Playlist } from 'src/playlists/entity/playlist.entity';
 import { Screen } from 'src/screens/entity/screen.entity';
 import {
   Column,
@@ -31,4 +32,7 @@ export class User {
 
   @OneToMany(() => Screen, (screen) => screen.user)
   screens: Screen[];
+
+  @OneToMany(() => Playlist, (playlist) => playlist.user)
+  playlists: Playlist[];
 }
