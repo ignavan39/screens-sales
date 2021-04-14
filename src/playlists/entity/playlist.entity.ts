@@ -7,6 +7,7 @@ import {
   Entity,
   ManyToMany,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -30,6 +31,11 @@ export class Playlist {
 
   @OneToOne(() => Screen, (screen) => screen.playlist)
   screen: Screen;
+
+
+  @OneToMany(()=>ContentToPlaylists,(c)=>c.playlist)
+  contentToPlaylists: ContentToPlaylists[]
+
 
   @ManyToMany(() => Content, (content) => content.playlists)
   contents: Content[];

@@ -10,6 +10,7 @@ import {
   PrimaryGeneratedColumn,
   TreeLevelColumn,
 } from 'typeorm';
+import { ContentToPlaylists } from './content-to-playlist.entity';
 
 export enum ContentType {
   VIDEO = 'Video',
@@ -34,6 +35,10 @@ export class Content {
 
   @Column()
   userId: string;
+
+  @OneToMany(()=>ContentToPlaylists,(c)=>c.content)
+  contentToPlaylists: ContentToPlaylists[]
+
 
   @ManyToMany(() => Playlist, (paylist) => paylist.contents)
   @JoinTable({ name: 'contents_to_playlists' })

@@ -15,13 +15,22 @@ export class PlaylistCrudService extends TypeOrmCrudService<Playlist> {
 
 @Injectable()
 export class PlaylistService {
-  constructor(@InjectRepository(Playlist) 
-  private readonly repository: Repository<Playlist>){}
+  constructor(
+    @InjectRepository(Playlist)
+    private readonly repository: Repository<Playlist>,
+  ) {}
 
-  async save(userId: User['id'],createPlaylistDto: CreatePlaylistDto): Promise<Playlist>{
+  async save(
+    userId: User['id'],
+    createPlaylistDto: CreatePlaylistDto,
+  ): Promise<Playlist> {
     return this.repository.save({
       userId,
       ...createPlaylistDto,
-    })
+    });
+  }
+
+  async findOne(id: Playlist['id']) {
+    return this.repository.findOne(id, { relations: ['contents'] });
   }
 }
