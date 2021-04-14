@@ -1,4 +1,4 @@
-import { Controller, Param, UseGuards, UsePipes } from '@nestjs/common';
+import { Body, Controller, Param, UseGuards, UsePipes } from '@nestjs/common';
 import {
   Crud,
   CrudController,
@@ -49,6 +49,10 @@ export class EventsController implements CrudController<Event> {
     private readonly customService: EventsService,
   ) {}
 
+  @Override('createOneBase')
+  create(@User() user,@Body() createDto:CreateEventDto){
+    return this.customService.save(user.id,createDto)
+  }
   //for admin
   @Override()
   getMany(@User() user) {

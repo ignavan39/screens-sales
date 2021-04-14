@@ -4,6 +4,7 @@ import { Override } from '@nestjsx/crud';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { User } from 'src/users/entity/user.entity';
 import { Repository } from 'typeorm';
+import { CreateEventDto } from './dto/event.dto';
 import { Event } from './entity/event.entity';
 
 @Injectable()
@@ -37,5 +38,12 @@ export class EventsService {
         id,
       },
     });
+  }
+
+  async save(userId: User['id'],createDto:CreateEventDto){
+    return this.eventsRepository.save({
+      userId,
+      ...createDto
+    })
   }
 }

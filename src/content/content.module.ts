@@ -1,9 +1,12 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { ContentController } from './content.controller';
-import { ContentService } from './content.service';
+import { ContentCrudService, ContentService } from './content.service';
+import { Content } from './entity/content.entity';
 
 @Module({
   controllers: [ContentController],
-  providers: [ContentService]
+  providers: [ContentService,ContentCrudService],
+  imports: [TypeOrmModule.forFeature([Content])]
 })
 export class ContentModule {}

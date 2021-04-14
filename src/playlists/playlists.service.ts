@@ -21,7 +21,7 @@ export class PlaylistService {
   async save(userId: User['id'],createPlaylistDto: CreatePlaylistDto): Promise<Playlist>{
     return this.repository.save({
       userId,
-      ...createPlaylistDto
+      ...createPlaylistDto,
     })
   }
 }

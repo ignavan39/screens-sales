@@ -1,43 +1,47 @@
-import { Playlist } from "src/playlists/entity/playlist.entity";
-import { User } from "src/users/entity/user.entity";
-import { Column, Entity, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Playlist } from 'src/playlists/entity/playlist.entity';
+import { User } from 'src/users/entity/user.entity';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  TreeLevelColumn,
+} from 'typeorm';
 
 export enum ContentType {
-    VIDEO = "Video",
-    HTML = "HTML",
-    MUSIC = "MUSIC",
-    IMAGE = "IMAGE"
+  VIDEO = 'Video',
+  HTML = 'HTML',
+  MUSIC = 'MUSIC',
+  IMAGE = 'IMAGE',
 }
 
-@Entity({name: 'contents'})
+@Entity({ name: 'contents' })
 export class Content {
-    @PrimaryGeneratedColumn('uuid')
-    id: string
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column({
-        type: 'enum',
-        enum: ContentType
-    })
-    contentType: ContentType
-    
-    @Column()
-    name: string
+  @Column({
+    type: 'enum',
+    enum: ContentType,
+  })
+  contentType: ContentType;
 
-    @Column()
-    userId: string
+  @Column()
+  name: string;
 
-    @Column({type:'unsigned big int'})
-    priority: number
+  @Column()
+  userId: string;
 
-    @ManyToMany(()=>Playlist,{
-        cascade:true,
-        onDelete: 'CASCADE'
-    })
-    playlists: Playlist[]
+  @ManyToMany(() => Playlist, (paylist) => paylist.contents)
+  @JoinTable({ name: 'contents_to_playlists' })
+  playlists: Playlist[];
 
-    @ManyToOne(()=>User,(user)=>user.content,{
-        cascade:true,
-        onDelete: 'CASCADE'
-    })
-    user: User
+  @ManyToOne(() => User, (user) => user.content, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  user: User;
 }

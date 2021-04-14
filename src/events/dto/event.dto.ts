@@ -6,11 +6,6 @@ export class CreateEventDto {
   @ApiProperty()
   @IsNotEmpty()
   description: string;
-
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsUUID()
-  userId: User['id'];
 }
 
 export class UpdateEventDto {

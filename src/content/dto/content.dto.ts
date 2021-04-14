@@ -13,9 +13,9 @@ export class CreateContentDto {
     contentType: ContentType
 
     @ApiProperty()
-    @IsOptional()
-    @IsArray()
-    playlistsId: Playlist['id'][]
+    @IsOptional() 
+    @IsNotEmpty()
+    playlistsId: Playlist['id']
 }
 
 export class UpdateContentDto {
@@ -30,10 +30,16 @@ export class UpdateContentDto {
     @ApiProperty()
     @IsOptional()
     @IsArray()
-    playlistsId?: Playlist['id'][]
+    playlistsId?: Playlist['id']
 
     @IsOptional()
     @IsPositive()
     @IsNumber()
-    priority?:number
+    order?:number
+}
+
+export class ContentFindByPlaylistId {
+    @ApiProperty()
+    @IsNotEmpty()
+    playlistId: Playlist['id']
 }
