@@ -1,31 +1,32 @@
-import { Body, Controller, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
+import { identity } from 'rxjs';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
 import { ContentCrudService, ContentService } from './content.service';
-import { ContentFindByPlaylistId, CreateContentDto } from './dto/content.dto';
+import { ContentFindByPlaylistId, CreateContentDto, UpdateContentDto } from './dto/content.dto';
 import { Content } from './entity/content.entity';
 
-@Crud({
-  model: {
-    type: Content,
-  },
-})
+
 @UseGuards(JwtAuthGuard)
-@Controller('content')
-export class ContentController implements CrudController<Content> {
+@Controller('contents')
+export class ContentController{
   constructor(
-    public readonly service: ContentCrudService,
     private readonly customService: ContentService,
   ) {}
 
-  @Override('getManyBase')
+  @Get('/')
   findMany(@User() user) {
     return this.customService.findManyByUser(user.id);
   }
 
-  @Override('createOneBase')
+  @Post('/')
   create(@Body() body: CreateContentDto) {
     return this.customService.save(body);
+  }
+
+  @Put('/:id')
+  update(@Param('id') id, @Body() body: UpdateContentDto){
+    return this.customService.update(body,id)
   }
 }

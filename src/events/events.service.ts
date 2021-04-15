@@ -40,10 +40,10 @@ export class EventsService {
     });
   }
 
-  async save(userId: User['id'],createDto:CreateEventDto){
+  async save(userId: User['id'], createDto: CreateEventDto) {
     return this.eventsRepository.save({
       userId,
-      ...createDto
-    })
+      ...createDto,
+    });
   }
 }

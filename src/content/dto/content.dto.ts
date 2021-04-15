@@ -27,7 +27,7 @@ export class CreateContentDto {
 
   @IsNotEmpty()
   @ApiProperty()
-  userId: User['id']
+  userId: User['id'];
 }
 
 export class UpdateContentDto {
@@ -41,7 +41,6 @@ export class UpdateContentDto {
 
   @ApiProperty()
   @IsOptional()
-  @IsArray()
   playlistsId?: Playlist['id'];
 
   @IsOptional()
@@ -49,10 +48,9 @@ export class UpdateContentDto {
   @IsNumber()
   order?: number;
 
-
   @IsNotEmpty()
   @ApiProperty()
-  userId: User['id']
+  userId: User['id'];
 }
 
 export class ContentFindByPlaylistId {

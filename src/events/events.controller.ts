@@ -1,9 +1,5 @@
 import { Body, Controller, Param, UseGuards, UsePipes } from '@nestjs/common';
-import {
-  Crud,
-  CrudController,
-  Override,
-} from '@nestjsx/crud';
+import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
 import { CreateEventDto, UpdateEventDto } from './dto/event.dto';
@@ -50,8 +46,8 @@ export class EventsController implements CrudController<Event> {
   ) {}
 
   @Override('createOneBase')
-  create(@User() user,@Body() createDto:CreateEventDto){
-    return this.customService.save(user.id,createDto)
+  create(@User() user, @Body() createDto: CreateEventDto) {
+    return this.customService.save(user.id, createDto);
   }
   //for admin
   @Override()

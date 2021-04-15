@@ -37,6 +37,6 @@ export class User {
   @OneToMany(() => Playlist, (playlist) => playlist.user)
   playlists: Playlist[];
 
-  @OneToMany(()=>Content,(content)=>content.user)
-  content: Content[]
+  @OneToMany(() => Content, (content) => content.user)
+  content: Content[];
 }

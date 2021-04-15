@@ -1,5 +1,11 @@
-import { CanActivate, ExecutionContext, Inject, Injectable, NotFoundException } from "@nestjs/common";
-import { PlaylistCrudService } from "../playlists.service";
+import {
+  CanActivate,
+  ExecutionContext,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { PlaylistCrudService } from '../playlists.service';
 
 @Injectable()
 export class PlaylistOwnerGuard implements CanActivate {

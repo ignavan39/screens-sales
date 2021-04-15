@@ -6,7 +6,7 @@ import { ContentToPlaylists } from './entity/content-to-playlist.entity';
 
 @Module({
   providers: [ContentToPlaylistService],
-  imports: [TypeOrmModule.forFeature([ContentToPlaylists]),PlaylistsModule],
-  exports: [ContentToPlaylistService]
+  imports: [TypeOrmModule.forFeature([ContentToPlaylists])],
+  exports: [ContentToPlaylistService],
 })
 export class ContentToPlaylistModule {}

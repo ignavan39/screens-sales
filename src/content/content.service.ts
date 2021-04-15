@@ -23,6 +23,7 @@ export class ContentCrudService extends TypeOrmCrudService<Content> {
 export class ContentService {
   constructor(
     @InjectRepository(Content) private readonly repository: Repository<Content>,
+    private readonly contentToPlaylistService: ContentToPlaylistService
   ) {}
 
   async findManyByUser(userId: User['id']): Promise<Content[]> {
@@ -38,31 +39,36 @@ export class ContentService {
       relations: ['playlists'],
       where: {
         playlists: {
-          id: playlistId
-        }
-      }
+          id: playlistId,
+        },
+      },
     });
 
     return res;
   }
 
-
-  async save(createDto: CreateContentDto): Promise<Content> {
-
-    const content =  await this.repository.save({
+  async save(createDto: CreateContentDto) {
+    const content = await this.repository.save({
       ...createDto,
-      userId: createDto.userId
+      userId: createDto.userId,
     });
+
+    if (createDto.playlistsId){
+      const  contentToPlaylist = await this.contentToPlaylistService.save(createDto.playlistsId, content.id)
+      return { ...contentToPlaylist, ...content }
+    }
+
     return content;
-      
   }
 
-  async update(updateDto: UpdateContentDto) {
-    if (updateDto.order) {
-      const currentPlaylist = await this.findMany(updateDto.playlistsId);
-      // add checking
-      // const idx = currentPlaylist.findIndex(item => item.order === updateDto.order)
-      console.log(currentPlaylist);
+  async update(updateDto: UpdateContentDto,id: Content['id']) {
+    if (updateDto.playlistsId) {
+       if(updateDto.order){
+        return this.contentToPlaylistService.update(updateDto.playlistsId,id,updateDto.order)
+       }
+
+       return this.contentToPlaylistService.save(updateDto.playlistsId,id)
     }
+    return this.repository.save({...updateDto})
   }
 }

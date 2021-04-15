@@ -1,7 +1,13 @@
 import { Event } from 'src/events/entity/event.entity';
 import { Playlist } from 'src/playlists/entity/playlist.entity';
 import { User } from 'src/users/entity/user.entity';
-import { Column, Entity, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'screens' })
 export class Screen {
@@ -17,8 +23,8 @@ export class Screen {
   @Column()
   eventId: string;
 
-  @Column({nullable:true})
-  playlistId: string
+  @Column({ nullable: true })
+  playlistId: string;
 
   @ManyToOne(() => User, (user) => user.screens, {
     cascade: true,
@@ -32,6 +38,6 @@ export class Screen {
   })
   event: Event;
 
-  @OneToOne(()=>Playlist,(playlist)=>playlist.screen)
-  playlist: Playlist
+  @OneToOne(() => Playlist, (playlist) => playlist.screen)
+  playlist: Playlist;
 }

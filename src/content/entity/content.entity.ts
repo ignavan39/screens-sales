@@ -36,13 +36,8 @@ export class Content {
   @Column()
   userId: string;
 
-  @OneToMany(()=>ContentToPlaylists,(c)=>c.content)
-  contentToPlaylists: ContentToPlaylists[]
-
-
-  @ManyToMany(() => Playlist, (paylist) => paylist.contents)
-  @JoinTable({ name: 'contents_to_playlists' })
-  playlists: Playlist[];
+  @OneToMany(() => ContentToPlaylists, (c) => c.content)
+  contentToPlaylists: ContentToPlaylists[];
 
   @ManyToOne(() => User, (user) => user.content, {
     cascade: true,

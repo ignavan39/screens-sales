@@ -32,13 +32,8 @@ export class Playlist {
   @OneToOne(() => Screen, (screen) => screen.playlist)
   screen: Screen;
 
-
-  @OneToMany(()=>ContentToPlaylists,(c)=>c.playlist)
-  contentToPlaylists: ContentToPlaylists[]
-
-
-  @ManyToMany(() => Content, (content) => content.playlists)
-  contents: Content[];
+  @OneToMany(() => ContentToPlaylists, (c) => c.playlist)
+  contentToPlaylists: ContentToPlaylists[];
 
   @ManyToOne(() => User, (user) => user.playlists, {
     cascade: true,
