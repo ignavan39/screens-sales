@@ -42,8 +42,8 @@ export class ContentService {
       userId: createDto.userId,
     });
 
-    if (createDto.playlistsId){
-      const  contentToPlaylist = await this.contentToPlaylistService.save(createDto.playlistsId, content.id)
+    if (createDto.playlistId){
+      const  contentToPlaylist = await this.contentToPlaylistService.save(createDto.playlistId, content.id)
       return { ...contentToPlaylist, ...content }
     }
 
@@ -55,7 +55,5 @@ export class ContentService {
     return this.repository.save({...content, ...updateDto})
   }
 
-  async moveContentInPlaylist(dto: MoveIncludeContentDto,id: Content['id']){
-    
-  }
+  
 }

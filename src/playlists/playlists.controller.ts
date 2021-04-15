@@ -16,7 +16,7 @@ import { User } from 'src/users/user.decorator';
 import { CreatePlaylistDto, UpdatePlaylistDto } from './dto/playlists.dto';
 import { Playlist } from './entity/playlist.entity';
 import { PlaylistOwnerGuard } from './guards/playlist.guard';
-import { CheckPlaylistExsist } from './pipes/playlist.pipe';
+import { CheckContentOrder, CheckPlaylistExsist } from './pipes/playlist.pipe';
 import { PlaylistCrudService, PlaylistService } from './playlists.service';
 
 @Crud({
@@ -83,6 +83,8 @@ export class PlaylistsController implements CrudController<Playlist> {
     return this.customService.insertContent(id,contentId)
   }
 
+
+  @UsePipes(CheckContentOrder)
   @Post("/:id/contents/:contentId/move")
   moveIncludeContent(@Param('id') id, @Param("contentId") contentId,@Body() body:MoveIncludeContentDto){
     return this.customService.moveContent(id,contentId,body)

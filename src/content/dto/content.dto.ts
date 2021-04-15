@@ -23,7 +23,7 @@ export class CreateContentDto {
   @ApiProperty()
   @IsOptional()
   @IsNotEmpty()
-  playlistsId: Playlist['id'];
+  playlistId: Playlist['id'];
 
   @IsNotEmpty()
   @ApiProperty()

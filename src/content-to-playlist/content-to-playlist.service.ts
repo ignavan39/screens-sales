@@ -39,9 +39,14 @@ export class ContentToPlaylistService {
     let playlist = await this.findContentByPlaylistId(playlistId)
 
     const newPlaylist = playlist.map((item) => {
-        if(item.order >= order){
-             item.order++
+        if(item.id !== contentId && item.order >= order){
+            return { ...item, order: item.order + 1 };
         }
+
+        if (item.id === contentId) {
+            return { ...item, order };
+        }
+
         return item
     })
     return this.repository.save([

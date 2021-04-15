@@ -40,6 +40,7 @@ export class PlaylistService {
     return this.repository.findOne(id, { relations: ['contents'] });
   }
 
+
   async findIncludeContent(id: Playlist['id']) {
     return this.contentToPlaylistService.findContentByPlaylistId(id)
   }
