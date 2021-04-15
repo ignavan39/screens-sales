@@ -10,7 +10,7 @@ import {
   PrimaryGeneratedColumn,
   TreeLevelColumn,
 } from 'typeorm';
-import { ContentToPlaylists } from './content-to-playlist.entity';
+import { ContentToPlaylists } from '../../content-to-playlist/entity/content-to-playlist.entity';
 
 export enum ContentType {
   VIDEO = 'Video',

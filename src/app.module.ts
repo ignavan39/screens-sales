@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ormConfig } from './ormconfig';
 import { AuthModule } from './auth/auth.module';
@@ -8,6 +8,7 @@ import { EventsModule } from './events/events.module';
 import { ScreensModule } from './screens/screens.module';
 import { PlaylistsModule } from './playlists/playlists.module';
 import { ContentModule } from './content/content.module';
+import { ContentToPlaylistModule } from './content-to-playlist/content-to-playlist.module';
 
 CrudConfigService.load({
   params: {
@@ -33,6 +34,7 @@ CrudConfigService.load({
     ScreensModule,
     PlaylistsModule,
     ContentModule,
+    ContentToPlaylistModule,
   ],
   controllers: [],
 })

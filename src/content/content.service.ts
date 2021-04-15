@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
+import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-playlist.service';
 import { Playlist } from 'src/playlists/entity/playlist.entity';
 import { PlaylistService } from 'src/playlists/playlists.service';
 import { User } from 'src/users/entity/user.entity';
@@ -22,7 +23,6 @@ export class ContentCrudService extends TypeOrmCrudService<Content> {
 export class ContentService {
   constructor(
     @InjectRepository(Content) private readonly repository: Repository<Content>,
-    private readonly playlistService: PlaylistService,
   ) {}
 
   async findManyByUser(userId: User['id']): Promise<Content[]> {
@@ -36,34 +36,25 @@ export class ContentService {
   async findMany(playlistId: Playlist['id']) {
     const res = await this.repository.find({
       relations: ['playlists'],
+      where: {
+        playlists: {
+          id: playlistId
+        }
+      }
     });
 
     return res;
   }
 
-  async findRelatedPlaylist(playlistId: Playlist['id']) {
-    return this.playlistService.findOne(playlistId);
-  }
 
   async save(createDto: CreateContentDto): Promise<Content> {
-    const currentPlaylist = await this.findRelatedPlaylist(
-      createDto.playlistsId,
-    );
 
-    console.log(currentPlaylist);
-
-    const order =
-      currentPlaylist.contents.length === 0
-        ? 1
-        : currentPlaylist.contents.length + 1;
-    const a = await this.repository.save({
+    const content =  await this.repository.save({
       ...createDto,
-      userId: currentPlaylist.userId,
-      playlists: [{ id: currentPlaylist.id }],
-      contentToPlaylists: [{ order, playlistId: currentPlaylist.id }],
+      userId: createDto.userId
     });
-
-    return a;
+    return content;
+      
   }
 
   async update(updateDto: UpdateContentDto) {

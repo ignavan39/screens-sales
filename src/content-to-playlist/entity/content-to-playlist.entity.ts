@@ -6,7 +6,7 @@ import {
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Content } from './content.entity';
+import { Content } from '../../content/entity/content.entity';
 
 @Entity({ name: 'contents_to_playlists' })
 export class ContentToPlaylists {

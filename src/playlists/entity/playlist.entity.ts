@@ -1,5 +1,5 @@
 import { Content } from 'src/content/entity/content.entity';
-import { ContentToPlaylists } from 'src/content/entity/content-to-playlist.entity';
+import { ContentToPlaylists } from 'src/content-to-playlist/entity/content-to-playlist.entity';
 import { Screen } from 'src/screens/entity/screen.entity';
 import { User } from 'src/users/entity/user.entity';
 import {

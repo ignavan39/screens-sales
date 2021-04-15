@@ -1,6 +1,7 @@
 import { Body, Controller, UseGuards } from '@nestjs/common';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { User } from 'src/users/user.decorator';
 import { ContentCrudService, ContentService } from './content.service';
 import { ContentFindByPlaylistId, CreateContentDto } from './dto/content.dto';
 import { Content } from './entity/content.entity';
@@ -19,8 +20,8 @@ export class ContentController implements CrudController<Content> {
   ) {}
 
   @Override('getManyBase')
-  findMany(@Body() body: ContentFindByPlaylistId) {
-    return this.customService.findMany(body.playlistId);
+  findMany(@User() user) {
+    return this.customService.findManyByUser(user.id);
   }
 
   @Override('createOneBase')
