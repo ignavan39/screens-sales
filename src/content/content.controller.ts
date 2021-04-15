@@ -1,11 +1,8 @@
 import { Body, Controller, Get, Param, Post, Put, UseGuards } from '@nestjs/common';
-import { Crud, CrudController, Override } from '@nestjsx/crud';
-import { identity } from 'rxjs';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
-import { ContentCrudService, ContentService } from './content.service';
-import { ContentFindByPlaylistId, CreateContentDto, UpdateContentDto } from './dto/content.dto';
-import { Content } from './entity/content.entity';
+import { ContentService } from './content.service';
+import { CreateContentDto, UpdateContentDto } from './dto/content.dto';
 
 
 @UseGuards(JwtAuthGuard)

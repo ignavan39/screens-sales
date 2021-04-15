@@ -39,22 +39,15 @@ export class UpdateContentDto {
   @IsOptional()
   contentType?: ContentType;
 
-  @ApiProperty()
-  @IsOptional()
-  playlistsId?: Playlist['id'];
-
-  @IsOptional()
-  @IsPositive()
-  @IsNumber()
-  order?: number;
-
   @IsNotEmpty()
   @ApiProperty()
   userId: User['id'];
 }
 
-export class ContentFindByPlaylistId {
+export class MoveIncludeContentDto {
+
   @ApiProperty()
   @IsNotEmpty()
-  playlistId: Playlist['id'];
+  order: number
+
 }

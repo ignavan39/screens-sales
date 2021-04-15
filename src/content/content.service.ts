@@ -1,23 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-playlist.service';
 import { Playlist } from 'src/playlists/entity/playlist.entity';
-import { PlaylistService } from 'src/playlists/playlists.service';
 import { User } from 'src/users/entity/user.entity';
 import { Repository } from 'typeorm';
-import { CreateContentDto, UpdateContentDto } from './dto/content.dto';
+import { CreateContentDto, MoveIncludeContentDto, UpdateContentDto } from './dto/content.dto';
 import { Content } from './entity/content.entity';
 
-@Injectable()
-export class ContentCrudService extends TypeOrmCrudService<Content> {
-  constructor(
-    @InjectRepository(Content)
-    repository: Repository<Content>,
-  ) {
-    super(repository);
-  }
-}
 
 @Injectable()
 export class ContentService {
@@ -62,13 +51,11 @@ export class ContentService {
   }
 
   async update(updateDto: UpdateContentDto,id: Content['id']) {
-    if (updateDto.playlistsId) {
-       if(updateDto.order){
-        return this.contentToPlaylistService.update(updateDto.playlistsId,id,updateDto.order)
-       }
+    const content = this.repository.findOne(id)
+    return this.repository.save({...content, ...updateDto})
+  }
 
-       return this.contentToPlaylistService.save(updateDto.playlistsId,id)
-    }
-    return this.repository.save({...updateDto})
+  async moveContentInPlaylist(dto: MoveIncludeContentDto,id: Content['id']){
+    
   }
 }

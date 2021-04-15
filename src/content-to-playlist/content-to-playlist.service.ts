@@ -35,7 +35,7 @@ export class ContentToPlaylistService {
       })
   }
 
-  async update(playlistId: Playlist['id'], contentId: Content['id'], order: number) {
+  async moveContent(playlistId: Playlist['id'], contentId: Content['id'], order: number) {
     let playlist = await this.findContentByPlaylistId(playlistId)
 
     const newPlaylist = playlist.map((item) => {

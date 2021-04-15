@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-playlist.service';
+import { MoveIncludeContentDto } from 'src/content/dto/content.dto';
+import { Content } from 'src/content/entity/content.entity';
 import { User } from 'src/users/entity/user.entity';
 import { Repository } from 'typeorm';
 import { CreatePlaylistDto } from './dto/playlists.dto';
@@ -40,6 +42,14 @@ export class PlaylistService {
 
   async findIncludeContent(id: Playlist['id']) {
     return this.contentToPlaylistService.findContentByPlaylistId(id)
+  }
+
+  async moveContent(id: Playlist['id'],contentId: Content['id'], dto: MoveIncludeContentDto){
+    return this.contentToPlaylistService.moveContent(id,contentId,dto.order)
+  }
+
+  async insertContent(id: Playlist['id'],contentId: Content['id']){
+    return this.contentToPlaylistService.save(id,contentId)
   }
 
 }
