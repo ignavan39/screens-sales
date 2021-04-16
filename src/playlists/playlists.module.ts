@@ -8,7 +8,7 @@ import { ContentToPlaylistModule } from 'src/content-to-playlist/content-to-play
 @Module({
   providers: [PlaylistService, PlaylistCrudService],
   controllers: [PlaylistsController],
-  imports: [TypeOrmModule.forFeature([Playlist]),ContentToPlaylistModule],
+  imports: [TypeOrmModule.forFeature([Playlist]), ContentToPlaylistModule],
   exports: [PlaylistService, PlaylistCrudService],
 })
 export class PlaylistsModule {}

@@ -4,15 +4,18 @@ import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-pla
 import { Playlist } from 'src/playlists/entity/playlist.entity';
 import { User } from 'src/users/entity/user.entity';
 import { Repository } from 'typeorm';
-import { CreateContentDto, MoveIncludeContentDto, UpdateContentDto } from './dto/content.dto';
+import {
+  CreateContentDto,
+  MoveIncludeContentDto,
+  UpdateContentDto,
+} from './dto/content.dto';
 import { Content } from './entity/content.entity';
-
 
 @Injectable()
 export class ContentService {
   constructor(
     @InjectRepository(Content) private readonly repository: Repository<Content>,
-    private readonly contentToPlaylistService: ContentToPlaylistService
+    private readonly contentToPlaylistService: ContentToPlaylistService,
   ) {}
 
   async findManyByUser(userId: User['id']): Promise<Content[]> {
@@ -42,18 +45,19 @@ export class ContentService {
       userId: createDto.userId,
     });
 
-    if (createDto.playlistId){
-      const  contentToPlaylist = await this.contentToPlaylistService.save(createDto.playlistId, content.id)
-      return { ...contentToPlaylist, ...content }
+    if (createDto.playlistId) {
+      const contentToPlaylist = await this.contentToPlaylistService.save(
+        createDto.playlistId,
+        content.id,
+      );
+      return { ...contentToPlaylist, ...content };
     }
 
     return content;
   }
 
-  async update(updateDto: UpdateContentDto,id: Content['id']) {
-    const content = this.repository.findOne(id)
-    return this.repository.save({...content, ...updateDto})
+  async update(updateDto: UpdateContentDto, id: Content['id']) {
+    const content = this.repository.findOne(id);
+    return this.repository.save({ ...content, ...updateDto });
   }
-
-  
 }

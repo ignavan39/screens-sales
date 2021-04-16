@@ -5,8 +5,6 @@ import {
   Injectable,
   PipeTransform,
 } from '@nestjs/common';
-import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-playlist.service';
-import { MoveIncludeContentDto } from 'src/content/dto/content.dto';
 import { PlaylistCrudService } from '../playlists.service';
 
 @Injectable()

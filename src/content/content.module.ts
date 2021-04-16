@@ -8,7 +8,7 @@ import { ContentService } from './content.service';
 @Module({
   controllers: [ContentController],
   providers: [ContentService],
-  imports: [TypeOrmModule.forFeature([Content]),ContentToPlaylistModule],
+  imports: [TypeOrmModule.forFeature([Content]), ContentToPlaylistModule],
   exports: [ContentService],
 })
 export class ContentModule {}

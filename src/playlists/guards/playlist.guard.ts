@@ -32,14 +32,14 @@ export class CheckOrderInPlaylistGuard implements CanActivate {
   constructor(
     @Inject('ContentToPlaylistService')
     private readonly service: ContentToPlaylistService,
-  ){}
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const  playlistId  = request.params.id
-    const playlistSize = await this.service.playlistSize(playlistId)
-    if(request.body.order < 0 || request.body.order > playlistSize){
-      throw new BadRequestException("Incorrect order")
+    const playlistId = request.params.id;
+    const playlistSize = await this.service.playlistSize(playlistId);
+    if (request.body.order < 0 || request.body.order > playlistSize) {
+      throw new BadRequestException('Incorrect order');
     }
 
     return true;

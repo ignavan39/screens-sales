@@ -1,10 +1,5 @@
 import { Playlist } from 'src/playlists/entity/playlist.entity';
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Content } from '../../content/entity/content.entity';
 
 @Entity({ name: 'contents_to_playlists' })

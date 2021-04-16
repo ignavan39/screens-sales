@@ -45,9 +45,7 @@ export class UpdateContentDto {
 }
 
 export class MoveIncludeContentDto {
-
   @ApiProperty()
   @IsNotEmpty()
-  order: number
-
+  order: number;
 }
