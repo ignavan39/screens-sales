@@ -1,14 +1,5 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  UseGuards,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { MoveIncludeContentDto } from 'src/content/dto/content.dto';
@@ -19,7 +10,6 @@ import {
   CheckOrderInPlaylistGuard,
   PlaylistOwnerGuard,
 } from './guards/playlist.guard';
-import { CheckPlaylistExsist } from './pipes/playlist.pipe';
 import { PlaylistCrudService, PlaylistService } from './playlists.service';
 
 @Crud({
@@ -61,12 +51,15 @@ export class PlaylistsController implements CrudController<Playlist> {
     private readonly playlistService: PlaylistService,
   ) {}
 
+  @ApiOperation({summary: 'create playlist'})
   @ApiBody({ type: CreatePlaylistDto })
   @Override()
   createOne(@Body() body: CreatePlaylistDto, @User('id') userId) {
     return this.playlistService.save(userId, body);
   }
 
+
+  @ApiOperation({summary: 'get all playlist contents'})
   @ApiParam({ name: 'id', type: 'uuid' })
   @UseGuards(PlaylistOwnerGuard)
   @Get('/:id/contents')
@@ -74,6 +67,8 @@ export class PlaylistsController implements CrudController<Playlist> {
     return this.playlistService.findIncludeContent(playlistId);
   }
 
+
+  @ApiOperation({summary: 'insert content into playlist'})
   @ApiParam({ name: 'id', type: 'uuid' })
   @ApiParam({ name: 'contentId', type: 'uuid' })
   @UseGuards(PlaylistOwnerGuard)
@@ -82,6 +77,7 @@ export class PlaylistsController implements CrudController<Playlist> {
     return this.playlistService.insertContent(playlistId, contentId);
   }
 
+  @ApiOperation({summary: 'move content into playlists'})
   @ApiParam({ name: 'id', type: 'uuid' })
   @ApiParam({ name: 'contentId', type: 'uuid' })
   @ApiBody({ type: MoveIncludeContentDto })

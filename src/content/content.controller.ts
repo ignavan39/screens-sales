@@ -7,7 +7,7 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
 import { ContentService } from './content.service';
@@ -21,17 +21,22 @@ import { ContentOwnerGuard } from './guards/content.guard';
 export class ContentController {
   constructor(private readonly contentService: ContentService) {}
 
+  @ApiOperation({summary: 'find all user contents'})
   @Get('/')
   findMany(@User() user) {
     return this.contentService.findManyByUser(user.id);
   }
 
+
+  @ApiOperation({summary: 'create content'})
   @ApiBody({ type: CreateContentDto })
   @Post('/')
   create(@Body() body: CreateContentDto) {
     return this.contentService.save(body);
   }
 
+
+  @ApiOperation({summary: 'update content'})
   @UseGuards(ContentOwnerGuard)
   @ApiParam({ name: 'id', type: 'uuid' })
   @ApiBody({ type: UpdateContentDto })

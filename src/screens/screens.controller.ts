@@ -1,11 +1,5 @@
-import {
-  Body,
-  Controller,
-  UseGuards,
-  UsePipes,
-  ValidationPipe,
-} from '@nestjs/common';
-import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, UseGuards, ValidationPipe } from '@nestjs/common';
+import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import {
@@ -75,6 +69,7 @@ export class ScreensController implements CrudController<Screen> {
     public readonly screensService: ScreensService,
   ) {}
 
+  @ApiOperation({summary: 'get all event screens'})
   @ApiBody({ type: FindByEventDto })
   @UseGuards(ScreenOwnerByEventGuard)
   @Override()
