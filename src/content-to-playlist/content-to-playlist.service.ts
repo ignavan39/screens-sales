@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UpdateContentDto } from 'src/content/dto/content.dto';
 import { Content } from 'src/content/entity/content.entity';
 import { Playlist } from 'src/playlists/entity/playlist.entity';
 import { Repository } from 'typeorm';

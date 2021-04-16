@@ -26,20 +26,3 @@ export class CheckPlaylistExsist implements PipeTransform {
     return value;
   }
 }
-
-@Injectable()
-export class CheckContentOrder implements PipeTransform {
-  constructor(
-    @Inject('ContentToPlaylistService') private readonly service: ContentToPlaylistService,
-  ) {}
-
-  async transform(value, metadata: ArgumentMetadata) {
-    // console.log(value)
-    // console.log(metadata)
-        // const playlistSize = await this.service.playlistSize(value)
-        // if(value.order < 1 || value.order > playlistSize){
-        //     throw new BadRequestException("Order is incorrect")
-        // }
-    return value;
-  }
-}
