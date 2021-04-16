@@ -11,9 +11,7 @@ import { Event } from './entity/event.entity';
 export class EventsCrudService extends TypeOrmCrudService<Event> {
   constructor(
     @InjectRepository(Event)
-    eventRepository: Repository<Event>,
-    @InjectRepository(Event)
-    private eventCustomRepository: Repository<Event>,
+    eventRepository: Repository<Event>
   ) {
     super(eventRepository);
   }
@@ -33,11 +31,7 @@ export class EventsService {
   }
 
   async findOne(id: Event['id']): Promise<Event | null> {
-    return this.eventsRepository.findOne({
-      where: {
-        id,
-      },
-    });
+    return this.eventsRepository.findOne(id);
   }
 
   async save(userId: User['id'], createDto: CreateEventDto) {

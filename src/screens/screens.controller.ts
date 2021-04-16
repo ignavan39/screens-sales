@@ -18,7 +18,6 @@ import {
   ScreenOwnerByEventGuard,
   ScreenOwnerGuard,
 } from './guards/owner.guard';
-import { CheckScreenExsists } from './pipes/screen.pipe';
 import { ScreensCrudService, ScreensService } from './screens.service';
 
 @Crud({
@@ -47,14 +46,12 @@ import { ScreensCrudService, ScreensService } from './screens.service';
     getOneBase: {
       decorators: [
         UseGuards(ScreenOwnerGuard),
-        UsePipes(CheckScreenExsists),
         ApiParam({ name: 'id', type: 'uuid' }),
       ],
     },
     updateOneBase: {
       decorators: [
         UseGuards(ScreenOwnerGuard),
-        UsePipes(CheckScreenExsists),
         ApiParam({ name: 'id', type: 'uuid' }),
         ApiBody({ type: UpdateScreenDto }),
       ],
@@ -63,7 +60,6 @@ import { ScreensCrudService, ScreensService } from './screens.service';
     deleteOneBase: {
       decorators: [
         UseGuards(ScreenOwnerGuard),
-        UsePipes(CheckScreenExsists),
         ApiParam({ name: 'id', type: 'uuid' }),
       ],
       returnDeleted: true,
@@ -76,13 +72,13 @@ import { ScreensCrudService, ScreensService } from './screens.service';
 export class ScreensController implements CrudController<Screen> {
   constructor(
     public readonly service: ScreensCrudService,
-    public readonly customService: ScreensService,
+    public readonly screensService: ScreensService,
   ) {}
 
   @ApiBody({ type: FindByEventDto })
   @UseGuards(ScreenOwnerByEventGuard)
   @Override()
   async getMany(@Body(new ValidationPipe()) body: FindByEventDto) {
-    return this.customService.findMany(body.eventId);
+    return this.screensService.findMany(body.eventId);
   }
 }

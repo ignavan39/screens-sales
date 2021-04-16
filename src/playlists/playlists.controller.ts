@@ -37,20 +37,17 @@ import { PlaylistCrudService, PlaylistService } from './playlists.service';
     getOneBase: {
       decorators: [
         UseGuards(PlaylistOwnerGuard),
-        UsePipes(CheckPlaylistExsist),
       ],
     },
     updateOneBase: {
       decorators: [
         UseGuards(PlaylistOwnerGuard),
-        UsePipes(CheckPlaylistExsist),
       ],
       returnShallow: true,
     },
     deleteOneBase: {
       decorators: [
         UseGuards(PlaylistOwnerGuard),
-        UsePipes(CheckPlaylistExsist),
       ],
       returnDeleted: true,
     },
@@ -67,45 +64,40 @@ import { PlaylistCrudService, PlaylistService } from './playlists.service';
 export class PlaylistsController implements CrudController<Playlist> {
   constructor(
     public readonly service: PlaylistCrudService,
-    private readonly customService: PlaylistService,
+    private readonly playlistService: PlaylistService,
   ) {}
 
-  @ApiBody({type: CreatePlaylistDto})
+  @ApiBody({ type: CreatePlaylistDto })
   @Override()
-  createOne(
-    @Body(new ValidationPipe()) body: CreatePlaylistDto,
-    @User('id') userId,
-  ) {
-    return this.customService.save(userId, body);
+  createOne(@Body() body: CreatePlaylistDto, @User('id') userId) {
+    return this.playlistService.save(userId, body);
   }
 
-  @ApiParam({name: 'id',type: 'uuid'})
+  @ApiParam({ name: 'id', type: 'uuid' })
   @UseGuards(PlaylistOwnerGuard)
   @Get('/:id/contents')
-  getIncludeContents(@Param('id') id) {
-    return this.customService.findIncludeContent(id);
+  getIncludeContents(@Param('id') playlistId) {
+    return this.playlistService.findIncludeContent(playlistId);
   }
 
-
-  @ApiParam({name: 'id',type: 'uuid'})
-  @ApiParam({name: 'contentId',type: 'uuid'})
+  @ApiParam({ name: 'id', type: 'uuid' })
+  @ApiParam({ name: 'contentId', type: 'uuid' })
   @UseGuards(PlaylistOwnerGuard)
   @Post('/:id/contents/:contentId')
-  insertContent(@Param('id') id, @Param('contentId') contentId) {
-    return this.customService.insertContent(id, contentId);
+  insertContent(@Param('id') playlistId, @Param('contentId') contentId) {
+    return this.playlistService.insertContent(playlistId, contentId);
   }
 
-
-  @ApiParam({name: 'id',type: 'uuid'})
-  @ApiParam({name: 'contentId',type: 'uuid'})
-  @ApiBody({type: MoveIncludeContentDto})
+  @ApiParam({ name: 'id', type: 'uuid' })
+  @ApiParam({ name: 'contentId', type: 'uuid' })
+  @ApiBody({ type: MoveIncludeContentDto })
   @UseGuards(CheckOrderInPlaylistGuard, PlaylistOwnerGuard)
   @Post('/:id/contents/:contentId/move')
   moveIncludeContent(
-    @Param('id') id,
+    @Param('id') playlistId,
     @Param('contentId') contentId,
     @Body() body: MoveIncludeContentDto,
   ) {
-    return this.customService.moveContent(id, contentId, body);
+    return this.playlistService.moveContent(playlistId, contentId, body);
   }
 }

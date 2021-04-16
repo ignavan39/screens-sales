@@ -41,14 +41,14 @@ export class ContentToPlaylistService {
   ) {
     const playlist = await this.findContentByPlaylistId(playlistId);
 
-    const newPlaylist = playlist.map((it) => {
-      if (it.contentId === contentId) {
-        return { ...it, order };
-      } else if (it.order >= order && it.id !== contentId) {
-        return { ...it, order: it.order + 1 };
+    const newPlaylist = playlist.map((item) => {
+      if (item.contentId === contentId) {
+        return { ...item, order };
+      } else if (item.order >= order && item.id !== contentId) {
+        return { ...item, order: item.order + 1 };
       }
 
-      return it;
+      return item;
     });
     return this.repository.save([...newPlaylist]);
   }

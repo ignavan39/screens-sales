@@ -12,30 +12,29 @@ import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
 import { ContentService } from './content.service';
 import { CreateContentDto, UpdateContentDto } from './dto/content.dto';
-import { Content } from './entity/content.entity';
 
 @ApiBearerAuth()
 @ApiTags('contents')
 @UseGuards(JwtAuthGuard)
 @Controller('contents')
 export class ContentController {
-  constructor(private readonly customService: ContentService) {}
+  constructor(private readonly contentService: ContentService) {}
 
   @Get('/')
   findMany(@User() user) {
-    return this.customService.findManyByUser(user.id);
+    return this.contentService.findManyByUser(user.id);
   }
 
   @ApiBody({ type: CreateContentDto })
   @Post('/')
   create(@Body() body: CreateContentDto) {
-    return this.customService.save(body);
+    return this.contentService.save(body);
   }
 
   @ApiParam({ name: 'id', type: 'uuid' })
   @ApiBody({ type: UpdateContentDto })
   @Put('/:id')
   update(@Param('id') id, @Body() body: UpdateContentDto) {
-    return this.customService.update(body, id);
+    return this.contentService.update(body, id);
   }
 }

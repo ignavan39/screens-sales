@@ -1,8 +1,8 @@
 import {
   ArgumentMetadata,
-  BadRequestException,
   Inject,
   Injectable,
+  NotFoundException,
   PipeTransform,
 } from '@nestjs/common';
 import { PlaylistCrudService } from '../playlists.service';
@@ -19,7 +19,7 @@ export class CheckPlaylistExsist implements PipeTransform {
       value.parsed.paramsFilter[0].value,
     );
     if (!playlist) {
-      throw new BadRequestException('playlist dont exsist');
+      throw new NotFoundException('playlist dont exsist');
     }
     return value;
   }

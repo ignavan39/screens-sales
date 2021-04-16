@@ -5,7 +5,10 @@ import {
   IsNumber,
   IsOptional,
   IsPositive,
+  IsString,
   IsUUID,
+  Min,
+  MinLength,
 } from 'class-validator';
 import { Playlist } from 'src/playlists/entity/playlist.entity';
 import { User } from 'src/users/entity/user.entity';
@@ -14,8 +17,10 @@ import { ContentType } from '../entity/content.entity';
 export class CreateContentDto {
   @ApiProperty()
   @IsNotEmpty()
+  @IsString()
   name: string;
 
+  @IsString()
   @ApiProperty()
   @IsNotEmpty()
   contentType: ContentType;
@@ -33,10 +38,12 @@ export class CreateContentDto {
 }
 
 export class UpdateContentDto {
+  @IsString()
   @ApiProperty()
   @IsOptional()
   name?: string;
 
+  @IsString()
   @ApiProperty()
   @IsOptional()
   contentType?: ContentType;

@@ -1,8 +1,15 @@
 import { Playlist } from 'src/playlists/entity/playlist.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 import { Content } from '../../content/entity/content.entity';
 
 @Entity({ name: 'contents_to_playlists' })
+@Unique(['contentId', 'playlistId'])
 export class ContentToPlaylists {
   @PrimaryGeneratedColumn('uuid')
   id: string;

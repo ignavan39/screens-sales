@@ -7,7 +7,6 @@ import { CreateEventDto, UpdateEventDto } from './dto/event.dto';
 import { Event } from './entity/event.entity';
 import { EventsCrudService, EventsService } from './events.service';
 import { EventOwnerGuard } from './guards/owner.guard';
-import { CheckEventExsists } from './pipes/event.pipe';
 
 @Crud({
   model: {
@@ -24,7 +23,6 @@ import { CheckEventExsists } from './pipes/event.pipe';
     updateOneBase: {
       decorators: [
         UseGuards(EventOwnerGuard),
-        UsePipes(CheckEventExsists),
         ApiBody({ type: UpdateEventDto }),
         ApiParam({ name: 'id', type: 'uuid' }),
       ],
@@ -33,7 +31,6 @@ import { CheckEventExsists } from './pipes/event.pipe';
     deleteOneBase: {
       decorators: [
         UseGuards(EventOwnerGuard),
-        UsePipes(CheckEventExsists),
         ApiParam({ name: 'id', type: 'uuid' }),
       ],
       returnDeleted: true,
@@ -41,7 +38,6 @@ import { CheckEventExsists } from './pipes/event.pipe';
     getOneBase: {
       decorators: [
         UseGuards(EventOwnerGuard),
-        UsePipes(CheckEventExsists),
         ApiParam({ name: 'id', type: 'uuid' }),
       ],
     },
@@ -58,17 +54,17 @@ import { CheckEventExsists } from './pipes/event.pipe';
 export class EventsController implements CrudController<Event> {
   constructor(
     public readonly service: EventsCrudService,
-    private readonly customService: EventsService,
+    private readonly eventsService: EventsService,
   ) {}
 
   @ApiBody({ type: CreateEventDto })
   @Override('createOneBase')
   create(@User() user, @Body() createDto: CreateEventDto) {
-    return this.customService.save(user.id, createDto);
+    return this.eventsService.save(user.id, createDto);
   }
-  //for admin
+
   @Override()
   getMany(@User() user) {
-    return this.customService.findMany(user.id);
+    return this.eventsService.findMany(user.id);
   }
 }

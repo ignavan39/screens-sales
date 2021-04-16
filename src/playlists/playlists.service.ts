@@ -34,21 +34,21 @@ export class PlaylistService {
     });
   }
 
-  async findOne(id: Playlist['id']) {
-    return this.repository.findOne(id, { relations: ['contents'] });
-  }
-
-  async findIncludeContent(id: Playlist['id']) {
-    return this.contentToPlaylistService.findContentByPlaylistId(id);
+  async findIncludeContent(playlistId: Playlist['id']) {
+    return this.contentToPlaylistService.findContentByPlaylistId(playlistId);
   }
 
   async moveContent(
-    id: Playlist['id'],
+    playlistId: Playlist['id'],
     contentId: Content['id'],
     dto: MoveIncludeContentDto,
   ) {
     console.log(dto);
-    return this.contentToPlaylistService.moveContent(id, contentId, dto.order);
+    return this.contentToPlaylistService.moveContent(
+      playlistId,
+      contentId,
+      dto.order,
+    );
   }
 
   async insertContent(id: Playlist['id'], contentId: Content['id']) {

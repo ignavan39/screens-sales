@@ -1,11 +1,19 @@
 import { ApiProperty } from '@nestjsx/crud/lib/crud';
-import { IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUUID,
+  MinLength,
+} from 'class-validator';
 import { Event } from 'src/events/entity/event.entity';
 import { User } from 'src/users/entity/user.entity';
 
 export class CreateScreenDto {
   @ApiProperty()
   @IsNotEmpty()
+  @MinLength(4)
+  @IsString()
   name: string;
 
   @ApiProperty()
@@ -21,6 +29,8 @@ export class CreateScreenDto {
 
 export class UpdateScreenDto {
   @ApiProperty()
+  @MinLength(4)
+  @IsString()
   @IsOptional()
   name?: string;
 
