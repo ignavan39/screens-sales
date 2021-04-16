@@ -5,6 +5,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import {
@@ -37,22 +38,39 @@ import { ScreensCrudService, ScreensService } from './screens.service';
   },
   routes: {
     createOneBase: {
-      decorators: [UseGuards(ScreenOwnerByEventGuard)],
+      decorators: [
+        UseGuards(ScreenOwnerByEventGuard),
+        ApiBody({ type: CreateScreenDto }),
+      ],
       returnShallow: true,
     },
     getOneBase: {
-      decorators: [UseGuards(ScreenOwnerGuard), UsePipes(CheckScreenExsists)],
+      decorators: [
+        UseGuards(ScreenOwnerGuard),
+        UsePipes(CheckScreenExsists),
+        ApiParam({ name: 'id', type: 'uuid' }),
+      ],
     },
     updateOneBase: {
-      decorators: [UseGuards(ScreenOwnerGuard), UsePipes(CheckScreenExsists)],
+      decorators: [
+        UseGuards(ScreenOwnerGuard),
+        UsePipes(CheckScreenExsists),
+        ApiParam({ name: 'id', type: 'uuid' }),
+        ApiBody({ type: UpdateScreenDto }),
+      ],
       returnShallow: true,
     },
     deleteOneBase: {
-      decorators: [UseGuards(ScreenOwnerGuard), UsePipes(CheckScreenExsists)],
+      decorators: [
+        UseGuards(ScreenOwnerGuard),
+        UsePipes(CheckScreenExsists),
+        ApiParam({ name: 'id', type: 'uuid' }),
+      ],
       returnDeleted: true,
     },
   },
 })
+@ApiTags('screens')
 @UseGuards(JwtAuthGuard)
 @Controller('screens')
 export class ScreensController implements CrudController<Screen> {
@@ -61,6 +79,7 @@ export class ScreensController implements CrudController<Screen> {
     public readonly customService: ScreensService,
   ) {}
 
+  @ApiBody({ type: FindByEventDto })
   @UseGuards(ScreenOwnerByEventGuard)
   @Override()
   async getMany(@Body(new ValidationPipe()) body: FindByEventDto) {

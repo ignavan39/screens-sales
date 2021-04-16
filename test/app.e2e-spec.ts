@@ -6,7 +6,7 @@ import { AuthService } from 'src/auth/auth.service';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
-  let authService = { findAll: () => ['test'] };
+  const authService = { findAll: () => ['test'] };
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({

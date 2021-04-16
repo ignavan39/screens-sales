@@ -8,6 +8,7 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiBody, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { MoveIncludeContentDto } from 'src/content/dto/content.dto';
@@ -59,6 +60,8 @@ import { PlaylistCrudService, PlaylistService } from './playlists.service';
     update: UpdatePlaylistDto,
   },
 })
+@ApiBearerAuth()
+@ApiTags('playlists')
 @UseGuards(JwtAuthGuard)
 @Controller('playlists')
 export class PlaylistsController implements CrudController<Playlist> {
@@ -67,6 +70,7 @@ export class PlaylistsController implements CrudController<Playlist> {
     private readonly customService: PlaylistService,
   ) {}
 
+  @ApiBody({type: CreatePlaylistDto})
   @Override()
   createOne(
     @Body(new ValidationPipe()) body: CreatePlaylistDto,
@@ -75,18 +79,26 @@ export class PlaylistsController implements CrudController<Playlist> {
     return this.customService.save(userId, body);
   }
 
+  @ApiParam({name: 'id',type: 'uuid'})
   @UseGuards(PlaylistOwnerGuard)
   @Get('/:id/contents')
   getIncludeContents(@Param('id') id) {
     return this.customService.findIncludeContent(id);
   }
 
+
+  @ApiParam({name: 'id',type: 'uuid'})
+  @ApiParam({name: 'contentId',type: 'uuid'})
   @UseGuards(PlaylistOwnerGuard)
   @Post('/:id/contents/:contentId')
   insertContent(@Param('id') id, @Param('contentId') contentId) {
     return this.customService.insertContent(id, contentId);
   }
 
+
+  @ApiParam({name: 'id',type: 'uuid'})
+  @ApiParam({name: 'contentId',type: 'uuid'})
+  @ApiBody({type: MoveIncludeContentDto})
   @UseGuards(CheckOrderInPlaylistGuard, PlaylistOwnerGuard)
   @Post('/:id/contents/:contentId/move')
   moveIncludeContent(

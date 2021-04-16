@@ -39,7 +39,7 @@ export class ContentToPlaylistService {
     contentId: Content['id'],
     order: number,
   ) {
-    let playlist = await this.findContentByPlaylistId(playlistId);
+    const playlist = await this.findContentByPlaylistId(playlistId);
 
     const newPlaylist = playlist.map((it) => {
       if (it.contentId === contentId) {

@@ -23,10 +23,12 @@ export class CreateContentDto {
   @ApiProperty()
   @IsOptional()
   @IsNotEmpty()
+  @IsUUID()
   playlistId: Playlist['id'];
 
   @IsNotEmpty()
   @ApiProperty()
+  @IsUUID()
   userId: User['id'];
 }
 
@@ -41,11 +43,13 @@ export class UpdateContentDto {
 
   @IsNotEmpty()
   @ApiProperty()
+  @IsUUID()
   userId: User['id'];
 }
 
 export class MoveIncludeContentDto {
   @ApiProperty()
   @IsNotEmpty()
+  @IsPositive()
   order: number;
 }
