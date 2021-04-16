@@ -46,6 +46,7 @@ export class PlaylistService {
   }
 
   async moveContent(id: Playlist['id'],contentId: Content['id'], dto: MoveIncludeContentDto){
+    console.log(dto)
     return this.contentToPlaylistService.moveContent(id,contentId,dto.order)
   }
 

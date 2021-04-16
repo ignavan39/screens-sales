@@ -38,23 +38,19 @@ export class ContentToPlaylistService {
   async moveContent(playlistId: Playlist['id'], contentId: Content['id'], order: number) {
     let playlist = await this.findContentByPlaylistId(playlistId)
 
-    const newPlaylist = playlist.map((item) => {
-        if(item.id !== contentId && item.order >= order){
-            return { ...item, order: item.order + 1 };
+    const newPlaylist = playlist.map((it)=> {
+
+        if(it.contentId === contentId){
+            return {...it, order}
+        }
+        else if(it.order >= order && it.id !== contentId){
+            return {...it,order:(it.order)+1}
         }
 
-        if (item.id === contentId) {
-            return { ...item, order };
-        }
-
-        return item
+        return it;
     })
     return this.repository.save([
-        ...newPlaylist, {
-            playlistId,
-            contentId,
-            order
-        }])
+        ...newPlaylist])
   }
 
   async playlistSize(playlistId: Playlist['id']): Promise<number> {

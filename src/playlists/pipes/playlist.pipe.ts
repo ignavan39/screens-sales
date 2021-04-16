@@ -34,8 +34,8 @@ export class CheckContentOrder implements PipeTransform {
   ) {}
 
   async transform(value, metadata: ArgumentMetadata) {
-    console.log(value)
-    console.log(metadata)
+    // console.log(value)
+    // console.log(metadata)
         // const playlistSize = await this.service.playlistSize(value)
         // if(value.order < 1 || value.order > playlistSize){
         //     throw new BadRequestException("Order is incorrect")
