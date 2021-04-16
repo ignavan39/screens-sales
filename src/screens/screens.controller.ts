@@ -1,5 +1,11 @@
 import { Body, Controller, UseGuards, ValidationPipe } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import {
@@ -60,6 +66,7 @@ import { ScreensCrudService, ScreensService } from './screens.service';
     },
   },
 })
+@ApiResponse({ status: 401, description: 'Unauthorized' })
 @ApiTags('screens')
 @UseGuards(JwtAuthGuard)
 @Controller('screens')
@@ -69,7 +76,8 @@ export class ScreensController implements CrudController<Screen> {
     public readonly screensService: ScreensService,
   ) {}
 
-  @ApiOperation({summary: 'get all event screens'})
+  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiOperation({ summary: 'get all event screens' })
   @ApiBody({ type: FindByEventDto })
   @UseGuards(ScreenOwnerByEventGuard)
   @Override()

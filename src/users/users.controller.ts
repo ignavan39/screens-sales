@@ -1,5 +1,5 @@
 import { Controller, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { AccessGuard } from './access.guard';
@@ -34,6 +34,8 @@ import { UsersService } from './users.service';
     },
   },
 })
+@ApiResponse({ status: 401, description: 'Unauthorized' })
+@ApiResponse({ status: 403, description: 'Forbidden.' })
 @ApiBearerAuth()
 @ApiTags('Auth')
 @UseGuards(JwtAuthGuard)

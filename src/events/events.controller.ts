@@ -1,5 +1,12 @@
 import { Body, Controller, Param, UseGuards, UsePipes } from '@nestjs/common';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiParam,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
@@ -47,6 +54,7 @@ import { EventOwnerGuard } from './guards/owner.guard';
     update: UpdateEventDto,
   },
 })
+@ApiResponse({ status: 401, description: 'Unauthorized' })
 @ApiBearerAuth()
 @ApiTags('events')
 @UseGuards(JwtAuthGuard)
@@ -57,15 +65,14 @@ export class EventsController implements CrudController<Event> {
     private readonly eventsService: EventsService,
   ) {}
 
-  @ApiOperation({summary: 'create event'})
+  @ApiOperation({ summary: 'create event' })
   @ApiBody({ type: CreateEventDto })
   @Override('createOneBase')
   create(@User() user, @Body() createDto: CreateEventDto) {
     return this.eventsService.save(user.id, createDto);
   }
 
-
-  @ApiOperation({summary: 'get all events'})
+  @ApiOperation({ summary: 'get all events' })
   @Override()
   getMany(@User() user) {
     return this.eventsService.findMany(user.id);
