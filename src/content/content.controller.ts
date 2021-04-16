@@ -12,6 +12,7 @@ import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
 import { ContentService } from './content.service';
 import { CreateContentDto, UpdateContentDto } from './dto/content.dto';
+import { ContentOwnerGuard } from './guards/content.guard';
 
 @ApiBearerAuth()
 @ApiTags('contents')
@@ -31,10 +32,11 @@ export class ContentController {
     return this.contentService.save(body);
   }
 
+  @UseGuards(ContentOwnerGuard)
   @ApiParam({ name: 'id', type: 'uuid' })
   @ApiBody({ type: UpdateContentDto })
   @Put('/:id')
-  update(@Param('id') id, @Body() body: UpdateContentDto) {
-    return this.contentService.update(body, id);
+  update(@Param('id') contentId, @Body() body: UpdateContentDto) {
+    return this.contentService.update(body, contentId);
   }
 }

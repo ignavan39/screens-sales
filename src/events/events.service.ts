@@ -11,7 +11,7 @@ import { Event } from './entity/event.entity';
 export class EventsCrudService extends TypeOrmCrudService<Event> {
   constructor(
     @InjectRepository(Event)
-    eventRepository: Repository<Event>
+    eventRepository: Repository<Event>,
   ) {
     super(eventRepository);
   }

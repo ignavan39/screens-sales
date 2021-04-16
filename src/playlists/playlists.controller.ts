@@ -35,20 +35,14 @@ import { PlaylistCrudService, PlaylistService } from './playlists.service';
   },
   routes: {
     getOneBase: {
-      decorators: [
-        UseGuards(PlaylistOwnerGuard),
-      ],
+      decorators: [UseGuards(PlaylistOwnerGuard)],
     },
     updateOneBase: {
-      decorators: [
-        UseGuards(PlaylistOwnerGuard),
-      ],
+      decorators: [UseGuards(PlaylistOwnerGuard)],
       returnShallow: true,
     },
     deleteOneBase: {
-      decorators: [
-        UseGuards(PlaylistOwnerGuard),
-      ],
+      decorators: [UseGuards(PlaylistOwnerGuard)],
       returnDeleted: true,
     },
   },

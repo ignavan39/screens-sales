@@ -4,11 +4,7 @@ import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-pla
 import { Playlist } from 'src/playlists/entity/playlist.entity';
 import { User } from 'src/users/entity/user.entity';
 import { Repository } from 'typeorm';
-import {
-  CreateContentDto,
-  MoveIncludeContentDto,
-  UpdateContentDto,
-} from './dto/content.dto';
+import { CreateContentDto, UpdateContentDto } from './dto/content.dto';
 import { Content } from './entity/content.entity';
 
 @Injectable()
@@ -54,6 +50,10 @@ export class ContentService {
     }
 
     return content;
+  }
+
+  async findOne(id: Content['id']): Promise<Content | null> {
+    return this.repository.findOne(id);
   }
 
   async update(updateDto: UpdateContentDto, id: Content['id']) {
