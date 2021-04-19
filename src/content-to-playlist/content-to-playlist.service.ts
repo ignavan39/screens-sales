@@ -39,35 +39,63 @@ export class ContentToPlaylistService {
     });
   }
 
+  moveContentToLeftSide(
+    playlist: ContentToPlaylists[],
+    contentId: Content['id'],
+    order: number,
+    oldOrder: number,
+  ) {
+    return playlist.map((v) => {
+      if (v.contentId === contentId) {
+        return { ...v, order };
+      } else if (v.order <= order && v.order > oldOrder) {
+        return { ...v, order: v.order - 1 };
+      }
+      return v;
+    });
+  }
+
+  moveContentToRightSide(
+    playlist: ContentToPlaylists[],
+    contentId: Content['id'],
+    order: number,
+    oldOrder: number,
+  ) {
+    return playlist.map((v) => {
+      if (v.contentId === contentId) {
+        return { ...v, order };
+      } else if (v.order >= order && v.order < oldOrder) {
+        return { ...v, order: v.order + 1 };
+      }
+      return v;
+    });
+  }
+
   async moveContent(
     playlistId: Playlist['id'],
     contentId: Content['id'],
     order: number,
   ): Promise<ContentToPlaylists[] | ContentToPlaylists> {
     const playlist = await this.findContentByPlaylistId(playlistId);
+    const oldOrder = await (
+      await this.repository.findOne({ contentId, playlistId })
+    ).order;
 
-    if (order > playlist.length) {
-      return this.save(playlistId, contentId);
+    if (order > oldOrder) {
+      return this.repository.save([
+        ...this.moveContentToLeftSide(playlist, contentId, order, oldOrder),
+      ]);
     }
 
-    const newPlaylist = playlist.map((item) => {
-      if (item.contentId === contentId) {
-        return { ...item, order };
-      } else if (item.order >= order && item.id !== contentId) {
-        return { ...item, order: item.order + 1 };
-      }
-
-      return item;
-    });
-    return this.repository.save([...newPlaylist]);
+    return this.repository.save([
+      ...this.moveContentToRightSide(playlist, contentId, order, oldOrder),
+    ]);
   }
 
   async playlistSize(playlistId: Playlist['id']): Promise<number> {
     return this.repository.count({
       where: {
-        playlist: {
-          id: playlistId,
-        },
+        playlistId,
       },
     });
   }
