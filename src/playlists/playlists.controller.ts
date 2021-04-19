@@ -60,8 +60,8 @@ export class PlaylistsController implements CrudController<Playlist> {
   @ApiParam({ name: 'id', type: 'uuid' })
   @UseGuards(PlaylistOwnerGuard)
   @Get('/:id/contents')
-  getIncludeContents(@Param('id') playlistId: Playlist['id']) {
-    return this.playlistService.findIncludeContent(playlistId);
+  getContents(@Param('id') playlistId: Playlist['id']) {
+    return this.playlistService.findContents(playlistId);
   }
 
   @ApiResponse({ status: 403, description: 'Forbidden.' })
@@ -84,7 +84,7 @@ export class PlaylistsController implements CrudController<Playlist> {
   @ApiBody({ type: MoveIncludeContentDto })
   @UseGuards(PlaylistOwnerGuard)
   @Post('/:id/contents/:contentId/move')
-  moveIncludeContent(
+  moveContent(
     @Param('id') playlistId: Playlist['id'],
     @Param('contentId') contentId: Content['id'],
     @Body() body: MoveIncludeContentDto,

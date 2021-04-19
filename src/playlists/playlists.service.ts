@@ -35,7 +35,7 @@ export class PlaylistService {
     });
   }
 
-  async findIncludeContent(
+  async findContents(
     playlistId: Playlist['id'],
   ): Promise<ContentToPlaylists[]> {
     return this.contentToPlaylistService.findContentByPlaylistId(playlistId);

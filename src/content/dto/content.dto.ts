@@ -43,11 +43,6 @@ export class UpdateContentDto {
   @IsOptional()
   name?: string;
 
-  @IsString()
-  @ApiProperty()
-  @IsOptional()
-  contentType?: ContentType;
-
   @IsNotEmpty()
   @ApiProperty()
   @IsUUID()

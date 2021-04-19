@@ -14,24 +14,10 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, password: string): Promise<User | null> {
-    const user = await this.usersService.findOne({ email });
-    console.log(user);
-    if (user && this.validatePassword(password, user.password)) {
-      return user;
-    }
-    return null;
-  }
-
   validatePassword(password: string, hash: string): boolean {
     return bcrypt.compareSync(password, hash);
   }
-  async signIn(signInDto: SignInDto) {
-    // AuthGuard('local')
-    const user = await this.validateUser(signInDto.email, signInDto.password);
-    if (!user) {
-      throw new BadRequestException('passwords do not match');
-    }
+  async signIn(user: User) {
     const payload = { email: user.email, sub: user.id };
     const token = this.jwtService.sign(payload);
     return { user_info: { ...user }, access_token: token };
@@ -47,6 +33,7 @@ export class AuthService {
     );
     const payload = { email: signUpDto.email, sub: savedUser.id };
     return {
+      user_info: { ...savedUser },
       access_token: this.jwtService.sign(payload),
     };
   }
