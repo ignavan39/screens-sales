@@ -1,12 +1,12 @@
 import { ConnectionOptions } from 'typeorm';
-require('dotenv').config();
+import { DB_HOST, DB_NAME, DB_PASS, DB_USER } from './constants';
 
 export const ormConfig: ConnectionOptions = {
   type: 'postgres',
-  host: process.env.DB_HOST,
-  username: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.DB_NAME,
+  host: DB_HOST,
+  username: DB_USER,
+  password: DB_PASS,
+  database: DB_NAME,
   synchronize: true,
   migrationsRun: true,
   entities: [__dirname + '/**/*.entity{.ts,.js}'],

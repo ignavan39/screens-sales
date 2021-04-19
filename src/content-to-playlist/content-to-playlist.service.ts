@@ -13,13 +13,11 @@ export class ContentToPlaylistService {
   ) {}
 
   async findContentByPlaylistId(
-    id: Playlist['id'],
+    playlistId: Playlist['id'],
   ): Promise<ContentToPlaylists[]> {
     return this.repository.find({
       where: {
-        playlist: {
-          id,
-        },
+        playlistId,
       },
       relations: ['content'],
     });
