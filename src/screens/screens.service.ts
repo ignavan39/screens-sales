@@ -4,6 +4,7 @@ import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Event } from 'src/events/entity/event.entity';
 import { User } from 'src/users/entity/user.entity';
 import { Repository } from 'typeorm';
+import { CreateScreenDto } from './dto/screen.dto';
 import { Screen } from './entity/screen.entity';
 
 @Injectable()
@@ -26,5 +27,9 @@ export class ScreensService {
         eventId,
       },
     });
+  }
+
+  async save(createScreenDto: CreateScreenDto): Promise<Screen> {
+    return this.screenRepository.save(createScreenDto);
   }
 }

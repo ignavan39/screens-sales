@@ -15,11 +15,11 @@ export class CheckScreenExsists implements PipeTransform {
   ) {}
 
   async transform(value, metadata: ArgumentMetadata) {
-    const screen = await this.screenService.findOne(
-      value.parsed.paramsFilter[0].value,
-    );
-    if (!screen) {
-      throw new BadRequestException('Screen dont exsist');
+    if (value.screenId) {
+      const screen = await this.screenService.findOne(value.screenId);
+      if (!screen) {
+        throw new BadRequestException('Screen dont exsist');
+      }
     }
     return value;
   }

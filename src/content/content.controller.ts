@@ -16,6 +16,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { CheckPlaylistExsist } from 'src/playlists/pipes/playlist.pipe';
 import { User } from 'src/users/user.decorator';
 import { ContentService } from './content.service';
 import { CreateContentDto, UpdateContentDto } from './dto/content.dto';
@@ -39,7 +40,7 @@ export class ContentController {
   @ApiOperation({ summary: 'create content' })
   @ApiBody({ type: CreateContentDto })
   @Post()
-  create(@Body() body: CreateContentDto) {
+  create(@Body(CheckPlaylistExsist) body: CreateContentDto) {
     return this.contentService.save(body);
   }
 

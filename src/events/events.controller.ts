@@ -25,12 +25,32 @@ import { EventOwnerGuard } from './guards/owner.guard';
         UseGuards(EventOwnerGuard),
         ApiBody({ type: UpdateEventDto }),
         ApiParam({ name: 'id', type: 'uuid' }),
+        ApiResponse({
+          status: 200,
+          schema: {
+            example: {
+              id: '8c9163fe-b6e1-49e5-a194-035409de304d',
+              description: '12345',
+              userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+            },
+          },
+        }),
       ],
     },
     deleteOneBase: {
       decorators: [
         UseGuards(EventOwnerGuard),
         ApiParam({ name: 'id', type: 'uuid' }),
+        ApiResponse({
+          status: 200,
+          schema: {
+            example: {
+              playlistId: 'a4c401bb-048f-4bd1-a582-58f52168231b',
+              description: 'description',
+              userId: '29615bad-0209-47ca-81e9-4a0d73b98dc9',
+            },
+          },
+        }),
       ],
     },
     getOneBase: {

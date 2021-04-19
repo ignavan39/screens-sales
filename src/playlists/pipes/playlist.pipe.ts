@@ -15,11 +15,11 @@ export class CheckPlaylistExsist implements PipeTransform {
   ) {}
 
   async transform(value, metadata: ArgumentMetadata) {
-    const playlist = await this.playlistService.findOne(
-      value.parsed.paramsFilter[0].value,
-    );
-    if (!playlist) {
-      throw new NotFoundException('playlist dont exsist');
+    if (value.playlistId) {
+      const playlist = await this.playlistService.findOne(value.playlistId);
+      if (!playlist) {
+        throw new NotFoundException('playlist dont exsist');
+      }
     }
     return value;
   }

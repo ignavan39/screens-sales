@@ -66,7 +66,7 @@ import { UsersService } from './users.service';
   },
 })
 @ApiResponse({ status: 401, description: 'Unauthorized' })
-@ApiResponse({ status: 403, description: 'Forbidden.' })
+@ApiResponse({ status: 403, description: 'Forbidden' })
 @ApiBearerAuth()
 @ApiTags('Auth')
 @UseGuards(JwtAuthGuard)

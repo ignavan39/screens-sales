@@ -11,6 +11,7 @@ import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { MoveIncludeContentDto } from 'src/content/dto/content.dto';
 import { Content } from 'src/content/entity/content.entity';
+import { CheckScreenExsists } from 'src/screens/pipes/screen.pipe';
 import { User } from 'src/users/user.decorator';
 import { CreatePlaylistDto, UpdatePlaylistDto } from './dto/playlists.dto';
 import { Playlist } from './entity/playlist.entity';
@@ -51,7 +52,10 @@ export class PlaylistsController implements CrudController<Playlist> {
   @ApiOperation({ summary: 'create playlist' })
   @ApiBody({ type: CreatePlaylistDto })
   @Override()
-  createOne(@Body() body: CreatePlaylistDto, @User('id') userId) {
+  createOne(
+    @Body(CheckScreenExsists) body: CreatePlaylistDto,
+    @User('id') userId,
+  ) {
     return this.playlistService.save(userId, body);
   }
 

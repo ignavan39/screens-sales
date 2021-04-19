@@ -1,4 +1,10 @@
-import { Body, Controller, UseGuards, ValidationPipe } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  UseGuards,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import {
   ApiBody,
   ApiOperation,
@@ -8,6 +14,7 @@ import {
 } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { CheckEventExsists } from 'src/events/pipes/event.pipe';
 import {
   CreateScreenDto,
   FindByEventDto,
@@ -29,12 +36,6 @@ import { ScreensCrudService, ScreensService } from './screens.service';
     update: UpdateScreenDto,
   },
   routes: {
-    createOneBase: {
-      decorators: [
-        UseGuards(ScreenOwnerByEventGuard),
-        ApiBody({ type: CreateScreenDto }),
-      ],
-    },
     getOneBase: {
       decorators: [
         UseGuards(ScreenOwnerGuard),
@@ -57,6 +58,7 @@ import { ScreensCrudService, ScreensService } from './screens.service';
   },
 })
 @ApiResponse({ status: 401, description: 'Unauthorized' })
+@ApiResponse({ status: 403, description: 'Forbidden' })
 @ApiTags('screens')
 @UseGuards(JwtAuthGuard)
 @Controller('screens')
@@ -65,6 +67,23 @@ export class ScreensController implements CrudController<Screen> {
     public readonly service: ScreensCrudService,
     public readonly screensService: ScreensService,
   ) {}
+
+  @ApiResponse({
+    status: 201,
+    schema: {
+      example: {
+        playlistId: 'a4c401bb-048f-4bd1-a582-58f52168231b',
+        description: 'description',
+        userId: '29615bad-0209-47ca-81e9-4a0d73b98dc9',
+        id: '6fb9a764-b455-4cf8-b103-c146e6541529',
+      },
+    },
+  })
+  @ApiBody({ type: CreateScreenDto })
+  @Override('createOneBase')
+  create(@Body(CheckEventExsists) body: CreateScreenDto) {
+    return this.screensService.save(body);
+  }
 
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @ApiOperation({ summary: 'get all event screens' })

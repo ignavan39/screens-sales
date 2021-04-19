@@ -14,9 +14,8 @@ export class CheckEventExsists implements PipeTransform {
   ) {}
 
   async transform(value, metadata: ArgumentMetadata) {
-    const event = await this.eventsService.findOne(
-      value.parsed.paramsFilter[0].value,
-    );
+    console.log(value);
+    const event = await this.eventsService.findOne(value.eventId);
     if (!event) {
       throw new BadRequestException('Event dont exsist');
     }
