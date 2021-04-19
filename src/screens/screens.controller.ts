@@ -28,20 +28,12 @@ import { ScreensCrudService, ScreensService } from './screens.service';
     create: CreateScreenDto,
     update: UpdateScreenDto,
   },
-  params: {
-    id: {
-      field: 'id',
-      type: 'uuid',
-      primary: true,
-    },
-  },
   routes: {
     createOneBase: {
       decorators: [
         UseGuards(ScreenOwnerByEventGuard),
         ApiBody({ type: CreateScreenDto }),
       ],
-      returnShallow: true,
     },
     getOneBase: {
       decorators: [
@@ -55,14 +47,12 @@ import { ScreensCrudService, ScreensService } from './screens.service';
         ApiParam({ name: 'id', type: 'uuid' }),
         ApiBody({ type: UpdateScreenDto }),
       ],
-      returnShallow: true,
     },
     deleteOneBase: {
       decorators: [
         UseGuards(ScreenOwnerGuard),
         ApiParam({ name: 'id', type: 'uuid' }),
       ],
-      returnDeleted: true,
     },
   },
 })

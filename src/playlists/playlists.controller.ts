@@ -14,21 +14,12 @@ import { Content } from 'src/content/entity/content.entity';
 import { User } from 'src/users/user.decorator';
 import { CreatePlaylistDto, UpdatePlaylistDto } from './dto/playlists.dto';
 import { Playlist } from './entity/playlist.entity';
-import {
-  PlaylistOwnerGuard,
-} from './guards/playlist.guard';
+import { PlaylistOwnerGuard } from './guards/playlist.guard';
 import { PlaylistCrudService, PlaylistService } from './playlists.service';
 
 @Crud({
   model: {
     type: Playlist,
-  },
-  params: {
-    id: {
-      field: 'id',
-      type: 'uuid',
-      primary: true,
-    },
   },
   routes: {
     getOneBase: {
@@ -36,11 +27,9 @@ import { PlaylistCrudService, PlaylistService } from './playlists.service';
     },
     updateOneBase: {
       decorators: [UseGuards(PlaylistOwnerGuard)],
-      returnShallow: true,
     },
     deleteOneBase: {
       decorators: [UseGuards(PlaylistOwnerGuard)],
-      returnDeleted: true,
     },
   },
   dto: {

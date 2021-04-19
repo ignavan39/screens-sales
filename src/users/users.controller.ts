@@ -17,26 +17,51 @@ import { UsersService } from './users.service';
   model: {
     type: User,
   },
-  params: {
-    id: {
-      field: 'id',
-      type: 'uuid',
-      primary: true,
-    },
-  },
   dto: {
     update: UpdateUserDto,
   },
   routes: {
     only: ['getManyBase', 'getOneBase', 'deleteOneBase', 'updateOneBase'],
     getOneBase: {
-      decorators: [UseGuards(AccessGuard)],
+      decorators: [
+        UseGuards(AccessGuard),
+        ApiResponse({
+          status: 200,
+          schema: {
+            example: {
+              id: '29615bad-0209-47ca-81e9-4a0d73b98dc1',
+              email: 'example@mail.com',
+              username: 'example',
+              password:
+                '$2b$18$Hy9zMiIrjEhvXzCdhP3z2e1GOQPBeznNb93kbM9Xr0cQ/S0s4GK9S',
+              fullName: null,
+            },
+          },
+        }),
+      ],
     },
     deleteOneBase: {
       decorators: [UseGuards(AccessGuard)],
     },
     updateOneBase: {
-      decorators: [UseGuards(AccessGuard)],
+      decorators: [
+        UseGuards(AccessGuard),
+        ApiResponse({
+          status: 200,
+          schema: {
+            example: [
+              {
+                id: '29615bad-0209-47ca-81e9-4a0d73b98dc1',
+                email: 'example@mail.com',
+                username: 'example',
+                password:
+                  '$2b$18$Hy9zMiIrjEhvXzCdhP3z2e1GOQPBeznNb93kbM9Xr0cQ/S0s4GK9S',
+                fullName: null,
+              },
+            ],
+          },
+        }),
+      ],
     },
   },
 })

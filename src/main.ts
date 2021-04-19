@@ -1,7 +1,30 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { CrudConfigService } from '@nestjsx/crud';
+CrudConfigService.load({
+  params: {
+    id: {
+      field: 'id',
+      type: 'uuid',
+      primary: true,
+    },
+  },
+  routes: {
+    updateOneBase: {
+      returnShallow: true,
+    },
+    deleteOneBase: {
+      returnDeleted: true,
+    },
+    createOneBase: {
+      returnShallow: true,
+    },
+  },
+});
+
 import { AppModule } from './app.module';
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(

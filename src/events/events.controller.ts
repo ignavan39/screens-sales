@@ -19,13 +19,6 @@ import { EventOwnerGuard } from './guards/owner.guard';
   model: {
     type: Event,
   },
-  params: {
-    id: {
-      field: 'id',
-      type: 'uuid',
-      primary: true,
-    },
-  },
   routes: {
     updateOneBase: {
       decorators: [
@@ -33,14 +26,12 @@ import { EventOwnerGuard } from './guards/owner.guard';
         ApiBody({ type: UpdateEventDto }),
         ApiParam({ name: 'id', type: 'uuid' }),
       ],
-      returnShallow: true,
     },
     deleteOneBase: {
       decorators: [
         UseGuards(EventOwnerGuard),
         ApiParam({ name: 'id', type: 'uuid' }),
       ],
-      returnDeleted: true,
     },
     getOneBase: {
       decorators: [

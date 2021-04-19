@@ -26,4 +26,3 @@ export class PlaylistOwnerGuard implements CanActivate {
     return userId === playlist.userId;
   }
 }
-

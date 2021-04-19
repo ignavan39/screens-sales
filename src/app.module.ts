@@ -10,21 +10,6 @@ import { PlaylistsModule } from './playlists/playlists.module';
 import { ContentModule } from './content/content.module';
 import { ContentToPlaylistModule } from './content-to-playlist/content-to-playlist.module';
 
-CrudConfigService.load({
-  params: {
-    id: {
-      field: 'id',
-      type: 'uuid',
-      primary: true,
-    },
-  },
-  routes: {
-    updateOneBase: {
-      allowParamsOverride: true,
-    },
-  },
-});
-
 @Module({
   imports: [
     TypeOrmModule.forRoot(ormConfig),
