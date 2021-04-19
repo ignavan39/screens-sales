@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjsx/crud/lib/crud';
 import {
   IsNotEmpty,
   IsOptional,
+  IsPositive,
   IsString,
   IsUUID,
   MinLength,
@@ -20,8 +21,12 @@ export class CreatePlaylistDto {
   @IsOptional()
   description: string;
 
+  @IsPositive()
+  @IsOptional()
+  duration?: number;
+
   @ApiProperty()
-  @IsNotEmpty()
+  @IsOptional()
   @IsUUID()
   screenId: Screen['id'];
 }
@@ -42,4 +47,8 @@ export class UpdatePlaylistDto {
   @IsNotEmpty()
   @IsUUID()
   screenId: Screen['id'];
+
+  @IsPositive()
+  @IsOptional()
+  duration?: number;
 }

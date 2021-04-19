@@ -20,6 +20,9 @@ export class ContentToPlaylists {
   @Column()
   contentId: string;
 
+  @Column({ nullable: true })
+  duration: number;
+
   @Column()
   playlistId: string;
 

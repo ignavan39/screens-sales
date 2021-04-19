@@ -25,6 +25,10 @@ export class CreateContentDto {
   @IsNotEmpty()
   contentType: ContentType;
 
+  @IsPositive()
+  @IsOptional()
+  duration?: number;
+
   @ApiProperty()
   @IsOptional()
   @IsNotEmpty()
@@ -54,4 +58,8 @@ export class MoveIncludeContentDto {
   @IsNotEmpty()
   @IsPositive()
   order: number;
+
+  @IsPositive()
+  @IsOptional()
+  duration?: number;
 }
