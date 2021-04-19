@@ -22,7 +22,7 @@ export class ContentService {
     });
   }
 
-  async findMany(playlistId: Playlist['id']) {
+  async findMany(playlistId: Playlist['id']): Promise<Content[]> {
     const res = await this.repository.find({
       relations: ['playlists'],
       where: {
@@ -35,7 +35,7 @@ export class ContentService {
     return res;
   }
 
-  async save(createDto: CreateContentDto) {
+  async save(createDto: CreateContentDto): Promise<Content> {
     const content = await this.repository.save({
       ...createDto,
       userId: createDto.userId,

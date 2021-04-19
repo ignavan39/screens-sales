@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-playlist.service';
+import { ContentToPlaylists } from 'src/content-to-playlist/entity/content-to-playlist.entity';
 import { MoveIncludeContentDto } from 'src/content/dto/content.dto';
 import { Content } from 'src/content/entity/content.entity';
 import { User } from 'src/users/entity/user.entity';
@@ -34,7 +35,7 @@ export class PlaylistService {
     });
   }
 
-  async findIncludeContent(playlistId: Playlist['id']) {
+  async findIncludeContent(playlistId: Playlist['id']): Promise<ContentToPlaylists[]> {
     return this.contentToPlaylistService.findContentByPlaylistId(playlistId);
   }
 
@@ -42,7 +43,7 @@ export class PlaylistService {
     playlistId: Playlist['id'],
     contentId: Content['id'],
     dto: MoveIncludeContentDto,
-  ) {
+  ): Promise<ContentToPlaylists[]> {
     console.log(dto);
     return this.contentToPlaylistService.moveContent(
       playlistId,
@@ -51,7 +52,7 @@ export class PlaylistService {
     );
   }
 
-  async insertContent(id: Playlist['id'], contentId: Content['id']) {
+  async insertContent(id: Playlist['id'], contentId: Content['id']): Promise<ContentToPlaylists> {
     return this.contentToPlaylistService.save(id, contentId);
   }
 }

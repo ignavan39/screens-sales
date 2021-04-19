@@ -34,7 +34,7 @@ export class EventsService {
     return this.eventsRepository.findOne(id);
   }
 
-  async save(userId: User['id'], createDto: CreateEventDto) {
+  async save(userId: User['id'], createDto: CreateEventDto): Promise<Event> {
     return this.eventsRepository.save({
       userId,
       ...createDto,

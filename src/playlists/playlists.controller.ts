@@ -10,6 +10,7 @@ import {
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { MoveIncludeContentDto } from 'src/content/dto/content.dto';
+import { Content } from 'src/content/entity/content.entity';
 import { User } from 'src/users/user.decorator';
 import { CreatePlaylistDto, UpdatePlaylistDto } from './dto/playlists.dto';
 import { Playlist } from './entity/playlist.entity';
@@ -71,7 +72,7 @@ export class PlaylistsController implements CrudController<Playlist> {
   @ApiParam({ name: 'id', type: 'uuid' })
   @UseGuards(PlaylistOwnerGuard)
   @Get('/:id/contents')
-  getIncludeContents(@Param('id') playlistId) {
+  getIncludeContents(@Param('id') playlistId: Playlist['id']) {
     return this.playlistService.findIncludeContent(playlistId);
   }
 
@@ -81,7 +82,7 @@ export class PlaylistsController implements CrudController<Playlist> {
   @ApiParam({ name: 'contentId', type: 'uuid' })
   @UseGuards(PlaylistOwnerGuard)
   @Post('/:id/contents/:contentId')
-  insertContent(@Param('id') playlistId, @Param('contentId') contentId) {
+  insertContent(@Param('id') playlistId: Playlist['id'], @Param('contentId') contentId: Content['id']) {
     return this.playlistService.insertContent(playlistId, contentId);
   }
 
@@ -93,8 +94,8 @@ export class PlaylistsController implements CrudController<Playlist> {
   @UseGuards(CheckOrderInPlaylistGuard, PlaylistOwnerGuard)
   @Post('/:id/contents/:contentId/move')
   moveIncludeContent(
-    @Param('id') playlistId,
-    @Param('contentId') contentId,
+    @Param('id') playlistId: Playlist['id'],
+    @Param('contentId') contentId: Content['id'],
     @Body() body: MoveIncludeContentDto,
   ) {
     return this.playlistService.moveContent(playlistId, contentId, body);

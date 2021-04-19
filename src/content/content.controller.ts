@@ -19,6 +19,7 @@ import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
 import { ContentService } from './content.service';
 import { CreateContentDto, UpdateContentDto } from './dto/content.dto';
+import { Content } from './entity/content.entity';
 import { ContentOwnerGuard } from './guards/content.guard';
 
 @ApiResponse({ status: 401, description: 'Unauthorized' })
@@ -48,7 +49,7 @@ export class ContentController {
   @ApiParam({ name: 'id', type: 'uuid' })
   @ApiBody({ type: UpdateContentDto })
   @Put(':id')
-  update(@Param('id') contentId, @Body() body: UpdateContentDto) {
+  update(@Param('id') contentId: Content['id'], @Body() body: UpdateContentDto) {
     return this.contentService.update(body, contentId);
   }
 }
