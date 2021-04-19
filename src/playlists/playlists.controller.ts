@@ -15,7 +15,6 @@ import { User } from 'src/users/user.decorator';
 import { CreatePlaylistDto, UpdatePlaylistDto } from './dto/playlists.dto';
 import { Playlist } from './entity/playlist.entity';
 import {
-  CheckOrderInPlaylistGuard,
   PlaylistOwnerGuard,
 } from './guards/playlist.guard';
 import { PlaylistCrudService, PlaylistService } from './playlists.service';
@@ -82,7 +81,10 @@ export class PlaylistsController implements CrudController<Playlist> {
   @ApiParam({ name: 'contentId', type: 'uuid' })
   @UseGuards(PlaylistOwnerGuard)
   @Post('/:id/contents/:contentId')
-  insertContent(@Param('id') playlistId: Playlist['id'], @Param('contentId') contentId: Content['id']) {
+  insertContent(
+    @Param('id') playlistId: Playlist['id'],
+    @Param('contentId') contentId: Content['id'],
+  ) {
     return this.playlistService.insertContent(playlistId, contentId);
   }
 
@@ -91,7 +93,7 @@ export class PlaylistsController implements CrudController<Playlist> {
   @ApiParam({ name: 'id', type: 'uuid' })
   @ApiParam({ name: 'contentId', type: 'uuid' })
   @ApiBody({ type: MoveIncludeContentDto })
-  @UseGuards(CheckOrderInPlaylistGuard, PlaylistOwnerGuard)
+  @UseGuards(PlaylistOwnerGuard)
   @Post('/:id/contents/:contentId/move')
   moveIncludeContent(
     @Param('id') playlistId: Playlist['id'],

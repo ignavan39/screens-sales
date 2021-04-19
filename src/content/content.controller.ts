@@ -49,7 +49,10 @@ export class ContentController {
   @ApiParam({ name: 'id', type: 'uuid' })
   @ApiBody({ type: UpdateContentDto })
   @Put(':id')
-  update(@Param('id') contentId: Content['id'], @Body() body: UpdateContentDto) {
+  update(
+    @Param('id') contentId: Content['id'],
+    @Body() body: UpdateContentDto,
+  ) {
     return this.contentService.update(body, contentId);
   }
 }

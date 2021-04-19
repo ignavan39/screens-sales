@@ -35,7 +35,9 @@ export class PlaylistService {
     });
   }
 
-  async findIncludeContent(playlistId: Playlist['id']): Promise<ContentToPlaylists[]> {
+  async findIncludeContent(
+    playlistId: Playlist['id'],
+  ): Promise<ContentToPlaylists[]> {
     return this.contentToPlaylistService.findContentByPlaylistId(playlistId);
   }
 
@@ -43,7 +45,7 @@ export class PlaylistService {
     playlistId: Playlist['id'],
     contentId: Content['id'],
     dto: MoveIncludeContentDto,
-  ): Promise<ContentToPlaylists[]> {
+  ): Promise<ContentToPlaylists[] | ContentToPlaylists> {
     console.log(dto);
     return this.contentToPlaylistService.moveContent(
       playlistId,
@@ -52,7 +54,10 @@ export class PlaylistService {
     );
   }
 
-  async insertContent(id: Playlist['id'], contentId: Content['id']): Promise<ContentToPlaylists> {
+  async insertContent(
+    id: Playlist['id'],
+    contentId: Content['id'],
+  ): Promise<ContentToPlaylists> {
     return this.contentToPlaylistService.save(id, contentId);
   }
 }

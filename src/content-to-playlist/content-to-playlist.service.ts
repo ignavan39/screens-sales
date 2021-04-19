@@ -12,7 +12,9 @@ export class ContentToPlaylistService {
     private readonly repository: Repository<ContentToPlaylists>,
   ) {}
 
-  async findContentByPlaylistId(id: Playlist['id']): Promise<ContentToPlaylists[]>{
+  async findContentByPlaylistId(
+    id: Playlist['id'],
+  ): Promise<ContentToPlaylists[]> {
     return this.repository.find({
       where: {
         playlist: {
@@ -23,7 +25,10 @@ export class ContentToPlaylistService {
     });
   }
 
-  async save(playlistId: Playlist['id'], contentId: Content['id']): Promise<ContentToPlaylists> {
+  async save(
+    playlistId: Playlist['id'],
+    contentId: Content['id'],
+  ): Promise<ContentToPlaylists> {
     const playlistSize = await this.playlistSize(playlistId);
 
     const order = playlistSize + 1;
@@ -38,8 +43,12 @@ export class ContentToPlaylistService {
     playlistId: Playlist['id'],
     contentId: Content['id'],
     order: number,
-  ): Promise<ContentToPlaylists[]> {
+  ): Promise<ContentToPlaylists[] | ContentToPlaylists> {
     const playlist = await this.findContentByPlaylistId(playlistId);
+
+    if (order > playlist.length) {
+      return this.save(playlistId, contentId);
+    }
 
     const newPlaylist = playlist.map((item) => {
       if (item.contentId === contentId) {
