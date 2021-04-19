@@ -24,6 +24,7 @@ import { Content } from './entity/content.entity';
 import { ContentOwnerGuard } from './guards/content.guard';
 
 @ApiResponse({ status: 401, description: 'Unauthorized' })
+@ApiResponse({ status: 403, description: 'Forbidden' })
 @ApiBearerAuth()
 @ApiTags('contents')
 @UseGuards(JwtAuthGuard)
@@ -31,12 +32,45 @@ import { ContentOwnerGuard } from './guards/content.guard';
 export class ContentController {
   constructor(private readonly contentService: ContentService) {}
 
+  @ApiResponse({
+    status: 200,
+    schema: {
+      example: [
+        {
+          id: 'e2eec7f0-096d-4a5b-9c92-2017c07208c8',
+          contentType: 'Video',
+          name: '12345',
+          userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+        },
+        {
+          id: 'eae1c35c-5fea-4855-8ed3-e2fc5ed33b33',
+          contentType: 'Video',
+          name: '12345',
+          userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+        },
+      ],
+    },
+  })
   @ApiOperation({ summary: 'find all user contents' })
   @Get()
   findMany(@User() user) {
     return this.contentService.findManyByUser(user.id);
   }
 
+  @ApiResponse({
+    status: 200,
+    schema: {
+      example: {
+        playlistId: 'a4c401bb-048f-4bd1-a582-58f52168231b',
+        order: 13,
+        duration: null,
+        id: 'de92e7fd-9a79-4dd5-81a6-04f8ea51588b',
+        name: '12345',
+        userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+        contentType: 'Video',
+      },
+    },
+  })
   @ApiOperation({ summary: 'create content' })
   @ApiBody({ type: CreateContentDto })
   @Post()
@@ -44,7 +78,20 @@ export class ContentController {
     return this.contentService.save(body);
   }
 
-  @ApiResponse({ status: 403, description: 'Forbidden.' })
+  @ApiResponse({
+    status: 200,
+    schema: {
+      example: {
+        playlistId: 'a4c401bb-048f-4bd1-a582-58f52168231b',
+        order: 13,
+        duration: null,
+        id: 'de92e7fd-9a79-4dd5-81a6-04f8ea51588b',
+        name: '12345',
+        userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+        contentType: 'Video',
+      },
+    },
+  })
   @ApiOperation({ summary: 'update content' })
   @UseGuards(ContentOwnerGuard)
   @ApiParam({ name: 'id', type: 'uuid' })

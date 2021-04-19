@@ -49,6 +49,7 @@ import { PlaylistCrudService, PlaylistService } from './playlists.service';
     update: UpdatePlaylistDto,
   },
 })
+@ApiResponse({ status: 403, description: 'Forbidden.' })
 @ApiResponse({ status: 401, description: 'Unauthorized' })
 @ApiBearerAuth()
 @ApiTags('playlists')
@@ -70,7 +71,6 @@ export class PlaylistsController implements CrudController<Playlist> {
     return this.playlistService.save(userId, body);
   }
 
-  @ApiResponse({ status: 403, description: 'Forbidden.' })
   @ApiOperation({ summary: 'get all playlist contents' })
   @ApiParam({ name: 'id', type: 'uuid' })
   @UseGuards(PlaylistOwnerGuard)
@@ -79,10 +79,10 @@ export class PlaylistsController implements CrudController<Playlist> {
     return this.playlistService.findContents(playlistId);
   }
 
-  @ApiResponse({ status: 403, description: 'Forbidden.' })
   @ApiOperation({ summary: 'insert content into playlist' })
   @ApiParam({ name: 'id', type: 'uuid' })
   @ApiParam({ name: 'contentId', type: 'uuid' })
+  @ApiBody({ type: InsertContentDto })
   @UseGuards(PlaylistOwnerGuard)
   @Put('/:id/contents')
   insertContent(
@@ -92,7 +92,6 @@ export class PlaylistsController implements CrudController<Playlist> {
     return this.playlistService.insertContent(playlistId, body);
   }
 
-  @ApiResponse({ status: 403, description: 'Forbidden.' })
   @ApiOperation({ summary: 'move content into playlists' })
   @ApiParam({ name: 'id', type: 'uuid' })
   @ApiParam({ name: 'contentId', type: 'uuid' })

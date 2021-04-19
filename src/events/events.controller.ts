@@ -66,6 +66,7 @@ import { EventOwnerGuard } from './guards/owner.guard';
   },
 })
 @ApiResponse({ status: 401, description: 'Unauthorized' })
+@ApiResponse({ status: 403, description: 'Forbidden' })
 @ApiBearerAuth()
 @ApiTags('events')
 @UseGuards(JwtAuthGuard)
@@ -77,12 +78,39 @@ export class EventsController implements CrudController<Event> {
   ) {}
 
   @ApiOperation({ summary: 'create event' })
+  @ApiResponse({
+    status: 201,
+    schema: {
+      example: {
+        userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+        description: 'example',
+        id: '8a418430-523f-49aa-8620-7142490102a4',
+      },
+    },
+  })
   @ApiBody({ type: CreateEventDto })
   @Override('createOneBase')
   create(@User() user, @Body() createDto: CreateEventDto) {
     return this.eventsService.save(user.id, createDto);
   }
 
+  @ApiResponse({
+    status: 200,
+    schema: {
+      example: [
+        {
+          id: '6fb9a764-b455-4cf8-b103-c146e6541529',
+          description: 'example1',
+          userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+        },
+        {
+          id: '6fb9a764-b455-4cf8-b103-c146e6541521',
+          description: 'example2',
+          userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+        },
+      ],
+    },
+  })
   @ApiOperation({ summary: 'get all events' })
   @Override()
   getMany(@User() user) {
