@@ -12,7 +12,7 @@ import {
 } from 'class-validator';
 import { Playlist } from 'src/playlists/entity/playlist.entity';
 import { User } from 'src/users/entity/user.entity';
-import { ContentType } from '../entity/content.entity';
+import { Content, ContentType } from '../entity/content.entity';
 
 export class CreateContentDto {
   @ApiProperty()
@@ -31,7 +31,6 @@ export class CreateContentDto {
 
   @ApiProperty()
   @IsOptional()
-  @IsNotEmpty()
   @IsUUID()
   playlistId: Playlist['id'];
 
@@ -62,4 +61,11 @@ export class MoveIncludeContentDto {
   @IsPositive()
   @IsOptional()
   duration?: number;
+}
+
+export class InsertContentDto {
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsUUID()
+  contentId: Content['id'];
 }

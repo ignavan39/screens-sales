@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -9,7 +17,10 @@ import {
 } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
-import { MoveIncludeContentDto } from 'src/content/dto/content.dto';
+import {
+  InsertContentDto,
+  MoveIncludeContentDto,
+} from 'src/content/dto/content.dto';
 import { Content } from 'src/content/entity/content.entity';
 import { CheckScreenExsists } from 'src/screens/pipes/screen.pipe';
 import { User } from 'src/users/user.decorator';
@@ -73,12 +84,12 @@ export class PlaylistsController implements CrudController<Playlist> {
   @ApiParam({ name: 'id', type: 'uuid' })
   @ApiParam({ name: 'contentId', type: 'uuid' })
   @UseGuards(PlaylistOwnerGuard)
-  @Post('/:id/contents/:contentId')
+  @Put('/:id/contents')
   insertContent(
     @Param('id') playlistId: Playlist['id'],
-    @Param('contentId') contentId: Content['id'],
+    @Body() body: InsertContentDto,
   ) {
-    return this.playlistService.insertContent(playlistId, contentId);
+    return this.playlistService.insertContent(playlistId, body);
   }
 
   @ApiResponse({ status: 403, description: 'Forbidden.' })
