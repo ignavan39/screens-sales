@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-import { CRYPTO_SALT } from 'src/constants';
+import { CRYPTO_ROUND } from 'src/constants';
 import { User } from 'src/users/entity/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { SignInDto } from './dto/sign-in.dto';
@@ -24,7 +24,7 @@ export class AuthService {
   }
 
   async signUp(signUpDto: SignUpDto) {
-    const hashPass = await bcrypt.hash(signUpDto.password, CRYPTO_SALT);
+    const hashPass = await bcrypt.hash(signUpDto.password, CRYPTO_ROUND);
     const savedUser = await this.usersService.save(
       signUpDto.username,
       hashPass,
