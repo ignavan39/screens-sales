@@ -57,10 +57,6 @@ export class MoveIncludeContentDto {
   @IsNotEmpty()
   @IsPositive()
   order: number;
-
-  @IsPositive()
-  @IsOptional()
-  duration?: number;
 }
 
 export class InsertContentDto {

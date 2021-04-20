@@ -46,6 +46,13 @@ export class ContentService {
         createDto.playlistId,
         content.id,
       );
+      if (createDto.duration) {
+        await this.contentToPlaylistService.updateDuration(
+          createDto.playlistId,
+          content.id,
+          createDto.duration,
+        );
+      }
       return { ...contentToPlaylist, ...content };
     }
 

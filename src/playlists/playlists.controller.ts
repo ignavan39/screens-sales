@@ -193,7 +193,10 @@ export class PlaylistsController implements CrudController<Playlist> {
     return this.playlistService.insertContent(playlistId, body);
   }
 
+  @ApiParam({ name: 'id', type: 'uuid' })
+  @ApiParam({ name: 'contentId', type: 'uuid' })
   @ApiOperation({ summary: 'change content duration' })
+  @ApiBody({ type: UpdateDurationDto })
   @Put('/:id/contents/:contentId/duration')
   @UseGuards(PlaylistOwnerGuard)
   changeContentDuration(
