@@ -20,6 +20,7 @@ import { JwtAuthGuard } from 'src/auth/auth.guard';
 import {
   InsertContentDto,
   MoveIncludeContentDto,
+  UpdateDurationDto,
 } from 'src/content/dto/content.dto';
 import { Content } from 'src/content/entity/content.entity';
 import { CheckScreenExsists } from 'src/screens/pipes/screen.pipe';
@@ -190,6 +191,21 @@ export class PlaylistsController implements CrudController<Playlist> {
     @Body() body: InsertContentDto,
   ) {
     return this.playlistService.insertContent(playlistId, body);
+  }
+
+  @ApiOperation({ summary: 'change content duration' })
+  @Put('/:id/contents/:contentId/duration')
+  @UseGuards(PlaylistOwnerGuard)
+  changeContentDuration(
+    @Param('id') playlistId: Playlist['id'],
+    @Param('contentId') contentId: Content['id'],
+    @Body() body: UpdateDurationDto,
+  ) {
+    return this.playlistService.updateDuration(
+      playlistId,
+      contentId,
+      body.duration,
+    );
   }
 
   @ApiOperation({ summary: 'move content into playlists' })

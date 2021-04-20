@@ -69,3 +69,9 @@ export class InsertContentDto {
   @IsUUID()
   contentId: Content['id'];
 }
+
+export class UpdateDurationDto {
+  @ApiProperty()
+  @IsPositive()
+  duration: number;
+}

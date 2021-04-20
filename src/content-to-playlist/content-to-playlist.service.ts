@@ -23,6 +23,24 @@ export class ContentToPlaylistService {
     });
   }
 
+  async updateDuration(
+    playlistId: Playlist['id'],
+    contentId: Content['id'],
+    duration: number,
+  ) {
+    const contentToPlaylist = this.repository.findOne({
+      where: {
+        contentId,
+        playlistId,
+      },
+    });
+
+    return this.repository.save({
+      ...contentToPlaylist,
+      duration,
+    });
+  }
+
   async save(
     playlistId: Playlist['id'],
     contentId: Content['id'],

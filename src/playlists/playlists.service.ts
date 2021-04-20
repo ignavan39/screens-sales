@@ -38,6 +38,18 @@ export class PlaylistService {
     });
   }
 
+  async updateDuration(
+    playlistId: Playlist['id'],
+    contentId: Content['id'],
+    duration: number,
+  ): Promise<ContentToPlaylists> {
+    return this.contentToPlaylistService.updateDuration(
+      playlistId,
+      contentId,
+      duration,
+    );
+  }
+
   async findContents(
     playlistId: Playlist['id'],
   ): Promise<ContentToPlaylists[]> {
