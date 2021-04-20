@@ -35,13 +35,60 @@ import { PlaylistCrudService, PlaylistService } from './playlists.service';
   },
   routes: {
     getOneBase: {
-      decorators: [UseGuards(PlaylistOwnerGuard)],
+      decorators: [
+        UseGuards(PlaylistOwnerGuard),
+        ApiResponse({
+          status: 200,
+          schema: {
+            type: 'Playlist',
+            example: {
+              id: 'd8e8b47a-057a-44c2-9875-2fcb300c6fe3',
+              description: '123456',
+              name: 'name',
+              screenId: '1317efdb-0c6f-4a1a-ab7a-c0e4f5236ce3',
+              duration: null,
+              userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+            },
+          },
+        }),
+      ],
     },
     updateOneBase: {
-      decorators: [UseGuards(PlaylistOwnerGuard)],
+      decorators: [
+        UseGuards(PlaylistOwnerGuard),
+        ApiResponse({
+          status: 200,
+          schema: {
+            type: 'Playlist',
+            example: {
+              id: 'd8e8b47a-057a-44c2-9875-2fcb300c6fe3',
+              description: '123456',
+              name: 'name',
+              screenId: '1317efdb-0c6f-4a1a-ab7a-c0e4f5236ce3',
+              duration: null,
+              userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+            },
+          },
+        }),
+      ],
     },
     deleteOneBase: {
-      decorators: [UseGuards(PlaylistOwnerGuard)],
+      decorators: [
+        UseGuards(PlaylistOwnerGuard),
+        ApiResponse({
+          status: 200,
+          schema: {
+            example: {
+              id: 'd8e8b47a-057a-44c2-9875-2fcb300c6fe3',
+              description: '123456',
+              name: 'name',
+              screenId: '1317efdb-0c6f-4a1a-ab7a-c0e4f5236ce3',
+              duration: null,
+              userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+            },
+          },
+        }),
+      ],
     },
   },
   dto: {
@@ -62,6 +109,26 @@ export class PlaylistsController implements CrudController<Playlist> {
   ) {}
 
   @ApiOperation({ summary: 'create playlist' })
+  @ApiResponse({
+    status: 201,
+    schema: {
+      example: {
+        userId: {
+          id: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+          email: 'example@gmail.com',
+          username: 'example',
+          password:
+            '$2b$18$w/sw6WAsDYvtT829Bl1A5.VXnbw6LA1Y6ZMHJ/mlQUVz6uGmbR/DC',
+          fullName: null,
+        },
+        name: 'name',
+        description: '123456',
+        screenId: '1317efdb-0c6f-4a1a-ab7a-c0e4f5236ce3',
+        duration: null,
+        id: 'd8e8b47a-057a-44c2-9875-2fcb300c6fe3',
+      },
+    },
+  })
   @ApiBody({ type: CreatePlaylistDto })
   @Override()
   createOne(
@@ -71,6 +138,39 @@ export class PlaylistsController implements CrudController<Playlist> {
     return this.playlistService.save(userId, body);
   }
 
+  @ApiResponse({
+    status: 200,
+    schema: {
+      example: [
+        {
+          id: 1,
+          order: 1,
+          contentId: 'd35ad620-fd7b-4ff5-85bf-100ea8ef31e9',
+          duration: null,
+          playlistId: 'd8e8b47a-057a-44c2-9875-2fcb300c6fe3',
+          content: {
+            id: 'd35ad620-fd7b-4ff5-85bf-100ea8ef31e9',
+            contentType: 'Video',
+            name: 'example',
+            userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+          },
+        },
+        {
+          id: 2,
+          order: 2,
+          contentId: 'd35ad620-fd7b-4ff5-85bf-100ea8ef31e9',
+          duration: null,
+          playlistId: 'd8e8b47a-057a-44c2-9875-2fcb300c6fe3',
+          content: {
+            id: 'd35ad620-fd7b-4ff5-85bf-100ea8ef31e9',
+            contentType: 'Video',
+            name: 'example1',
+            userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+          },
+        },
+      ],
+    },
+  })
   @ApiOperation({ summary: 'get all playlist contents' })
   @ApiParam({ name: 'id', type: 'uuid' })
   @UseGuards(PlaylistOwnerGuard)
@@ -104,5 +204,34 @@ export class PlaylistsController implements CrudController<Playlist> {
     @Body() body: MoveIncludeContentDto,
   ) {
     return this.playlistService.moveContent(playlistId, contentId, body);
+  }
+
+  @ApiResponse({
+    status: 200,
+    schema: {
+      example: [
+        {
+          id: '501df16d-1b31-4e6a-af62-758f3931b011',
+          description: '123456',
+          name: 'name',
+          screenId: '53a27c26-4fa5-43cc-a44e-242147283924',
+          duration: null,
+          userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+        },
+        {
+          id: '501df16d-1b31-4e6a-af62-758f3931b011',
+          description: '123456',
+          name: 'name1',
+          screenId: '53a27c26-4fa5-43cc-a44e-242147283924',
+          duration: null,
+          userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+        },
+      ],
+    },
+  })
+  @ApiOperation({ summary: 'get all playlist by user' })
+  @Override('getManyBase')
+  getPlaylistByUserId(@User() user) {
+    return this.playlistService.findAllPlaylystByUser(user.id);
   }
 }

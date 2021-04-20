@@ -66,4 +66,12 @@ export class PlaylistService {
       insertContentDto.contentId,
     );
   }
+
+  async findAllPlaylystByUser(userId: User['id']): Promise<Playlist[]> {
+    return this.repository.find({
+      where: {
+        userId,
+      },
+    });
+  }
 }
