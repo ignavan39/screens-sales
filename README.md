@@ -2,13 +2,11 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-cms for selling screens
+CMS for selling screens
 
 ### Database diagram
 
-<code><img width="560" height="315" src="./.assets/Screens_sale.png"></img></code>
+<code><img width="auto" height="500" src="./.assets/Screens_sale.png"></img></code>
 
 ## Installation
 
@@ -46,5 +44,12 @@ $ yarn test:e2e
 # test coverage
 $ yarn test:cov
 ```
+
+## Swagger Api
+
+```
+http://localhost:3000/api/
+```
+![link](http://localhost:3000/api/)
 
 Nest is [MIT licensed](LICENSE).
