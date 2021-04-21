@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
-import { Event } from 'src/events/entity/event.entity';
-import { User } from 'src/users/entity/user.entity';
+import { Event } from 'src/events/event.entity';
+import { User } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
-import { CreateScreenDto } from './dto/screen.dto';
-import { Screen } from './entity/screen.entity';
+import { CreateScreenDto } from './screen.dto';
+import { Screen } from './screen.entity';
 
 @Injectable()
 export class ScreensCrudService extends TypeOrmCrudService<Screen> {

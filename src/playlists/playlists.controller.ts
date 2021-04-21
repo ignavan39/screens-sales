@@ -21,13 +21,13 @@ import {
   InsertContentDto,
   MoveIncludeContentDto,
   UpdateDurationDto,
-} from 'src/content/dto/content.dto';
-import { Content } from 'src/content/entity/content.entity';
-import { CheckScreenExsists } from 'src/screens/pipes/screen.pipe';
+} from 'src/content/content.dto';
+import { Content } from 'src/content/content.entity';
+import { CheckScreenExsists } from 'src/screens/screen.pipe';
 import { User } from 'src/users/user.decorator';
-import { CreatePlaylistDto, UpdatePlaylistDto } from './dto/playlists.dto';
-import { Playlist } from './entity/playlist.entity';
-import { PlaylistOwnerGuard } from './guards/playlist.guard';
+import { CreatePlaylistDto, UpdatePlaylistDto } from './playlists.dto';
+import { Playlist } from './playlist.entity';
+import { PlaylistOwnerGuard } from './playlist.guard';
 import { PlaylistCrudService, PlaylistService } from './playlists.service';
 
 @Crud({

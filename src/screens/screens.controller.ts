@@ -14,17 +14,10 @@ import {
 } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
-import { CheckEventExsists } from 'src/events/pipes/event.pipe';
-import {
-  CreateScreenDto,
-  FindByEventDto,
-  UpdateScreenDto,
-} from './dto/screen.dto';
-import { Screen } from './entity/screen.entity';
-import {
-  ScreenOwnerByEventGuard,
-  ScreenOwnerGuard,
-} from './guards/owner.guard';
+import { CheckEventExsists } from 'src/events/event.pipe';
+import { CreateScreenDto, FindByEventDto, UpdateScreenDto } from './screen.dto';
+import { Screen } from './screen.entity';
+import { ScreenOwnerByEventGuard, ScreenOwnerGuard } from './owner.guard';
 import { ScreensCrudService, ScreensService } from './screens.service';
 
 @Crud({

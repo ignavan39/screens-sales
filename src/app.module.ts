@@ -9,6 +9,7 @@ import { ScreensModule } from './screens/screens.module';
 import { PlaylistsModule } from './playlists/playlists.module';
 import { ContentModule } from './content/content.module';
 import { ContentToPlaylistModule } from './content-to-playlist/content-to-playlist.module';
+import { GroupContentModule } from './group-content/group-content.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { ContentToPlaylistModule } from './content-to-playlist/content-to-playli
     PlaylistsModule,
     ContentModule,
     ContentToPlaylistModule,
+    GroupContentModule,
   ],
   controllers: [],
 })

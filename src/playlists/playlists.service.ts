@@ -2,16 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-playlist.service';
-import { ContentToPlaylists } from 'src/content-to-playlist/entity/content-to-playlist.entity';
+import { ContentToPlaylists } from 'src/content-to-playlist/content-to-playlist.entity';
 import {
   InsertContentDto,
   MoveIncludeContentDto,
-} from 'src/content/dto/content.dto';
-import { Content } from 'src/content/entity/content.entity';
-import { User } from 'src/users/entity/user.entity';
+} from 'src/content/content.dto';
+import { Content } from 'src/content/content.entity';
+import { User } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
-import { CreatePlaylistDto } from './dto/playlists.dto';
-import { Playlist } from './entity/playlist.entity';
+import { CreatePlaylistDto } from './playlists.dto';
+import { Playlist } from './playlist.entity';
 
 @Injectable()
 export class PlaylistCrudService extends TypeOrmCrudService<Playlist> {

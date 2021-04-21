@@ -16,12 +16,16 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
-import { CheckPlaylistExsist } from 'src/playlists/pipes/playlist.pipe';
+import { CheckPlaylistExsist } from 'src/playlists/playlist.pipe';
 import { User } from 'src/users/user.decorator';
 import { ContentService } from './content.service';
-import { CreateContentDto, UpdateContentDto } from './dto/content.dto';
-import { Content } from './entity/content.entity';
-import { ContentOwnerGuard } from './guards/content.guard';
+import {
+  AddContentIntoGroup,
+  CreateContentDto,
+  UpdateContentDto,
+} from './content.dto';
+import { Content } from './content.entity';
+import { ContentOwnerGuard } from './content.guard';
 
 @ApiResponse({ status: 401, description: 'Unauthorized' })
 @ApiResponse({ status: 403, description: 'Forbidden' })
@@ -102,5 +106,14 @@ export class ContentController {
     @Body() body: UpdateContentDto,
   ) {
     return this.contentService.update(body, contentId);
+  }
+
+  @UseGuards(ContentOwnerGuard)
+  @Put(':id/addGroup')
+  addIntoGroup(
+    @Param('id') contentId: Content['id'],
+    @Body() body: AddContentIntoGroup,
+  ) {
+    return this.contentService.addContentIntoGroup(body, contentId);
   }
 }

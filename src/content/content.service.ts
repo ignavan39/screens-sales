@@ -1,11 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-playlist.service';
-import { Playlist } from 'src/playlists/entity/playlist.entity';
-import { User } from 'src/users/entity/user.entity';
+import { Playlist } from 'src/playlists/playlist.entity';
+import { User } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
-import { CreateContentDto, UpdateContentDto } from './dto/content.dto';
-import { Content } from './entity/content.entity';
+import {
+  AddContentIntoGroup,
+  CreateContentDto,
+  UpdateContentDto,
+} from './content.dto';
+import { Content } from './content.entity';
 
 @Injectable()
 export class ContentService {
@@ -66,5 +70,10 @@ export class ContentService {
   async update(updateDto: UpdateContentDto, id: Content['id']) {
     const content = this.repository.findOne(id);
     return this.repository.save({ ...content, ...updateDto });
+  }
+
+  async addContentIntoGroup(dto: AddContentIntoGroup, id: Content['id']) {
+    const content = this.repository.findOne(id);
+    return this.repository.save({ ...content, ...dto });
   }
 }

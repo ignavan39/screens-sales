@@ -2,7 +2,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { CRYPTO_ROUND } from 'src/constants';
-import { User } from 'src/users/entity/user.entity';
+import { User } from 'src/users/user.entity';
 import { UsersService } from 'src/users/users.service';
 import { SignInDto } from './dto/sign-in.dto';
 import { SignUpDto } from './dto/sign-up.dto';

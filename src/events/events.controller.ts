@@ -10,10 +10,10 @@ import {
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
-import { CreateEventDto, UpdateEventDto } from './dto/event.dto';
-import { Event } from './entity/event.entity';
+import { CreateEventDto, UpdateEventDto } from './event.dto';
+import { Event } from './event.entity';
 import { EventsCrudService, EventsService } from './events.service';
-import { EventOwnerGuard } from './guards/owner.guard';
+import { EventOwnerGuard } from './owner.guard';
 
 @Crud({
   model: {

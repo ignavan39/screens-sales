@@ -9,8 +9,8 @@ import {
 import { Crud, CrudController } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { AccessGuard } from './access.guard';
-import { UpdateUserDto } from './dto/user.dto';
-import { User } from './entity/user.entity';
+import { UpdateUserDto } from './user.dto';
+import { User } from './user.entity';
 import { UsersService } from './users.service';
 
 @Crud({

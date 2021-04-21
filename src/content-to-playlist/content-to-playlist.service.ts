@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Content } from 'src/content/entity/content.entity';
-import { Playlist } from 'src/playlists/entity/playlist.entity';
+import { Content } from 'src/content/content.entity';
+import { Playlist } from 'src/playlists/playlist.entity';
 import { Repository } from 'typeorm';
-import { ContentToPlaylists } from './entity/content-to-playlist.entity';
+import { ContentToPlaylists } from './content-to-playlist.entity';
 
 @Injectable()
 export class ContentToPlaylistService {
