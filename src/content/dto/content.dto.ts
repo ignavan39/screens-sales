@@ -6,6 +6,7 @@ import {
   IsOptional,
   IsPositive,
   IsString,
+  IsUrl,
   IsUUID,
   Min,
   MinLength,
@@ -19,6 +20,11 @@ export class CreateContentDto {
   @IsNotEmpty()
   @IsString()
   name: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsUrl()
+  url: string;
 
   @IsString()
   @ApiProperty()
@@ -45,6 +51,11 @@ export class UpdateContentDto {
   @ApiProperty()
   @IsOptional()
   name?: string;
+
+  @IsUrl()
+  @ApiProperty()
+  @IsOptional()
+  url?: string;
 
   @IsNotEmpty()
   @ApiProperty()

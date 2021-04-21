@@ -34,6 +34,9 @@ export class Content {
   name: string;
 
   @Column()
+  url: string;
+
+  @Column()
   userId: string;
 
   @OneToMany(() => ContentToPlaylists, (c) => c.content)
