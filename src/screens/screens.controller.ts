@@ -36,6 +36,12 @@ import { ScreensCrudService, ScreensService } from './screens.service';
     update: UpdateScreenDto,
   },
   routes: {
+    createOneBase: {
+      decorators: [
+        UsePipes(CheckEventExsists),
+        ApiBody({ type: CreateScreenDto }),
+      ],
+    },
     getOneBase: {
       decorators: [
         UseGuards(ScreenOwnerGuard),
@@ -79,12 +85,6 @@ export class ScreensController implements CrudController<Screen> {
       },
     },
   })
-  @ApiBody({ type: CreateScreenDto })
-  @Override('createOneBase')
-  create(@Body(CheckEventExsists) body: CreateScreenDto) {
-    return this.screensService.save(body);
-  }
-
   @ApiResponse({ status: 403, description: 'Forbidden.' })
   @ApiOperation({ summary: 'get all event screens' })
   @ApiBody({ type: FindByEventDto })

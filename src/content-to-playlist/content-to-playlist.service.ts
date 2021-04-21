@@ -55,7 +55,7 @@ export class ContentToPlaylistService {
     });
   }
 
-  moveContentToLeftSide(
+  moveContentBackSide(
     playlist: ContentToPlaylists[],
     contentId: Content['id'],
     order: number,
@@ -70,20 +70,19 @@ export class ContentToPlaylistService {
       return v;
     });
   }
-
-  moveContentToRightSide(
+  moveContentForwardSide(
     playlist: ContentToPlaylists[],
     contentId: Content['id'],
     order: number,
     oldOrder: number,
   ) {
-    return playlist.map((v) => {
-      if (v.contentId === contentId) {
-        return { ...v, order };
-      } else if (v.order >= order && v.order < oldOrder) {
-        return { ...v, order: v.order + 1 };
+    return playlist.map((item) => {
+      if (item.contentId === contentId) {
+        return { ...item, order };
+      } else if (item.order >= order && item.order < oldOrder) {
+        return { ...item, order: item.order + 1 };
       }
-      return v;
+      return item;
     });
   }
 
@@ -93,19 +92,26 @@ export class ContentToPlaylistService {
     order: number,
   ): Promise<ContentToPlaylists[] | ContentToPlaylists> {
     const playlist = await this.findContentByPlaylistId(playlistId);
-    const oldOrder = await (
-      await this.repository.findOne({ contentId, playlistId })
-    ).order;
+    const content = await this.repository.findOne({ contentId, playlistId });
+    const oldOrder = content.order;
 
     if (order > oldOrder) {
-      return this.repository.save([
-        ...this.moveContentToLeftSide(playlist, contentId, order, oldOrder),
-      ]);
+      const movedPlaylist = await this.moveContentBackSide(
+        playlist,
+        contentId,
+        order,
+        oldOrder,
+      );
+      return this.repository.save(movedPlaylist);
     }
 
-    return this.repository.save([
-      ...this.moveContentToRightSide(playlist, contentId, order, oldOrder),
-    ]);
+    const movedPlaylist = await this.moveContentForwardSide(
+      playlist,
+      contentId,
+      order,
+      oldOrder,
+    );
+    return this.repository.save(movedPlaylist);
   }
 
   async playlistSize(playlistId: Playlist['id']): Promise<number> {

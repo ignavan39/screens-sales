@@ -28,8 +28,4 @@ export class ScreensService {
       },
     });
   }
-
-  async save(createScreenDto: CreateScreenDto): Promise<Screen> {
-    return this.screenRepository.save(createScreenDto);
-  }
 }

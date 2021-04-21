@@ -18,15 +18,13 @@ export class AuthController {
     schema: {
       example: {
         user_info: {
-          id: '9fed7552-bda8-4e5b-823c-ed2929749ea2',
+          id: 'id',
           email: 'example@gmail.com',
           username: 'example',
-          password:
-            '$2b$18$w/sw6WAsDYvtT829Bl1A5.VXnbw6LA1Y6ZMHJ/mlQUVz6uGmbR/DR',
+          password: 'password',
           fullName: null,
         },
-        access_token:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Iml2YW4xMjJAZ21haWwuY29tIiwic3ViIjoiOWZlZDc1NTItYmRhOC00ZTViLTgyM2MtZWQyOTI5NzQ5ZWUwIiwiaWF0IjoxNjE4ODMwNTg1LCJleHAiOjE2MTg5MzA1ODV9.c909QZMuBR2yHkmRViZZ4oDPuV8iekRjKJr-rZeCeSQ',
+        access_token: 'token',
       },
     },
   })
@@ -42,15 +40,13 @@ export class AuthController {
     schema: {
       example: {
         user_info: {
-          id: '9fed7552-bda8-4e5b-823c-ed2929749ea2',
+          id: 'id',
           email: 'example@gmail.com',
           username: 'example',
-          password:
-            '$2b$18$w/sw6WAsDYvtT829Bl1A5.VXnbw6LA1Y6ZMHJ/mlQUVz6uGmbR/DR',
+          password: 'password',
           fullName: null,
         },
-        access_token:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Iml2YW4xMjJAZ21haWwuY29tIiwic3ViIjoiOWZlZDc1NTItYmRhOC00ZTViLTgyM2MtZWQyOTI5NzQ5ZWUwIiwiaWF0IjoxNjE4ODMwNTg1LCJleHAiOjE2MTg5MzA1ODV9.c909QZMuBR2yHkmRViZZ4oDPuV8iekRjKJr-rZeCeSQ',
+        access_token: 'token',
       },
     },
   })

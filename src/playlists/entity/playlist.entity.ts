@@ -26,9 +26,6 @@ export class Playlist {
   @Column()
   screenId: string;
 
-  @Column({ nullable: true })
-  duration: number;
-
   @Column()
   userId: string;
 
