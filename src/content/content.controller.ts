@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -123,5 +124,11 @@ export class ContentController {
     @Body() body: AddContentIntoGroup,
   ) {
     return this.contentService.addContentIntoGroup(body, contentId);
+  }
+
+  @UseGuards(ContentOwnerGuard)
+  @Delete(':id')
+  delete(@Param('id') contentId: Content['id']) {
+    return this.contentService.delete(contentId);
   }
 }
