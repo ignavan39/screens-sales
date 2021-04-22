@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { CrudConfigService } from '@nestjsx/crud';
+import { auth } from 'express-openid-connect'
 CrudConfigService.load({
   params: {
     id: {
@@ -27,6 +28,15 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.enableCors();
+  app.use(auth({
+    issuerBaseURL: 'https://dev--83rk4dm.eu.auth0.com',
+    baseURL: 'https://warm-snail-49.loca.lt',
+    clientID: '0DKeivuHRA5jlJQnbxIXJUp07C8jJnqJ',
+    secret: '1nTlGIiAwxjyq7Rc3eiSAHgnyQCfu8K0wO9QsyAKSpxNCKlCrbmCCvpA3bqqFceV',
+    idpLogout: true,
+  }))
   app.useGlobalPipes(
     new ValidationPipe({
       disableErrorMessages: false,

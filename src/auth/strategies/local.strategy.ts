@@ -1,14 +1,14 @@
 import { BadRequestException, HttpException, Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { UsersService } from 'src/users/users.service';
-import { AuthService } from '../auth.service';
+// import { AuthService } from '../auth.service';
 import { Strategy } from 'passport-local';
 
 @Injectable()
 export class LocalStrategy extends PassportStrategy(Strategy) {
   constructor(
     private userService: UsersService,
-    private authService: AuthService,
+    // private authService: AuthService,
   ) {
     super({
       usernameField: 'email',
@@ -22,9 +22,9 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
       if (!user) {
         throw new BadRequestException('User not found');
       }
-      if (!this.authService.validatePassword(password, user.password)) {
-        throw new BadRequestException('Invalid password');
-      }
+      // if (!this.authService.validatePassword(password, user.password)) {
+      //   throw new BadRequestException('Invalid password');
+      // }
 
       return user;
     } catch (error) {
