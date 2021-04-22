@@ -1,0 +1,12 @@
+{
+    "type": "postgres",
+    "host": "localhost",
+    "port": 5432,
+    "username": "user",
+    "password": "1234",
+    "database": "screens_sales_db",
+    "migrations": ["dist/migrations/**/*{.ts,.js}"],
+    "entities": ["dist/**/*.entity{.ts,.js}"],
+    "synchronize": true,
+    "migrationsRun": false
+}

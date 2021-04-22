@@ -33,6 +33,10 @@ export class CreateContentDto {
   @IsNotEmpty()
   contentType: ContentType;
 
+  @IsUUID()
+  @IsOptional()
+  groupId: GroupsContent['id'];
+
   @IsPositive()
   @IsOptional()
   duration?: number;

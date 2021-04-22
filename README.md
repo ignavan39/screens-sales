@@ -45,6 +45,23 @@ $ yarn test:e2e
 $ yarn test:cov
 ```
 
+## Migrations :
+
+### For start database migration :
+```bash
+$ typeorm migration:run
+```
+
+### For revert migration :
+```bash
+$ typeorm migration:revert 
+```
+
+### For generate migration file :
+```bash
+$ npx typeorm migration:create -n ${nameMigration} -d src/migrations
+```
+
 ## Swagger Api
 
 ```

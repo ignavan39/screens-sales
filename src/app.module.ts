@@ -1,9 +1,8 @@
 import { Module, RequestMethod } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ormConfig } from './ormconfig';
+import { ormConfig } from './typeorm-constant';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
-import { CrudConfigService } from '@nestjsx/crud';
 import { EventsModule } from './events/events.module';
 import { ScreensModule } from './screens/screens.module';
 import { PlaylistsModule } from './playlists/playlists.module';

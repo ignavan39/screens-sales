@@ -8,7 +8,12 @@ export const ormConfig: ConnectionOptions = {
   password: DB_PASS,
   database: DB_NAME,
   synchronize: true,
-  migrationsRun: true,
+  migrationsRun: false,
   entities: [__dirname + '/**/*.entity{.ts,.js}'],
-  migrations: [__dirname + '/migrations/*{ts,js}'],
+  logging: true,
+  logger: 'file',
+  migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
+  cli: {
+    migrationsDir: 'src/migrations',
+  },
 };

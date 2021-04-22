@@ -40,7 +40,7 @@ export class Content {
   @Column()
   userId: string;
 
-  @Column()
+  @Column({ nullable: true })
   groupId: string;
 
   @OneToMany(() => ContentToPlaylists, (c) => c.content)
