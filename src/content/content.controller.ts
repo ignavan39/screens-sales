@@ -5,7 +5,9 @@ import {
   Param,
   Post,
   Put,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -15,6 +17,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { Express } from 'express';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CheckPlaylistExsist } from 'src/playlists/playlist.pipe';
 import { User } from 'src/users/user.decorator';
@@ -26,6 +29,7 @@ import {
 } from './content.dto';
 import { Content } from './content.entity';
 import { ContentOwnerGuard } from './content.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @ApiResponse({ status: 401, description: 'Unauthorized' })
 @ApiResponse({ status: 403, description: 'Forbidden' })
@@ -75,11 +79,15 @@ export class ContentController {
       },
     },
   })
+  @UseInterceptors(FileInterceptor('file'))
   @ApiOperation({ summary: 'create content' })
   @ApiBody({ type: CreateContentDto })
   @Post()
-  create(@Body(CheckPlaylistExsist) body: CreateContentDto) {
-    return this.contentService.save(body);
+  create(
+    @Body(CheckPlaylistExsist) body: CreateContentDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.contentService.save(body, file.buffer);
   }
 
   @ApiResponse({

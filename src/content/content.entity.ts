@@ -34,8 +34,11 @@ export class Content {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   url: string;
+
+  @Column()
+  public key: string;
 
   @Column()
   userId: string;

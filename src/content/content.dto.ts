@@ -23,11 +23,6 @@ export class CreateContentDto {
   @IsString()
   name: string;
 
-  @ApiProperty()
-  @IsNotEmpty()
-  @IsUrl()
-  url: string;
-
   @IsString()
   @ApiProperty()
   @IsNotEmpty()

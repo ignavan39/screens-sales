@@ -10,6 +10,10 @@ import {
   UpdateContentDto,
 } from './content.dto';
 import { Content } from './content.entity';
+import { S3 } from 'aws-sdk';
+import { v4 as uuid } from 'uuid';
+import { AWS_PUBLIC_BUCKET_NAME } from 'src/constants';
+import { UploadContentInterface } from './content.interface';
 
 @Injectable()
 export class ContentService {
@@ -17,6 +21,22 @@ export class ContentService {
     @InjectRepository(Content) private readonly repository: Repository<Content>,
     private readonly contentToPlaylistService: ContentToPlaylistService,
   ) {}
+
+  async uploadContent(
+    dataBuffer: Buffer,
+    name: Content['name'],
+  ): Promise<UploadContentInterface> {
+    const s3 = new S3();
+    const uploadResult = await s3
+      .upload({
+        Bucket: AWS_PUBLIC_BUCKET_NAME,
+        Body: dataBuffer,
+        Key: `${uuid()}-${name}`,
+      })
+      .promise();
+
+    return { url: uploadResult.Location, key: uploadResult.Key };
+  }
 
   async findManyByUser(userId: User['id']): Promise<Content[]> {
     return this.repository.find({
@@ -39,10 +59,17 @@ export class ContentService {
     return res;
   }
 
-  async save(createDto: CreateContentDto): Promise<Content> {
+  async save(
+    createDto: CreateContentDto,
+    imageBuffer: Buffer,
+  ): Promise<Content> {
+    const { url, key } = await this.uploadContent(imageBuffer, createDto.name);
+
     const content = await this.repository.save({
       ...createDto,
       userId: createDto.userId,
+      url,
+      key,
     });
 
     if (createDto.playlistId) {
