@@ -51,12 +51,6 @@ export class ContentController {
           name: 'name',
           userId: 'id',
         },
-        {
-          id: 'id',
-          contentType: 'Video',
-          name: 'name',
-          userId: 'id',
-        },
       ],
     },
   })

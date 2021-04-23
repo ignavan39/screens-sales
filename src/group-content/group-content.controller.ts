@@ -1,4 +1,11 @@
 import { Body, Controller, UseGuards } from '@nestjs/common';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
@@ -9,6 +16,7 @@ import {
   GroupContentCrudService,
   GroupContentService,
 } from './group-content.service';
+
 @Crud({
   model: {
     type: GroupsContent,
@@ -26,16 +34,56 @@ import {
       'updateOneBase',
     ],
     getOneBase: {
-      decorators: [UseGuards(GroupContentOwnerGuard)],
+      decorators: [
+        UseGuards(GroupContentOwnerGuard),
+        ApiResponse({
+          status: 200,
+          schema: {
+            example: {
+              id: 'id',
+              name: 'name',
+              userId: 'id',
+            },
+          },
+        }),
+      ],
     },
     updateOneBase: {
-      decorators: [UseGuards(GroupContentOwnerGuard)],
+      decorators: [
+        UseGuards(GroupContentOwnerGuard),
+        ApiResponse({
+          status: 200,
+          schema: {
+            example: {
+              id: 'id',
+              name: 'name',
+              userId: 'id',
+            },
+          },
+        }),
+      ],
     },
     deleteOneBase: {
-      decorators: [UseGuards(GroupContentOwnerGuard)],
+      decorators: [
+        UseGuards(GroupContentOwnerGuard),
+        ApiResponse({
+          status: 200,
+          schema: {
+            example: {
+              id: 'id',
+              name: 'name',
+              userId: 'id',
+            },
+          },
+        }),
+      ],
     },
   },
 })
+@ApiResponse({ status: 401, description: 'Unauthorized' })
+@ApiResponse({ status: 403, description: 'Forbidden' })
+@ApiBearerAuth()
+@ApiTags('groups')
 @UseGuards(JwtAuthGuard)
 @Controller('groups')
 export class GroupContentController implements CrudController<GroupsContent> {
@@ -44,11 +92,36 @@ export class GroupContentController implements CrudController<GroupsContent> {
     private readonly groupContentService: GroupContentService,
   ) {}
 
+  @ApiResponse({
+    status: 201,
+    schema: {
+      example: {
+        id: 'id',
+        name: 'name',
+        userId: 'id',
+      },
+    },
+  })
+  @ApiOperation({ summary: 'create content group' })
+  @ApiBody({ type: CreateGroupDto })
   @Override('createOneBase')
   create(@User('id') userId, @Body() body: CreateGroupDto) {
     return this.groupContentService.save(body, userId);
   }
 
+  @ApiResponse({
+    status: 200,
+    schema: {
+      example: [
+        {
+          id: 'id',
+          name: 'name',
+          userId: 'id',
+        },
+      ],
+    },
+  })
+  @ApiOperation({ summary: 'get all content groups' })
   @Override('getManyBase')
   findMany(@User('id') userId) {
     return this.groupContentService.findMany(userId);
