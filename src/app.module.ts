@@ -1,4 +1,4 @@
-import { Module, RequestMethod } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ormConfig } from './typeorm-constant';
 import { AuthModule } from './auth/auth.module';
@@ -9,6 +9,7 @@ import { PlaylistsModule } from './playlists/playlists.module';
 import { ContentModule } from './content/content.module';
 import { ContentToPlaylistModule } from './content-to-playlist/content-to-playlist.module';
 import { GroupContentModule } from './group-content/group-content.module';
+import { AwsModule } from './aws/aws.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { GroupContentModule } from './group-content/group-content.module';
     ContentModule,
     ContentToPlaylistModule,
     GroupContentModule,
+    AwsModule,
   ],
   controllers: [],
 })

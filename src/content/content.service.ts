@@ -10,33 +10,16 @@ import {
   UpdateContentDto,
 } from './content.dto';
 import { Content } from './content.entity';
-import { S3 } from 'aws-sdk';
-import { v4 as uuid } from 'uuid';
 import { AWS_PUBLIC_BUCKET_NAME } from 'src/constants';
-import { UploadContentInterface } from './content.interface';
+import { AwsService } from 'src/aws/aws.service';
 
 @Injectable()
 export class ContentService {
   constructor(
     @InjectRepository(Content) private readonly repository: Repository<Content>,
     private readonly contentToPlaylistService: ContentToPlaylistService,
+    private readonly awsService: AwsService,
   ) {}
-
-  async uploadContent(
-    dataBuffer: Buffer,
-    name: Content['name'],
-  ): Promise<UploadContentInterface> {
-    const s3 = new S3();
-    const uploadResult = await s3
-      .upload({
-        Bucket: AWS_PUBLIC_BUCKET_NAME,
-        Body: dataBuffer,
-        Key: `${uuid()}-${name}`,
-      })
-      .promise();
-
-    return { url: uploadResult.Location, key: uploadResult.Key };
-  }
 
   async findManyByUser(userId: User['id']): Promise<Content[]> {
     return this.repository.find({
@@ -63,7 +46,10 @@ export class ContentService {
     createDto: CreateContentDto,
     imageBuffer: Buffer,
   ): Promise<Content> {
-    const { url, key } = await this.uploadContent(imageBuffer, createDto.name);
+    const { url, key } = await this.awsService.uploadFile(
+      imageBuffer,
+      createDto.name,
+    );
 
     const content = await this.repository.save({
       ...createDto,
@@ -107,13 +93,7 @@ export class ContentService {
   async delete(id: Content['id']): Promise<Content | null> {
     const content = await this.findOne(id);
     if (content) {
-      const s3 = new S3();
-      await s3
-        .deleteObject({
-          Bucket: AWS_PUBLIC_BUCKET_NAME,
-          Key: content.key,
-        })
-        .promise();
+      this.awsService.deleteFile(content.key);
 
       await this.repository.delete(id);
     }

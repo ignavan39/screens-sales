@@ -5,6 +5,7 @@ import { Content } from './content.entity';
 import { ContentToPlaylistModule } from 'src/content-to-playlist/content-to-playlist.module';
 import { ContentService } from './content.service';
 import { PlaylistsModule } from 'src/playlists/playlists.module';
+import { AwsModule } from 'src/aws/aws.module';
 
 @Module({
   controllers: [ContentController],
@@ -13,6 +14,7 @@ import { PlaylistsModule } from 'src/playlists/playlists.module';
     TypeOrmModule.forFeature([Content]),
     ContentToPlaylistModule,
     PlaylistsModule,
+    AwsModule,
   ],
   exports: [ContentService],
 })
