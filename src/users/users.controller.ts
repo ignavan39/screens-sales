@@ -29,11 +29,10 @@ import { UsersService } from './users.service';
           status: 200,
           schema: {
             example: {
-              id: '29615bad-0209-47ca-81e9-4a0d73b98dc1',
+              id: 'id',
               email: 'example@mail.com',
               username: 'example',
-              password:
-                '$2b$18$Hy9zMiIrjEhvXzCdhP3z2e1GOQPBeznNb93kbM9Xr0cQ/S0s4GK9S',
+              password: 'password',
               fullName: null,
             },
           },
@@ -47,11 +46,10 @@ import { UsersService } from './users.service';
           status: 200,
           schema: {
             example: {
-              id: '29615bad-0209-47ca-81e9-4a0d73b98dc1',
+              id: 'id',
               email: 'example@mail.com',
               username: 'example',
-              password:
-                '$2b$18$Hy9zMiIrjEhvXzCdhP3z2e1GOQPBeznNb93kbM9Xr0cQ/S0s4GK9S',
+              password: 'password',
               fullName: null,
             },
           },
@@ -66,11 +64,10 @@ import { UsersService } from './users.service';
           schema: {
             example: [
               {
-                id: '29615bad-0209-47ca-81e9-4a0d73b98dc1',
+                id: 'id',
                 email: 'example@mail.com',
                 username: 'example',
-                password:
-                  '$2b$18$Hy9zMiIrjEhvXzCdhP3z2e1GOQPBeznNb93kbM9Xr0cQ/S0s4GK9S',
+                password: 'password',
                 fullName: null,
               },
             ],

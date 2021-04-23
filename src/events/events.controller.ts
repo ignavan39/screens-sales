@@ -29,9 +29,9 @@ import { EventOwnerGuard } from './owner.guard';
           status: 200,
           schema: {
             example: {
-              id: '8c9163fe-b6e1-49e5-a194-035409de304d',
-              description: '12345',
-              userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+              id: 'id',
+              description: 'description',
+              userId: 'id',
             },
           },
         }),
@@ -45,9 +45,9 @@ import { EventOwnerGuard } from './owner.guard';
           status: 200,
           schema: {
             example: {
-              playlistId: 'a4c401bb-048f-4bd1-a582-58f52168231b',
+              playlistId: 'id',
               description: 'description',
-              userId: '29615bad-0209-47ca-81e9-4a0d73b98dc9',
+              userId: 'id',
             },
           },
         }),
@@ -82,9 +82,9 @@ export class EventsController implements CrudController<Event> {
     status: 201,
     schema: {
       example: {
-        userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
-        description: 'example',
-        id: '8a418430-523f-49aa-8620-7142490102a4',
+        userId: 'id',
+        description: 'description',
+        id: 'id',
       },
     },
   })
@@ -99,14 +99,14 @@ export class EventsController implements CrudController<Event> {
     schema: {
       example: [
         {
-          id: '6fb9a764-b455-4cf8-b103-c146e6541529',
-          description: 'example1',
-          userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+          id: 'id',
+          description: 'description',
+          userId: 'id',
         },
         {
-          id: '6fb9a764-b455-4cf8-b103-c146e6541521',
-          description: 'example2',
-          userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+          id: 'id',
+          description: 'description',
+          userId: 'id',
         },
       ],
     },

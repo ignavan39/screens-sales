@@ -104,17 +104,19 @@ export class ContentService {
     return this.repository.save({ ...content, ...dto });
   }
 
-  async delete(id: Content['id']): Promise<Content> {
+  async delete(id: Content['id']): Promise<Content | null> {
     const content = await this.findOne(id);
-    const s3 = new S3();
-    await s3
-      .deleteObject({
-        Bucket: AWS_PUBLIC_BUCKET_NAME,
-        Key: content.key,
-      })
-      .promise();
+    if (content) {
+      const s3 = new S3();
+      await s3
+        .deleteObject({
+          Bucket: AWS_PUBLIC_BUCKET_NAME,
+          Key: content.key,
+        })
+        .promise();
 
-    await this.repository.delete(id);
+      await this.repository.delete(id);
+    }
     return content;
   }
 }

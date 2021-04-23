@@ -46,16 +46,16 @@ export class ContentController {
     schema: {
       example: [
         {
-          id: 'e2eec7f0-096d-4a5b-9c92-2017c07208c8',
+          id: 'id',
           contentType: 'Video',
-          name: '12345',
-          userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+          name: 'name',
+          userId: 'id',
         },
         {
-          id: 'eae1c35c-5fea-4855-8ed3-e2fc5ed33b33',
+          id: 'id',
           contentType: 'Video',
-          name: '12345',
-          userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+          name: 'name',
+          userId: 'id',
         },
       ],
     },
@@ -70,12 +70,12 @@ export class ContentController {
     status: 200,
     schema: {
       example: {
-        playlistId: 'a4c401bb-048f-4bd1-a582-58f52168231b',
+        playlistId: 'id',
         order: 13,
         duration: null,
-        id: 'de92e7fd-9a79-4dd5-81a6-04f8ea51588b',
-        name: '12345',
-        userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+        id: 'id',
+        name: 'name',
+        userId: 'id',
         contentType: 'Video',
       },
     },
@@ -95,12 +95,12 @@ export class ContentController {
     status: 200,
     schema: {
       example: {
-        playlistId: 'a4c401bb-048f-4bd1-a582-58f52168231b',
+        playlistId: 'id',
         order: 13,
         duration: null,
-        id: 'de92e7fd-9a79-4dd5-81a6-04f8ea51588b',
-        name: '12345',
-        userId: '9fed7552-bda8-4e5b-823c-ed2929749ee0',
+        id: 'id',
+        name: 'name',
+        userId: 'id',
         contentType: 'Video',
       },
     },
