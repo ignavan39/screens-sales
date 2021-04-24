@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Controller, Delete, Get, Module, Patch, Post } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ormConfig } from './typeorm-constant';
 import { AuthModule } from './auth/auth.module';
@@ -10,6 +10,8 @@ import { ContentModule } from './content/content.module';
 import { ContentToPlaylistModule } from './content-to-playlist/content-to-playlist.module';
 import { GroupContentModule } from './group-content/group-content.module';
 import { AwsModule } from './aws/aws.module';
+
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -24,6 +26,5 @@ import { AwsModule } from './aws/aws.module';
     GroupContentModule,
     AwsModule,
   ],
-  controllers: [],
 })
 export class AppModule {}

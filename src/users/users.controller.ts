@@ -1,4 +1,5 @@
 import { Controller, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -7,7 +8,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Crud, CrudController } from '@nestjsx/crud';
-import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { Auth0Guard } from 'src/auth/auth.guard';
 import { AccessGuard } from './access.guard';
 import { UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
@@ -56,6 +57,9 @@ import { UsersService } from './users.service';
         }),
       ],
     },
+    getManyBase: {
+      decorators: [UseGuards(AccessGuard)],
+    },
     updateOneBase: {
       decorators: [
         UseGuards(AccessGuard),
@@ -81,7 +85,7 @@ import { UsersService } from './users.service';
 @ApiResponse({ status: 403, description: 'Forbidden' })
 @ApiBearerAuth()
 @ApiTags('Auth')
-@UseGuards(JwtAuthGuard)
+@UseGuards(Auth0Guard)
 @Controller('users')
 export class UsersController implements CrudController<User> {
   constructor(public readonly service: UsersService) {}

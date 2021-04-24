@@ -10,7 +10,6 @@ import {
   UpdateContentDto,
 } from './content.dto';
 import { Content } from './content.entity';
-import { AWS_PUBLIC_BUCKET_NAME } from 'src/constants';
 import { AwsService } from 'src/aws/aws.service';
 
 @Injectable()
@@ -92,9 +91,9 @@ export class ContentService {
 
   async delete(id: Content['id']): Promise<Content | null> {
     const content = await this.findOne(id);
+
     if (content) {
       this.awsService.deleteFile(content.key);
-
       await this.repository.delete(id);
     }
     return content;

@@ -14,7 +14,7 @@ export class EventOwnerGuard implements CanActivate {
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const userId = request.user.id;
+    const userId = request.oidc.user.sub;
     const eventId = request.params.id;
     const event = await this.eventsService.findOne(eventId);
     if (!event) {

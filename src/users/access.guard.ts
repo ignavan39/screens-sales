@@ -1,9 +1,17 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import { UsersService } from './users.service';
 
 @Injectable()
 export class AccessGuard implements CanActivate {
-  canActivate(context: ExecutionContext): boolean {
+  constructor(private readonly usersService: UsersService) {}
+  async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    return request.params.id === request.user.id;
+    const user = await this.usersService.findOne({
+      email: request.oidc.user.email,
+    });
+    if (!user) {
+      return false;
+    }
+    return request.params.id === user.id;
   }
 }

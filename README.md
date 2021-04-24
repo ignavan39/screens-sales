@@ -32,6 +32,11 @@ $ yarn start:dev
 $ yarn start:prod
 ```
 
+## Local Tunnel : 
+```bash
+$ lt --subdomain serious-mouse-66 --port 3000
+```
+
 ## Test
 
 ```bash

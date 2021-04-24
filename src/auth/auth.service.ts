@@ -18,23 +18,22 @@ export class AuthService {
     return bcrypt.compareSync(password, hash);
   }
   async signIn(user: User) {
-    const payload = { email: user.email, sub: user.id };
-    const token = this.jwtService.sign(payload);
-    return { user_info: { ...user }, access_token: token };
+    console.log(user);
+    this.usersService.save(user.id, user.email);
   }
 
-  async signUp(signUpDto: SignUpDto) {
-    const hashPass = await bcrypt.hash(signUpDto.password, CRYPTO_ROUND);
-    const savedUser = await this.usersService.save(
-      signUpDto.username,
-      hashPass,
-      signUpDto.email,
-      signUpDto.fullName,
-    );
-    const payload = { email: signUpDto.email, sub: savedUser.id };
-    return {
-      user_info: { ...savedUser },
-      access_token: this.jwtService.sign(payload),
-    };
-  }
+  // async signUp(signUpDto: SignUpDto) {
+  //   const hashPass = await bcrypt.hash(signUpDto.password, CRYPTO_ROUND);
+  //   const savedUser = await this.usersService.save(
+  //     signUpDto.username,
+  //     hashPass,
+  //     signUpDto.email,
+  //     signUpDto.fullName,
+  //   );
+  //   const payload = { email: signUpDto.email, sub: savedUser.id };
+  //   return {
+  //     user_info: { ...savedUser },
+  //     access_token: this.jwtService.sign(payload),
+  //   };
+  // }
 }

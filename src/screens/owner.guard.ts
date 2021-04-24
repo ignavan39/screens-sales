@@ -16,7 +16,7 @@ export class ScreenOwnerByEventGuard implements CanActivate {
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const userId = request.user.id;
+    const userId = request.oidc.user.sub;
     const { eventId } = request.body;
     const event = await this.eventsService.findOne(eventId);
     if (!event) {

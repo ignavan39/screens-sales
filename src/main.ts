@@ -2,8 +2,8 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { CrudConfigService } from '@nestjsx/crud';
-import { ConfigService } from '@nestjs/config';
 import { config } from 'aws-sdk';
+import { auth } from 'express-openid-connect';
 
 CrudConfigService.load({
   params: {
@@ -27,13 +27,29 @@ CrudConfigService.load({
 });
 
 import { AppModule } from './app.module';
+import { Auth0Guard } from './auth/auth.guard';
 import { AWS_ACCESS_KEY, AWS_ACCESS_KEY_ID, AWS_REGION } from './constants';
+import { UsersService } from './users/users.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(
     new ValidationPipe({
       disableErrorMessages: false,
+    }),
+  );
+
+  // app.useGlobalGuards(new Auth0Guard())
+
+  app.use(
+    auth({
+      issuerBaseURL: 'https://dev--83rk4dm.eu.auth0.com',
+      baseURL: 'https://serious-mouse-66.loca.lt',
+      clientID: '0DKeivuHRA5jlJQnbxIXJUp07C8jJnqJ',
+      secret:
+        '1nTlGIiAwxjyq7Rc3eiSAHgnyQCfu8K0wO9QsyAKSpxNCKlCrbmCCvpA3bqqFceV',
+      idpLogout: true,
+      auth0Logout: true,
     }),
   );
 

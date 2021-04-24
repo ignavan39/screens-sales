@@ -17,7 +17,7 @@ export class PlaylistOwnerGuard implements CanActivate {
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const userId = request.user.id;
+    const userId = request.oidc.user.sub;
     const playlistId = request.params.id;
     const playlist = await this.service.findOne(playlistId);
     if (!playlist) {

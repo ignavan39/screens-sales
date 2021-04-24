@@ -6,6 +6,7 @@ import { ContentToPlaylistModule } from 'src/content-to-playlist/content-to-play
 import { ContentService } from './content.service';
 import { PlaylistsModule } from 'src/playlists/playlists.module';
 import { AwsModule } from 'src/aws/aws.module';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   controllers: [ContentController],
@@ -15,6 +16,7 @@ import { AwsModule } from 'src/aws/aws.module';
     ContentToPlaylistModule,
     PlaylistsModule,
     AwsModule,
+    UsersModule,
   ],
   exports: [ContentService],
 })

@@ -15,17 +15,10 @@ export class UsersService extends TypeOrmCrudService<User> {
     super(userCrudOrmRepo);
   }
 
-  async save(
-    username: string,
-    password: string,
-    email: string,
-    fullName?: string,
-  ): Promise<User> {
+  async save(id: string, email: string): Promise<User> {
     return this.userRepository.save({
-      username,
-      password,
+      id,
       email,
-      fullName,
     });
   }
 }

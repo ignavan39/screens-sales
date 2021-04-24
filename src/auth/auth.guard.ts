@@ -1,19 +1,22 @@
 import {
+  CanActivate,
   ExecutionContext,
+  Inject,
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
-export class JwtAuthGuard extends AuthGuard('jwt') {
-  canActivate(context: ExecutionContext) {
-    return super.canActivate(context);
-  }
-
-  handleRequest(err, user) {
-    if (err || !user) {
-      throw err || new UnauthorizedException();
+export class Auth0Guard implements CanActivate {
+  constructor(private readonly userService: UsersService) {}
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    const request = context.switchToHttp().getRequest();
+    const user = request.oidc.user;
+    let savedUser = await this.userService.findOne(user.sub);
+    if (!savedUser) {
+      savedUser = await this.userService.save(user.sub, user.email);
     }
     return user;
   }

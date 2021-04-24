@@ -7,7 +7,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
-import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { Auth0Guard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
 import { CreateGroupDto, UpdateGroupDto } from './group-content.dto';
 import { GroupsContent } from './group-content.entity';
@@ -80,11 +80,11 @@ import {
     },
   },
 })
+@UseGuards(Auth0Guard)
 @ApiResponse({ status: 401, description: 'Unauthorized' })
 @ApiResponse({ status: 403, description: 'Forbidden' })
 @ApiBearerAuth()
 @ApiTags('groups')
-@UseGuards(JwtAuthGuard)
 @Controller('groups')
 export class GroupContentController implements CrudController<GroupsContent> {
   constructor(

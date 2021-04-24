@@ -13,12 +13,13 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
-import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CheckEventExsists } from 'src/events/event.pipe';
 import { CreateScreenDto, FindByEventDto, UpdateScreenDto } from './screen.dto';
 import { Screen } from './screen.entity';
 import { ScreenOwnerByEventGuard, ScreenOwnerGuard } from './owner.guard';
 import { ScreensCrudService, ScreensService } from './screens.service';
+import { Cookies } from 'src/common/cookie.decorator';
+import { Auth0Guard } from 'src/auth/auth.guard';
 
 @Crud({
   model: {
@@ -56,10 +57,10 @@ import { ScreensCrudService, ScreensService } from './screens.service';
     },
   },
 })
+@UseGuards(Auth0Guard)
 @ApiResponse({ status: 401, description: 'Unauthorized' })
 @ApiResponse({ status: 403, description: 'Forbidden' })
 @ApiTags('screens')
-@UseGuards(JwtAuthGuard)
 @Controller('screens')
 export class ScreensController implements CrudController<Screen> {
   constructor(
@@ -83,7 +84,11 @@ export class ScreensController implements CrudController<Screen> {
   @ApiBody({ type: FindByEventDto })
   @UseGuards(ScreenOwnerByEventGuard)
   @Override()
-  async getMany(@Body(new ValidationPipe()) body: FindByEventDto) {
+  async getMany(
+    @Body(new ValidationPipe()) body: FindByEventDto,
+    @Cookies() cookies,
+  ) {
+    console.log(cookies);
     return this.screensService.findMany(body.eventId);
   }
 }

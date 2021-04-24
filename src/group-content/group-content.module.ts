@@ -6,11 +6,12 @@ import {
 import { GroupContentController } from './group-content.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GroupsContent } from './group-content.entity';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   providers: [GroupContentService, GroupContentCrudService],
   controllers: [GroupContentController],
-  imports: [TypeOrmModule.forFeature([GroupsContent])],
+  imports: [TypeOrmModule.forFeature([GroupsContent]), UsersModule],
   exports: [GroupContentService, GroupContentCrudService],
 })
 export class GroupContentModule {}

@@ -15,7 +15,7 @@ export class ContentOwnerGuard implements CanActivate {
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const userId = request.user.id;
+    const userId = request.oidc.user.sub;
     const contentId = request.params.id;
     const content = await this.service.findOne(contentId);
     if (!content) {

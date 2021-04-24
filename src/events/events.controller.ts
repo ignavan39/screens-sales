@@ -8,7 +8,7 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
-import { JwtAuthGuard } from 'src/auth/auth.guard';
+import { Auth0Guard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
 import { CreateEventDto, UpdateEventDto } from './event.dto';
 import { Event } from './event.entity';
@@ -69,7 +69,7 @@ import { EventOwnerGuard } from './owner.guard';
 @ApiResponse({ status: 403, description: 'Forbidden' })
 @ApiBearerAuth()
 @ApiTags('events')
-@UseGuards(JwtAuthGuard)
+@UseGuards(Auth0Guard)
 @Controller('events')
 export class EventsController implements CrudController<Event> {
   constructor(

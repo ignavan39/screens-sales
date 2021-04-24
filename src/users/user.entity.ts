@@ -8,23 +8,18 @@ import {
   Entity,
   Index,
   OneToMany,
+  PrimaryColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
 @Entity({ name: 'user' })
 export class User {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn({ nullable: false })
   id: string;
 
   @Column()
   @Index({ unique: true })
   email: string;
-
-  @Column()
-  username: string;
-
-  @Column()
-  password: string;
 
   @Column({ nullable: true })
   fullName?: string;

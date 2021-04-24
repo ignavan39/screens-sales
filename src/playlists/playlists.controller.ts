@@ -16,7 +16,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
-import { JwtAuthGuard } from 'src/auth/auth.guard';
 import {
   InsertContentDto,
   MoveIncludeContentDto,
@@ -29,6 +28,7 @@ import { CreatePlaylistDto, UpdatePlaylistDto } from './playlists.dto';
 import { Playlist } from './playlist.entity';
 import { PlaylistOwnerGuard } from './playlist.guard';
 import { PlaylistCrudService, PlaylistService } from './playlists.service';
+import { Auth0Guard } from 'src/auth/auth.guard';
 
 @Crud({
   model: {
@@ -97,11 +97,11 @@ import { PlaylistCrudService, PlaylistService } from './playlists.service';
     update: UpdatePlaylistDto,
   },
 })
+@UseGuards(Auth0Guard)
 @ApiResponse({ status: 403, description: 'Forbidden.' })
 @ApiResponse({ status: 401, description: 'Unauthorized' })
 @ApiBearerAuth()
 @ApiTags('playlists')
-@UseGuards(JwtAuthGuard)
 @Controller('playlists')
 export class PlaylistsController implements CrudController<Playlist> {
   constructor(

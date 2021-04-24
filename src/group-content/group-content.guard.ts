@@ -16,7 +16,7 @@ export class GroupContentOwnerGuard implements CanActivate {
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
-    const userId = request.user.id;
+    const userId = request.oidc.user.sub;
     const groupId = request.params.id;
     const group = await this.groupService.findOne(groupId);
     if (!group) {

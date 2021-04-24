@@ -19,7 +19,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Express } from 'express';
-import { JwtAuthGuard } from 'src/auth/auth.guard';
 import { CheckPlaylistExsist } from 'src/playlists/playlist.pipe';
 import { User } from 'src/users/user.decorator';
 import { ContentService } from './content.service';
@@ -31,12 +30,13 @@ import {
 import { Content } from './content.entity';
 import { ContentOwnerGuard } from './content.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { Auth0Guard } from 'src/auth/auth.guard';
 
+@UseGuards(Auth0Guard)
 @ApiResponse({ status: 401, description: 'Unauthorized' })
 @ApiResponse({ status: 403, description: 'Forbidden' })
 @ApiBearerAuth()
 @ApiTags('contents')
-@UseGuards(JwtAuthGuard)
 @Controller('contents')
 export class ContentController {
   constructor(private readonly contentService: ContentService) {}
