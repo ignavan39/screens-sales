@@ -14,7 +14,8 @@ export class Auth0Guard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const user = request.oidc.user;
-    let savedUser = await this.userService.findOne(user.sub);
+    let savedUser = await this.userService.findOne({ email: user.email });
+    console.log(savedUser);
     if (!savedUser) {
       savedUser = await this.userService.save(user.sub, user.email);
     }

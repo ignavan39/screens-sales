@@ -39,8 +39,6 @@ async function bootstrap() {
     }),
   );
 
-  // app.useGlobalGuards(new Auth0Guard())
-
   app.use(
     auth({
       issuerBaseURL: 'https://dev--83rk4dm.eu.auth0.com',
