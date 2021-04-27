@@ -46,10 +46,12 @@ export class CreateContentDto {
   @IsUUID()
   userId: User['id'];
 
+  @IsOptional()
   @ApiProperty()
   @IsPositive()
   width: number;
 
+  @IsOptional()
   @ApiProperty()
   @IsPositive()
   height: number;

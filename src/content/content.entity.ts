@@ -35,10 +35,10 @@ export class Content {
   @Column({ nullable: true })
   url: string;
 
-  @Column()
+  @Column({ nullable: true })
   width: number;
 
-  @Column()
+  @Column({ nullable: true })
   height: number;
 
   @Column()

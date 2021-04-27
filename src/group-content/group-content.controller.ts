@@ -1,4 +1,4 @@
-import { Body, Controller, Param, UseGuards } from '@nestjs/common';
+import { Body, Controller, Param, UseGuards, UsePipes } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -16,6 +16,10 @@ import {
 } from './group-content.dto';
 import { GroupsContent } from './group-content.entity';
 import { GroupContentOwnerGuard } from './group-content.guard';
+import {
+  CheckGroupExsist,
+  CheckGroupIsNotEmptyPipe,
+} from './group-content.pipe';
 import {
   GroupContentCrudService,
   GroupContentService,
@@ -131,6 +135,7 @@ export class GroupContentController implements CrudController<GroupsContent> {
     return this.groupContentService.findMany(userId);
   }
 
+  @UsePipes(CheckGroupExsist, CheckGroupIsNotEmptyPipe)
   findOptimal(@Param('id') id, @Body() body: GetOptimalContent) {
     return this.findOptimal(id, body);
   }
