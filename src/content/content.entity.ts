@@ -36,6 +36,12 @@ export class Content {
   url: string;
 
   @Column()
+  width: number;
+
+  @Column()
+  height: number;
+
+  @Column()
   public key: string;
 
   @Column()

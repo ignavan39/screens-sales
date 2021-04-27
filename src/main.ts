@@ -27,9 +27,7 @@ CrudConfigService.load({
 });
 
 import { AppModule } from './app.module';
-import { Auth0Guard } from './auth/auth.guard';
 import { AWS_ACCESS_KEY, AWS_ACCESS_KEY_ID, AWS_REGION } from './constants';
-import { UsersService } from './users/users.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

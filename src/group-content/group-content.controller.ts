@@ -1,4 +1,4 @@
-import { Body, Controller, UseGuards } from '@nestjs/common';
+import { Body, Controller, Param, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
   ApiBody,
@@ -9,7 +9,11 @@ import {
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { Auth0Guard } from 'src/auth/auth.guard';
 import { User } from 'src/users/user.decorator';
-import { CreateGroupDto, UpdateGroupDto } from './group-content.dto';
+import {
+  CreateGroupDto,
+  GetOptimalContent,
+  UpdateGroupDto,
+} from './group-content.dto';
 import { GroupsContent } from './group-content.entity';
 import { GroupContentOwnerGuard } from './group-content.guard';
 import {
@@ -125,5 +129,9 @@ export class GroupContentController implements CrudController<GroupsContent> {
   @Override('getManyBase')
   findMany(@User('id') userId) {
     return this.groupContentService.findMany(userId);
+  }
+
+  findOptimal(@Param('id') id, @Body() body: GetOptimalContent) {
+    return this.findOptimal(id, body);
   }
 }

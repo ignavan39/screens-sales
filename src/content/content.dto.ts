@@ -45,6 +45,14 @@ export class CreateContentDto {
   @ApiProperty()
   @IsUUID()
   userId: User['id'];
+
+  @ApiProperty()
+  @IsPositive()
+  width: number;
+
+  @ApiProperty()
+  @IsPositive()
+  height: number;
 }
 
 export class UpdateContentDto {
@@ -62,6 +70,14 @@ export class UpdateContentDto {
   @ApiProperty()
   @IsUUID()
   userId: User['id'];
+
+  @ApiProperty()
+  @IsPositive()
+  width?: number;
+
+  @ApiProperty()
+  @IsPositive()
+  height?: number;
 }
 
 export class MoveIncludeContentDto {

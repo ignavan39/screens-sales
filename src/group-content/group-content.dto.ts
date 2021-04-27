@@ -1,12 +1,14 @@
+import { APP_FILTER } from '@nestjs/core';
+import { ApiOperation } from '@nestjs/swagger';
 import { ApiProperty } from '@nestjsx/crud/lib/crud';
 import {
   IsNotEmpty,
   IsOptional,
+  IsPositive,
   IsString,
   IsUUID,
   MinLength,
 } from 'class-validator';
-import { User } from 'src/users/user.entity';
 
 export class CreateGroupDto {
   @ApiProperty()
@@ -20,4 +22,14 @@ export class UpdateGroupDto {
   @ApiProperty()
   @IsOptional()
   name?: string;
+}
+
+export class GetOptimalContent {
+  @ApiProperty()
+  @IsPositive()
+  width: number;
+
+  @ApiProperty()
+  @IsPositive()
+  height: number;
 }
