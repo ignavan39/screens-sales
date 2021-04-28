@@ -41,7 +41,7 @@ export class GroupContentService {
 
     if (idx === -1) {
       idx = sortedContents.findIndex(
-        (item) => dto.height > item.height && dto.width > item.height,
+        (item) => dto.height > item.height && dto.width > item.width,
       );
       if (idx === -1) {
         return sortedContents[0];
