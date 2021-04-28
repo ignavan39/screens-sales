@@ -28,6 +28,7 @@ export class ContentService {
     });
   }
 
+  // REVU: Такая реляция работатет? Если нигде не используешь то удали
   async findMany(playlistId: Playlist['id']): Promise<Content[]> {
     const res = await this.repository.find({
       relations: ['playlists'],
@@ -52,11 +53,13 @@ export class ContentService {
 
     const content = await this.repository.save({
       ...createDto,
+      // REVU: зачем это?
       userId: createDto.userId,
       url,
       key,
     });
 
+    // REVU: переиспользуй методы playlistService
     if (createDto.playlistId) {
       const contentToPlaylist = await this.contentToPlaylistService.save(
         createDto.playlistId,
@@ -85,6 +88,7 @@ export class ContentService {
   }
 
   async addContentIntoGroup(dto: AddContentIntoGroup, id: Content['id']) {
+    // REVU: можно писать просто save({ id, ...dto });
     const content = this.repository.findOne(id);
     return this.repository.save({ ...content, ...dto });
   }
@@ -92,6 +96,7 @@ export class ContentService {
   async delete(id: Content['id']): Promise<Content | null> {
     const content = await this.findOne(id);
 
+    // REVU: здесь надо подумать что будет если запрос на s3 или в БД зафейлится?
     if (content) {
       this.awsService.deleteFile(content.key);
       await this.repository.delete(id);

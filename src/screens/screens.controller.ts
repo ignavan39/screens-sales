@@ -86,6 +86,7 @@ export class ScreensController implements CrudController<Screen> {
   @Override()
   async getMany(
     @Body(new ValidationPipe()) body: FindByEventDto,
+    // REVU: для чего это?
     @Cookies() cookies,
   ) {
     console.log(cookies);

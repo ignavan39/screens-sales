@@ -37,6 +37,7 @@ async function bootstrap() {
     }),
   );
 
+  // REVU: это надо вынести в константы
   app.use(
     auth({
       issuerBaseURL: 'https://dev--83rk4dm.eu.auth0.com',

@@ -5,6 +5,8 @@ import { fileManagerInterface, UploadFileInterface } from './aws.interface';
 import { S3 } from 'aws-sdk';
 import { v4 as uuid } from 'uuid';
 
+// REVU: Лучше инжектировать  S3-сервис через систему модулей
+// Нет метода на download контента
 @Injectable()
 export class AwsService implements fileManagerInterface {
   async uploadFile(

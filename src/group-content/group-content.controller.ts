@@ -135,6 +135,8 @@ export class GroupContentController implements CrudController<GroupsContent> {
     return this.groupContentService.findMany(userId);
   }
 
+  // REVU: Это похоже на рекурсивный вызов. Мне кажется эта логика уместней во время
+  // привязки playlist'a к экрану
   @UsePipes(CheckGroupExsist, CheckGroupIsNotEmptyPipe)
   findOptimal(@Param('id') id, @Body() body: GetOptimalContent) {
     return this.findOptimal(id, body);

@@ -10,6 +10,7 @@ import {
   MinLength,
 } from 'class-validator';
 
+// REVU: Не думаю что группе контента нужно имя
 export class CreateGroupDto {
   @ApiProperty()
   @IsString()

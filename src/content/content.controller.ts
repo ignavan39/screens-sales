@@ -111,6 +111,7 @@ export class ContentController {
     return this.contentService.update(body, contentId);
   }
 
+  // REVU: Если подразумевается только видео контент, тогда здесь это надо валидировать
   @UseGuards(ContentOwnerGuard)
   @Put(':id/addGroup')
   addIntoGroup(

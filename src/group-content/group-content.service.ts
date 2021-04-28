@@ -29,6 +29,11 @@ export class GroupContentService {
     return this.groupRepository.save({ ...createGroupDto, userId });
   }
 
+  // REVU: этот метод написан не читаемо
+  // Лучше будет сделать так что группа контента создается
+  // автоматически при загрузке видео. Потом при добавлении
+  // контента в плейлист смотреть к какому экрану он привязан
+  // и выбирать из группы самый подходящий
   async getOptimalContent(id: GroupsContent['id'], dto: GetOptimalContent) {
     const group = await this.findOne(id);
     const sortedContents = group.contents.sort(

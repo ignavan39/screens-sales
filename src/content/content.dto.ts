@@ -73,6 +73,7 @@ export class UpdateContentDto {
   @IsUUID()
   userId: User['id'];
 
+  // REVU: Каким образом это изменит разрешение контента?
   @ApiProperty()
   @IsPositive()
   width?: number;
@@ -82,6 +83,7 @@ export class UpdateContentDto {
   height?: number;
 }
 
+// REVU: Лучше называть просто MoveContentDto
 export class MoveIncludeContentDto {
   @ApiProperty()
   @IsNotEmpty()
@@ -96,6 +98,7 @@ export class InsertContentDto {
   contentId: Content['id'];
 }
 
+// Лучше переместить в модуль плейлиста
 export class UpdateDurationDto {
   @ApiProperty()
   @IsPositive()
