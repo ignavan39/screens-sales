@@ -9,7 +9,6 @@ import { Content } from './content.entity';
 import { AwsService } from 'src/aws/aws.service';
 import { PlaylistService } from 'src/playlists/playlists.service';
 import { GroupContentService } from 'src/group-content/group-content.service';
-import { group } from 'node:console';
 import { GroupsContent } from 'src/group-content/group-content.entity';
 import { ScreensCrudService } from 'src/screens/screens.service';
 
@@ -69,7 +68,7 @@ export class ContentService {
       if (createDto.playlistId) {
         const optimalContent = await this.getOptimalContent(
           content.groupId,
-          content.playlistId,
+          createDto.playlistId,
         );
         const contentToPlaylist = await this.playlistService.insertContent(
           content.playlistId,
@@ -139,6 +138,20 @@ export class ContentService {
 
     if (content) {
       try {
+        await content.contentToPlaylists.map(async (item) => {
+          const screen = await this.screenService.findOne(
+            item.playlist.screenId,
+          );
+          const optimalContent = await this.getOptimalContent(
+            content.groupId,
+            item.playlistId,
+          );
+
+          await this.playlistService.insertContent(
+            item.playlistId,
+            optimalContent.id,
+          );
+        });
         this.awsService.deleteFile(content.key);
         await this.repository.delete(id);
       } catch (e) {
