@@ -16,9 +16,8 @@ import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { CheckEventExsists } from 'src/events/event.pipe';
 import { CreateScreenDto, FindByEventDto, UpdateScreenDto } from './screen.dto';
 import { Screen } from './screen.entity';
-import { ScreenOwnerByEventGuard, ScreenOwnerGuard } from './owner.guard';
+import { ScreenOwnerByEventGuard, ScreenOwnerGuard } from './screen.guard';
 import { ScreensCrudService, ScreensService } from './screens.service';
-import { Cookies } from 'src/common/cookie.decorator';
 import { Auth0Guard } from 'src/auth/auth.guard';
 
 @Crud({
@@ -84,12 +83,7 @@ export class ScreensController implements CrudController<Screen> {
   @ApiBody({ type: FindByEventDto })
   @UseGuards(ScreenOwnerByEventGuard)
   @Override()
-  async getMany(
-    @Body(new ValidationPipe()) body: FindByEventDto,
-    // REVU: для чего это?
-    @Cookies() cookies,
-  ) {
-    console.log(cookies);
+  async getMany(@Body(new ValidationPipe()) body: FindByEventDto) {
     return this.screensService.findMany(body.eventId);
   }
 }

@@ -18,6 +18,12 @@ export class Screen {
   name: string;
 
   @Column()
+  width: number;
+
+  @Column()
+  height: number;
+
+  @Column()
   userId: string;
 
   @Column()

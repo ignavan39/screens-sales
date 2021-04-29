@@ -2,9 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Event } from 'src/events/event.entity';
-import { User } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
-import { CreateScreenDto } from './screen.dto';
 import { Screen } from './screen.entity';
 
 @Injectable()

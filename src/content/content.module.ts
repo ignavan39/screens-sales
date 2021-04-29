@@ -7,6 +7,7 @@ import { ContentService } from './content.service';
 import { PlaylistsModule } from 'src/playlists/playlists.module';
 import { AwsModule } from 'src/aws/aws.module';
 import { UsersModule } from 'src/users/users.module';
+import { GroupContentModule } from 'src/group-content/group-content.module';
 
 @Module({
   controllers: [ContentController],
@@ -17,6 +18,7 @@ import { UsersModule } from 'src/users/users.module';
     PlaylistsModule,
     AwsModule,
     UsersModule,
+    GroupContentModule,
   ],
   exports: [ContentService],
 })

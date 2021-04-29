@@ -13,7 +13,7 @@ import { User } from 'src/users/user.decorator';
 import { CreateEventDto, UpdateEventDto } from './event.dto';
 import { Event } from './event.entity';
 import { EventsCrudService, EventsService } from './events.service';
-import { EventOwnerGuard } from './owner.guard';
+import { EventOwnerGuard } from './events.guard';
 
 @Crud({
   model: {

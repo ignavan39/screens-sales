@@ -52,3 +52,9 @@ export class UpdatePlaylistDto {
   @IsOptional()
   duration?: number;
 }
+
+export class UpdateDurationDto {
+  @ApiProperty()
+  @IsPositive()
+  duration: number;
+}

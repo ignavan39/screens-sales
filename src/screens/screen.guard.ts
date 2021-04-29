@@ -1,7 +1,6 @@
 import {
   CanActivate,
   ExecutionContext,
-  HttpException,
   Inject,
   Injectable,
   NotFoundException,

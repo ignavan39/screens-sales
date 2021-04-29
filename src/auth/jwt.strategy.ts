@@ -2,7 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { AUTH0_AUDIENCE, AUTH0_ISSUER_URL, JWT_SECRET } from 'src/constants';
-import { UsersService } from '../../users/users.service';
+import { UsersService } from '../users/users.service';
 
 import { passportJwtSecret } from 'jwks-rsa';
 
@@ -25,7 +25,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    console.log('redirect');
     const user = await this.userService.findOne({ email: payload.email });
     if (!user) {
       throw new UnauthorizedException();

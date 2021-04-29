@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjsx/crud/lib/crud';
 import {
   IsNotEmpty,
   IsOptional,
+  IsPositive,
   IsString,
   IsUUID,
   MinLength,
@@ -25,6 +26,16 @@ export class CreateScreenDto {
   @IsNotEmpty()
   @IsUUID()
   userId: User['id'];
+
+  @ApiProperty()
+  @IsPositive()
+  @IsNotEmpty()
+  width: number;
+
+  @ApiProperty()
+  @IsPositive()
+  @IsNotEmpty()
+  height: number;
 }
 
 export class UpdateScreenDto {

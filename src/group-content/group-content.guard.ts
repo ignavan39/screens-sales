@@ -5,7 +5,6 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
 import { GroupContentService } from './group-content.service';
 
 @Injectable()

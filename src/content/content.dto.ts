@@ -1,16 +1,11 @@
 import { ApiProperty } from '@nestjsx/crud/lib/crud';
 import {
-  IsArray,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsPositive,
   IsString,
   IsUrl,
-  isUUID,
   IsUUID,
-  Min,
-  MinLength,
 } from 'class-validator';
 import { GroupsContent } from 'src/group-content/group-content.entity';
 import { Playlist } from 'src/playlists/playlist.entity';
@@ -72,19 +67,9 @@ export class UpdateContentDto {
   @ApiProperty()
   @IsUUID()
   userId: User['id'];
-
-  // REVU: Каким образом это изменит разрешение контента?
-  @ApiProperty()
-  @IsPositive()
-  width?: number;
-
-  @ApiProperty()
-  @IsPositive()
-  height?: number;
 }
 
-// REVU: Лучше называть просто MoveContentDto
-export class MoveIncludeContentDto {
+export class MoveContentDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsPositive()
@@ -96,13 +81,6 @@ export class InsertContentDto {
   @IsNotEmpty()
   @IsUUID()
   contentId: Content['id'];
-}
-
-// Лучше переместить в модуль плейлиста
-export class UpdateDurationDto {
-  @ApiProperty()
-  @IsPositive()
-  duration: number;
 }
 
 export class AddContentIntoGroup {

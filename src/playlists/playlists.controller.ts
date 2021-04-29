@@ -16,15 +16,15 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Crud, CrudController, Override } from '@nestjsx/crud';
-import {
-  InsertContentDto,
-  MoveIncludeContentDto,
-  UpdateDurationDto,
-} from 'src/content/content.dto';
+import { InsertContentDto, MoveContentDto } from 'src/content/content.dto';
 import { Content } from 'src/content/content.entity';
 import { CheckScreenExsists } from 'src/screens/screen.pipe';
 import { User } from 'src/users/user.decorator';
-import { CreatePlaylistDto, UpdatePlaylistDto } from './playlists.dto';
+import {
+  CreatePlaylistDto,
+  UpdateDurationDto,
+  UpdatePlaylistDto,
+} from './playlists.dto';
 import { Playlist } from './playlist.entity';
 import { PlaylistOwnerGuard } from './playlist.guard';
 import { PlaylistCrudService, PlaylistService } from './playlists.service';
@@ -176,7 +176,7 @@ export class PlaylistsController implements CrudController<Playlist> {
     @Param('id') playlistId: Playlist['id'],
     @Body() body: InsertContentDto,
   ) {
-    return this.playlistService.insertContent(playlistId, body);
+    return this.playlistService.insertContent(playlistId, body.contentId);
   }
 
   @ApiParam({ name: 'id', type: 'uuid' })
@@ -200,13 +200,13 @@ export class PlaylistsController implements CrudController<Playlist> {
   @ApiOperation({ summary: 'move content into playlists' })
   @ApiParam({ name: 'id', type: 'uuid' })
   @ApiParam({ name: 'contentId', type: 'uuid' })
-  @ApiBody({ type: MoveIncludeContentDto })
+  @ApiBody({ type: MoveContentDto })
   @UseGuards(PlaylistOwnerGuard)
   @Post('/:id/contents/:contentId/move')
   moveContent(
     @Param('id') playlistId: Playlist['id'],
     @Param('contentId') contentId: Content['id'],
-    @Body() body: MoveIncludeContentDto,
+    @Body() body: MoveContentDto,
   ) {
     return this.playlistService.moveContent(playlistId, contentId, body);
   }

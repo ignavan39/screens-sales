@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadGatewayException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-playlist.service';
 import { Playlist } from 'src/playlists/playlist.entity';
@@ -11,6 +11,9 @@ import {
 } from './content.dto';
 import { Content } from './content.entity';
 import { AwsService } from 'src/aws/aws.service';
+import { PlaylistService } from 'src/playlists/playlists.service';
+import { GroupContentService } from 'src/group-content/group-content.service';
+import { group } from 'node:console';
 
 @Injectable()
 export class ContentService {
@@ -18,6 +21,8 @@ export class ContentService {
     @InjectRepository(Content) private readonly repository: Repository<Content>,
     private readonly contentToPlaylistService: ContentToPlaylistService,
     private readonly awsService: AwsService,
+    private readonly playlistService: PlaylistService,
+    private readonly groupService: GroupContentService,
   ) {}
 
   async findManyByUser(userId: User['id']): Promise<Content[]> {
@@ -28,10 +33,8 @@ export class ContentService {
     });
   }
 
-  // REVU: Такая реляция работатет? Если нигде не используешь то удали
   async findMany(playlistId: Playlist['id']): Promise<Content[]> {
     const res = await this.repository.find({
-      relations: ['playlists'],
       where: {
         playlists: {
           id: playlistId,
@@ -46,36 +49,43 @@ export class ContentService {
     createDto: CreateContentDto,
     imageBuffer: Buffer,
   ): Promise<Content> {
-    const { url, key } = await this.awsService.uploadFile(
-      imageBuffer,
-      createDto.name,
-    );
-
-    const content = await this.repository.save({
-      ...createDto,
-      // REVU: зачем это?
-      userId: createDto.userId,
-      url,
-      key,
-    });
-
-    // REVU: переиспользуй методы playlistService
-    if (createDto.playlistId) {
-      const contentToPlaylist = await this.contentToPlaylistService.save(
-        createDto.playlistId,
-        content.id,
+    try {
+      const { url, key } = await this.awsService.uploadFile(
+        imageBuffer,
+        createDto.name,
       );
-      if (createDto.duration) {
-        await this.contentToPlaylistService.updateDuration(
+
+      let groupId = null;
+      if (!createDto.groupId && createDto.contentType === 'Video') {
+        const group = await this.groupService.save(createDto.userId);
+        groupId = group.id;
+      }
+      const content = await this.repository.save({
+        groupId,
+        ...createDto,
+        url,
+        key,
+      });
+
+      if (createDto.playlistId) {
+        const contentToPlaylist = await this.playlistService.insertContent(
           createDto.playlistId,
           content.id,
-          createDto.duration,
         );
+        if (createDto.duration) {
+          await this.contentToPlaylistService.updateDuration(
+            createDto.playlistId,
+            content.id,
+            createDto.duration,
+          );
+        }
+        return { ...contentToPlaylist, ...content };
       }
-      return { ...contentToPlaylist, ...content };
-    }
 
-    return content;
+      return content;
+    } catch (e) {
+      throw new BadGatewayException('Failed save');
+    }
   }
 
   async findOne(id: Content['id']): Promise<Content | null> {
@@ -88,18 +98,19 @@ export class ContentService {
   }
 
   async addContentIntoGroup(dto: AddContentIntoGroup, id: Content['id']) {
-    // REVU: можно писать просто save({ id, ...dto });
-    const content = this.repository.findOne(id);
-    return this.repository.save({ ...content, ...dto });
+    return this.repository.save({ id, ...dto });
   }
 
   async delete(id: Content['id']): Promise<Content | null> {
     const content = await this.findOne(id);
 
-    // REVU: здесь надо подумать что будет если запрос на s3 или в БД зафейлится?
     if (content) {
-      this.awsService.deleteFile(content.key);
-      await this.repository.delete(id);
+      try {
+        this.awsService.deleteFile(content.key);
+        await this.repository.delete(id);
+      } catch (e) {
+        throw new BadGatewayException('Failed delete');
+      }
     }
     return content;
   }

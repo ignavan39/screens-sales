@@ -1,4 +1,3 @@
-import { ConflictException } from '@nestjs/common';
 import { Content } from 'src/content/content.entity';
 import { User } from 'src/users/user.entity';
 import {
@@ -15,14 +14,14 @@ export class GroupsContent {
   id: string;
 
   @Column()
-  name: string;
-
-  @Column()
   userId: string;
 
   @OneToMany(() => Content, (content) => content.group)
   contents: Content[];
 
-  @ManyToOne(() => User, (user) => user.groups)
+  @ManyToOne(() => User, (user) => user.groups, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   user: User;
 }

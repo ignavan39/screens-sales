@@ -7,7 +7,6 @@ import {
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  TreeLevelColumn,
 } from 'typeorm';
 import { ContentToPlaylists } from '../content-to-playlist/content-to-playlist.entity';
 
@@ -53,7 +52,10 @@ export class Content {
   @OneToMany(() => ContentToPlaylists, (c) => c.content)
   contentToPlaylists: ContentToPlaylists[];
 
-  @ManyToOne(() => GroupsContent, (group) => group.contents)
+  @ManyToOne(() => GroupsContent, (group) => group.contents, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   group: GroupsContent;
 
   @ManyToOne(() => User, (user) => user.content, {
