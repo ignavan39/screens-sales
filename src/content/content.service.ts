@@ -4,16 +4,14 @@ import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-pla
 import { Playlist } from 'src/playlists/playlist.entity';
 import { User } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
-import {
-  AddContentIntoGroup,
-  CreateContentDto,
-  UpdateContentDto,
-} from './content.dto';
+import { CreateContentDto, UpdateContentDto } from './content.dto';
 import { Content } from './content.entity';
 import { AwsService } from 'src/aws/aws.service';
 import { PlaylistService } from 'src/playlists/playlists.service';
 import { GroupContentService } from 'src/group-content/group-content.service';
 import { group } from 'node:console';
+import { GroupsContent } from 'src/group-content/group-content.entity';
+import { ScreensCrudService } from 'src/screens/screens.service';
 
 @Injectable()
 export class ContentService {
@@ -23,6 +21,7 @@ export class ContentService {
     private readonly awsService: AwsService,
     private readonly playlistService: PlaylistService,
     private readonly groupService: GroupContentService,
+    private readonly screenService: ScreensCrudService,
   ) {}
 
   async findManyByUser(userId: User['id']): Promise<Content[]> {
@@ -68,14 +67,18 @@ export class ContentService {
       });
 
       if (createDto.playlistId) {
+        const optimalContent = await this.getOptimalContent(
+          content.groupId,
+          content.playlistId,
+        );
         const contentToPlaylist = await this.playlistService.insertContent(
-          createDto.playlistId,
-          content.id,
+          content.playlistId,
+          optimalContent.id,
         );
         if (createDto.duration) {
           await this.contentToPlaylistService.updateDuration(
             createDto.playlistId,
-            content.id,
+            optimalContent.id,
             createDto.duration,
           );
         }
@@ -97,8 +100,38 @@ export class ContentService {
     return this.repository.save({ ...content, ...updateDto });
   }
 
-  async addContentIntoGroup(dto: AddContentIntoGroup, id: Content['id']) {
-    return this.repository.save({ id, ...dto });
+  async getOptimalContent(
+    groupId: GroupsContent['id'],
+    playlistId: Playlist['id'],
+  ): Promise<Content> {
+    const screen = await this.screenService.findOne({
+      where: {
+        playlistId,
+      },
+    });
+    const group = await this.groupService.findOne(groupId);
+    const sortedContents = group.contents.sort(
+      (item1, item2) => item1.height - item2.height,
+    );
+
+    let idx = sortedContents.findIndex(
+      (item) => item.height === screen.height && item.width === screen.width,
+    );
+
+    if (idx === -1) {
+      idx = sortedContents.findIndex(
+        (item) => screen.height > item.height && screen.width > item.width,
+      );
+      if (idx === -1) {
+        return sortedContents[0];
+      }
+    }
+    return sortedContents[idx];
+  }
+
+  async addContentIntoGroup(groupId: GroupsContent['id'], id: Content['id']) {
+    const content = await this.findOne(id);
+    return this.repository.save({ ...content, groupId });
   }
 
   async delete(id: Content['id']): Promise<Content | null> {

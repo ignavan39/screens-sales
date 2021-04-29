@@ -9,6 +9,7 @@ import {
   UploadedFile,
   UseGuards,
   UseInterceptors,
+  UsePipes,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -31,6 +32,7 @@ import { Content } from './content.entity';
 import { ContentOwnerGuard } from './content.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Auth0Guard } from 'src/auth/auth.guard';
+import { CheckContentTypePipe } from './content.pipe';
 
 @UseGuards(Auth0Guard)
 @ApiResponse({ status: 401, description: 'Unauthorized' })
@@ -111,14 +113,14 @@ export class ContentController {
     return this.contentService.update(body, contentId);
   }
 
-  // REVU: Если подразумевается только видео контент, тогда здесь это надо валидировать
+  @UsePipes(CheckContentTypePipe)
   @UseGuards(ContentOwnerGuard)
   @Put(':id/addGroup')
   addIntoGroup(
     @Param('id') contentId: Content['id'],
     @Body() body: AddContentIntoGroup,
   ) {
-    return this.contentService.addContentIntoGroup(body, contentId);
+    return this.contentService.addContentIntoGroup(body.groupId, contentId);
   }
 
   @UseGuards(ContentOwnerGuard)

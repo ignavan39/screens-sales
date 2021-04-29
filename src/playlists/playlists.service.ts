@@ -58,7 +58,6 @@ export class PlaylistService {
     contentId: Content['id'],
     dto: MoveContentDto,
   ): Promise<ContentToPlaylists[] | ContentToPlaylists> {
-    console.log(dto);
     return this.contentToPlaylistService.moveContent(
       playlistId,
       contentId,
