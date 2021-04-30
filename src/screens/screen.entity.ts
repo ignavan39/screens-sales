@@ -29,8 +29,8 @@ export class Screen {
   @Column()
   eventId: string;
 
-  @Column({ nullable: true })
-  playlistId: string;
+  @Column()
+  playlistId?: string;
 
   @ManyToOne(() => User, (user) => user.screens, {
     cascade: true,

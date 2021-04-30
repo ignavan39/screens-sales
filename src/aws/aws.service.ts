@@ -7,9 +7,7 @@ import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class AwsService implements fileManagerInterface {
-  constructor(@Inject('S3') private readonly s3: S3) {
-    this.s3 = new S3();
-  }
+  constructor(@Inject('S3') private readonly s3: S3) {}
 
   async uploadFile(
     dataBuffer: Buffer,

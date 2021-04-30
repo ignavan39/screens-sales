@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Event } from 'src/events/event.entity';
+import { Playlist } from 'src/playlists/playlist.entity';
 import { Repository } from 'typeorm';
 import { Screen } from './screen.entity';
 
@@ -23,6 +24,17 @@ export class ScreensService {
     return this.screenRepository.find({
       where: {
         eventId,
+      },
+    });
+  }
+
+  async findByPlaylistId(playlistId: Playlist['id']): Promise<Screen | null> {
+    console.log(playlistId)
+    return this.screenRepository.findOne({
+      where: {
+        playlist: {
+          id: playlistId,
+        }
       },
     });
   }

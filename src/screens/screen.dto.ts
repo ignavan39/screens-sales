@@ -52,7 +52,6 @@ export class UpdateScreenDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsUUID()
   userId?: User['id'];
 }
 

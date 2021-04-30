@@ -13,7 +13,12 @@ export class GroupContentService {
   ) {}
 
   async findOne(id: GroupsContent['id']): Promise<GroupsContent> {
-    return this.groupRepository.findOne(id);
+    return this.groupRepository.findOne({
+      relations: ['contents'],
+      where: {
+        id,
+      },
+    });
   }
 
   async findMany(userId: User['id']) {
