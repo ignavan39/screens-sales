@@ -34,7 +34,7 @@ $ yarn start:prod
 
 ## Local Tunnel : 
 ```bash
-$ lt --subdomain serious-mouse-66 --port 3000
+$ lt --subdomain big-swan-85 --port 3000
 ```
 
 ## Test

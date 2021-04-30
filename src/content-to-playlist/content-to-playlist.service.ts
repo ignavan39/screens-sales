@@ -26,9 +26,12 @@ export class ContentToPlaylistService {
   async findManyByContent(
     contentId: Content['id'],
   ): Promise<ContentToPlaylists[]> {
+    console.log(contentId)
     return this.repository.find({
       where: {
-        contentId,
+        content: {
+          id: contentId,
+        },
       },
     });
   }

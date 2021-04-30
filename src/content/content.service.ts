@@ -150,27 +150,30 @@ export class ContentService {
   async delete(id: Content['id']): Promise<Content | null> {
     const content = await this.findOne(id);
     if (content) {
-      try {
-        await this.repository.delete(id);
-        await this.awsService.deleteFile(content.key);
-        const contentToPlaylist = await this.contentToPlaylistService.findManyByContent(
-          content.id,
+      // try {
+      const contentToPlaylist = await this.contentToPlaylistService.findManyByContent(
+        content.id,
+      );
+      await this.repository.delete(id);
+      await this.awsService.deleteFile(content.key);
+      console.log(contentToPlaylist);
+      await contentToPlaylist.map(async (item) => {
+        const optimalContent = await this.getOptimalContent(
+          content.groupId,
+          item.playlistId,
         );
-        console.log(contentToPlaylist);
-        await contentToPlaylist.map(async (item) => {
-          const optimalContent = await this.getOptimalContent(
-            content.groupId,
-            item.playlistId,
-          );
+        console.log(optimalContent);
+        if (item.id !== optimalContent.id) {
           console.log(optimalContent);
           await this.playlistService.insertContent(
             item.playlistId,
             optimalContent.id,
           );
-        });
-      } catch (e) {
-        throw new BadGatewayException('Failed delete');
-      }
+        }
+      });
+      // } catch (e) {
+      //   throw new BadGatewayException('Failed delete');
+      // }
     }
     return content;
   }
