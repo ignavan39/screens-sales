@@ -50,12 +50,6 @@ async function bootstrap() {
     }),
   );
 
-  config.update({
-    accessKeyId: AWS_ACCESS_KEY_ID,
-    secretAccessKey: AWS_ACCESS_KEY,
-    region: AWS_REGION,
-  });
-
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Screen sales CMS')
     .setDescription('The cms API description')

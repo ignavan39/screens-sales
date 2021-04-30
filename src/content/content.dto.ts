@@ -38,18 +38,15 @@ export class CreateContentDto {
 
   @IsNotEmpty()
   @ApiProperty()
-  @IsUUID()
   userId: User['id'];
 
   @IsOptional()
   @ApiProperty()
-  @IsPositive()
-  width: number;
+  width: string;
 
   @IsOptional()
   @ApiProperty()
-  @IsPositive()
-  height: number;
+  height: string;
 }
 
 export class UpdateContentDto {

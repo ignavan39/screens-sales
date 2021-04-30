@@ -48,6 +48,8 @@ export class ContentService {
     imageBuffer: Buffer,
   ): Promise<Content> {
     try {
+      const width = Number.parseInt(createDto.width);
+      const height = Number.parseInt(createDto.height);
       const { url, key } = await this.awsService.uploadFile(
         imageBuffer,
         createDto.name,
@@ -63,6 +65,8 @@ export class ContentService {
         ...createDto,
         url,
         key,
+        width,
+        height,
       });
 
       if (createDto.playlistId) {
@@ -108,8 +112,12 @@ export class ContentService {
         playlistId,
       },
     });
-    const group = await this.groupService.findOne(groupId);
-    const sortedContents = group.contents.sort(
+    const contents = await this.repository.find({
+      where: {
+        groupId,
+      },
+    });
+    const sortedContents = contents.sort(
       (item1, item2) => item1.height - item2.height,
     );
 
@@ -139,9 +147,6 @@ export class ContentService {
     if (content) {
       try {
         await content.contentToPlaylists.map(async (item) => {
-          const screen = await this.screenService.findOne(
-            item.playlist.screenId,
-          );
           const optimalContent = await this.getOptimalContent(
             content.groupId,
             item.playlistId,

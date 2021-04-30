@@ -26,4 +26,22 @@ export class ScreensService {
       },
     });
   }
+
+  async save(
+    name: Screen['id'],
+    width: Screen['width'],
+    height: Screen['height'],
+    userId: Screen['userId'],
+    eventId: Screen['eventId'],
+    playlistId: Screen['playlistId'],
+  ) {
+    return this.screenRepository.save({
+      name,
+      width,
+      height,
+      userId,
+      eventId,
+      playlistId,
+    });
+  }
 }

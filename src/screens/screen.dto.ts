@@ -24,7 +24,6 @@ export class CreateScreenDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsUUID()
   userId: User['id'];
 
   @ApiProperty()
@@ -52,7 +51,6 @@ export class UpdateScreenDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsUUID()
   userId?: User['id'];
 }
 

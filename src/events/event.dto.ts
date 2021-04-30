@@ -25,6 +25,5 @@ export class UpdateEventDto {
 
   @ApiProperty()
   @IsNotEmpty()
-  @IsUUID()
   userId: User['id'];
 }
