@@ -4,6 +4,7 @@ import { PlaylistsController } from './playlists.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Playlist } from './playlist.entity';
 import { ContentToPlaylistModule } from 'src/content-to-playlist/content-to-playlist.module';
+import { ScreensModule } from 'src/screens/screens.module';
 import { UsersModule } from 'src/users/users.module';
 
 @Module({
@@ -12,6 +13,7 @@ import { UsersModule } from 'src/users/users.module';
   imports: [
     TypeOrmModule.forFeature([Playlist]),
     ContentToPlaylistModule,
+    ScreensModule,
     UsersModule,
   ],
   exports: [PlaylistService, PlaylistCrudService],

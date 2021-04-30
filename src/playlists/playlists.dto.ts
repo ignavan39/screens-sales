@@ -7,6 +7,7 @@ import {
   IsUUID,
   MinLength,
 } from 'class-validator';
+import { Screen } from 'src/screens/screen.entity';
 
 export class CreatePlaylistDto {
   @IsString()
@@ -23,6 +24,11 @@ export class CreatePlaylistDto {
   @IsPositive()
   @IsOptional()
   duration?: number;
+
+  @ApiProperty()
+  @IsOptional()
+  @IsUUID()
+  screenId: Screen['id'];
 }
 
 export class UpdatePlaylistDto {
@@ -36,6 +42,11 @@ export class UpdatePlaylistDto {
   @ApiProperty()
   @IsOptional()
   description?: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsUUID()
+  screenId: Screen['id'];
 
   @IsPositive()
   @IsOptional()

@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { CrudConfigService } from '@nestjsx/crud';
+import { config } from 'aws-sdk';
 import { auth } from 'express-openid-connect';
 
 CrudConfigService.load({
@@ -26,6 +27,7 @@ CrudConfigService.load({
 });
 
 import { AppModule } from './app.module';
+import { AWS_ACCESS_KEY, AWS_ACCESS_KEY_ID, AWS_REGION } from './constants';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -48,6 +50,11 @@ async function bootstrap() {
     }),
   );
 
+  config.update({
+    accessKeyId: AWS_ACCESS_KEY_ID,
+    secretAccessKey: AWS_ACCESS_KEY,
+    region: AWS_REGION,
+  });
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Screen sales CMS')

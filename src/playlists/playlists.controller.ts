@@ -18,8 +18,13 @@ import {
 import { Crud, CrudController, Override } from '@nestjsx/crud';
 import { InsertContentDto, MoveContentDto } from 'src/content/content.dto';
 import { Content } from 'src/content/content.entity';
+import { CheckScreenExsists } from 'src/screens/screen.pipe';
 import { User } from 'src/users/user.decorator';
-import { UpdateDurationDto, UpdatePlaylistDto } from './playlists.dto';
+import {
+  CreatePlaylistDto,
+  UpdateDurationDto,
+  UpdatePlaylistDto,
+} from './playlists.dto';
 import { Playlist } from './playlist.entity';
 import { PlaylistOwnerGuard } from './playlist.guard';
 import { PlaylistCrudService, PlaylistService } from './playlists.service';
@@ -88,6 +93,7 @@ import { Auth0Guard } from 'src/auth/auth.guard';
     },
   },
   dto: {
+    create: CreatePlaylistDto,
     update: UpdatePlaylistDto,
   },
 })
@@ -102,6 +108,35 @@ export class PlaylistsController implements CrudController<Playlist> {
     public readonly service: PlaylistCrudService,
     private readonly playlistService: PlaylistService,
   ) {}
+
+  @ApiOperation({ summary: 'create playlist' })
+  @ApiResponse({
+    status: 201,
+    schema: {
+      example: {
+        userId: {
+          id: 'id',
+          email: 'example@gmail.com',
+          username: 'example',
+          password: 'password',
+          fullName: null,
+        },
+        name: 'name',
+        description: 'description',
+        screenId: 'id',
+        duration: null,
+        id: 'id',
+      },
+    },
+  })
+  @ApiBody({ type: CreatePlaylistDto })
+  @Override()
+  createOne(
+    @Body(CheckScreenExsists) body: CreatePlaylistDto,
+    @User('id') userId,
+  ) {
+    return this.playlistService.save(userId, body);
+  }
 
   @ApiResponse({
     status: 200,
