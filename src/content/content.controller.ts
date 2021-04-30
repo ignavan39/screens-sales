@@ -128,4 +128,10 @@ export class ContentController {
   delete(@Param('id') contentId: Content['id']) {
     return this.contentService.delete(contentId);
   }
+
+  @UseGuards(ContentOwnerGuard)
+  @Get(':id')
+  findOne(@Param('id') id: Content['id']) {
+    return this.contentService.findOne(id);
+  }
 }

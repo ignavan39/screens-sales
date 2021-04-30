@@ -42,7 +42,6 @@ async function bootstrap() {
     }),
   );
 
-  // REVU: это надо вынести в константы
   app.use(
     auth({
       issuerBaseURL: AUTH0_ISSUER_URL,

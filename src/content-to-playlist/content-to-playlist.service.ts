@@ -23,6 +23,16 @@ export class ContentToPlaylistService {
     });
   }
 
+  async findManyByContent(
+    contentId: Content['id'],
+  ): Promise<ContentToPlaylists[]> {
+    return this.repository.find({
+      where: {
+        contentId,
+      },
+    });
+  }
+
   async updateDuration(
     playlistId: Playlist['id'],
     contentId: Content['id'],
@@ -41,6 +51,14 @@ export class ContentToPlaylistService {
     });
   }
 
+  async findOne(playlistId: Playlist['id'], contentId: Content['id']) {
+    return this.repository.findOne({
+      where: {
+        contentId,
+        playlistId,
+      },
+    });
+  }
   async save(
     playlistId: Playlist['id'],
     contentId: Content['id'],
@@ -92,7 +110,7 @@ export class ContentToPlaylistService {
     order: number,
   ): Promise<ContentToPlaylists[] | ContentToPlaylists> {
     const playlist = await this.findContentByPlaylistId(playlistId);
-    const content = await this.repository.findOne({ contentId, playlistId });
+    const content = await this.findOne(contentId, playlistId);
     const oldOrder = content.order;
 
     if (order > oldOrder) {
@@ -120,5 +138,11 @@ export class ContentToPlaylistService {
         playlistId,
       },
     });
+  }
+
+  async delete(contentId: Content['id'], playlistId: Playlist['id']) {
+    const contentToPlaylist = await this.findOne(contentId, playlistId);
+    await this.repository.delete(contentToPlaylist.id);
+    return contentToPlaylist;
   }
 }

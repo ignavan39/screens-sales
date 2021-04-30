@@ -74,18 +74,24 @@ export class ContentService {
           content.groupId,
           createDto.playlistId,
         );
-        const contentToPlaylist = await this.playlistService.insertContent(
+        const contentToPlaylist = await this.contentToPlaylistService.findOne(
           content.playlistId,
           optimalContent.id,
         );
-        if (createDto.duration) {
-          await this.contentToPlaylistService.updateDuration(
-            createDto.playlistId,
+        if (!contentToPlaylist) {
+          const contentToPlaylist = await this.playlistService.insertContent(
+            content.playlistId,
             optimalContent.id,
-            createDto.duration,
           );
+          if (createDto.duration) {
+            await this.contentToPlaylistService.updateDuration(
+              createDto.playlistId,
+              optimalContent.id,
+              createDto.duration,
+            );
+          }
+          return { ...contentToPlaylist, ...content };
         }
-        return { ...contentToPlaylist, ...content };
       }
 
       return content;
@@ -143,22 +149,25 @@ export class ContentService {
 
   async delete(id: Content['id']): Promise<Content | null> {
     const content = await this.findOne(id);
-
     if (content) {
       try {
-        await content.contentToPlaylists.map(async (item) => {
+        await this.repository.delete(id);
+        await this.awsService.deleteFile(content.key);
+        const contentToPlaylist = await this.contentToPlaylistService.findManyByContent(
+          content.id,
+        );
+        console.log(contentToPlaylist);
+        await contentToPlaylist.map(async (item) => {
           const optimalContent = await this.getOptimalContent(
             content.groupId,
             item.playlistId,
           );
-
+          console.log(optimalContent);
           await this.playlistService.insertContent(
             item.playlistId,
             optimalContent.id,
           );
         });
-        this.awsService.deleteFile(content.key);
-        await this.repository.delete(id);
       } catch (e) {
         throw new BadGatewayException('Failed delete');
       }

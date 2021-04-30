@@ -26,9 +26,15 @@ export class ContentToPlaylists {
   @Column()
   playlistId: string;
 
-  @ManyToOne(() => Content, (c) => c.contentToPlaylists)
+  @ManyToOne(() => Content, (c) => c.contentToPlaylists, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   content: Content;
 
-  @ManyToOne(() => Playlist, (p) => p.contentToPlaylists)
+  @ManyToOne(() => Playlist, (p) => p.contentToPlaylists, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
   playlist: Playlist;
 }
