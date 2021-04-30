@@ -27,7 +27,12 @@ CrudConfigService.load({
 });
 
 import { AppModule } from './app.module';
-import { AWS_ACCESS_KEY, AWS_ACCESS_KEY_ID, AWS_REGION } from './constants';
+import {
+  AUTH0_CLIENT_ID,
+  AUTH0_CLIENT_SECRET,
+  AUTH0_ISSUER_URL,
+  DOMAIN,
+} from './constants';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -40,11 +45,10 @@ async function bootstrap() {
   // REVU: это надо вынести в константы
   app.use(
     auth({
-      issuerBaseURL: 'https://dev--83rk4dm.eu.auth0.com',
-      baseURL: 'https://serious-mouse-66.loca.lt',
-      clientID: '0DKeivuHRA5jlJQnbxIXJUp07C8jJnqJ',
-      secret:
-        '1nTlGIiAwxjyq7Rc3eiSAHgnyQCfu8K0wO9QsyAKSpxNCKlCrbmCCvpA3bqqFceV',
+      issuerBaseURL: AUTH0_ISSUER_URL,
+      baseURL: DOMAIN,
+      clientID: AUTH0_CLIENT_ID,
+      secret: AUTH0_CLIENT_SECRET,
       idpLogout: true,
       auth0Logout: true,
     }),
