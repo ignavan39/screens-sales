@@ -12,10 +12,6 @@ import { User } from 'src/users/user.decorator';
 import { GroupsContent } from './group-content.entity';
 import { GroupContentOwnerGuard } from './group-content.guard';
 import {
-  CheckGroupExsist,
-  CheckGroupIsNotEmptyPipe,
-} from './group-content.pipe';
-import {
   GroupContentCrudService,
   GroupContentService,
 } from './group-content.service';

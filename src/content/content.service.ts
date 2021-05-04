@@ -11,6 +11,7 @@ import { PlaylistService } from 'src/playlists/playlists.service';
 import { GroupContentService } from 'src/group-content/group-content.service';
 import { GroupsContent } from 'src/group-content/group-content.entity';
 import { ScreensCrudService } from 'src/screens/screens.service';
+import { group } from 'node:console';
 
 @Injectable()
 export class ContentService {
@@ -43,61 +44,116 @@ export class ContentService {
     return res;
   }
 
-  async save(
-    createDto: CreateContentDto,
-    imageBuffer: Buffer,
-  ): Promise<Content> {
+  async delete(id: Content['id']) {
+    const content = await this.findOne(id);
     try {
-      const width = Number.parseInt(createDto.width);
-      const height = Number.parseInt(createDto.height);
-      const { url, key } = await this.awsService.uploadFile(
-        imageBuffer,
-        createDto.name,
+      const groupContents = await this.contentToPlaylistService.findManyByContent(
+        content.id,
       );
+      await this.awsService.deleteFile(content.key);
 
-      let groupId = null;
-      if (!createDto.groupId && createDto.contentType === 'Video') {
-        const group = await this.groupService.save(createDto.userId);
-        groupId = group.id;
-      }
-      const content = await this.repository.save({
-        groupId,
-        ...createDto,
-        url,
-        key,
-        width,
-        height,
-      });
-
-      if (createDto.playlistId) {
+      await groupContents.map(async (item) => {
         const optimalContent = await this.getOptimalContent(
           content.groupId,
-          createDto.playlistId,
+          item.playlistId,
         );
-        const contentToPlaylist = await this.contentToPlaylistService.findOne(
-          content.playlistId,
-          optimalContent.id,
-        );
-        if (!contentToPlaylist) {
-          const contentToPlaylist = await this.playlistService.insertContent(
-            content.playlistId,
+        await this.contentToPlaylistService.delete(id, item.playlistId);
+        if (
+          (await this.contentToPlaylistService.playlistSize(item.playlistId)) >
+          0
+        ) {
+          await this.playlistService.insertContent(
+            item.playlistId,
             optimalContent.id,
           );
-          if (createDto.duration) {
-            await this.contentToPlaylistService.updateDuration(
-              createDto.playlistId,
-              optimalContent.id,
-              createDto.duration,
-            );
-          }
-          return { ...contentToPlaylist, ...content };
         }
-      }
+      });
 
+      await this.repository.delete(content.id);
       return content;
     } catch (e) {
-      throw new BadGatewayException('Failed save');
+      throw new BadGatewayException('Failed delete');
     }
+  }
+
+  async save(createContentDto: CreateContentDto, buffer: Buffer) {
+    const width = Number.parseInt(createContentDto.width);
+    const height = Number.parseInt(createContentDto.height);
+
+    const { url, key } = await this.awsService.uploadFile(
+      buffer,
+      createContentDto.name,
+    );
+
+    let group = await this.groupService.findOne(createContentDto.groupId);
+
+    if (!group) {
+      group = await this.groupService.save(createContentDto.userId);
+    }
+    const content = await this.repository.save({
+      ...createContentDto,
+      url,
+      key,
+      width,
+      height,
+      groupId: group.id,
+    });
+    if (createContentDto.playlistId) {
+      const optimalContent = await this.getOptimalContent(
+        content.groupId,
+        createContentDto.playlistId,
+      );
+      let contentToPlaylist = await this.contentToPlaylistService.findOne(
+        createContentDto.playlistId,
+        optimalContent.id,
+      );
+
+      if (!contentToPlaylist) {
+        contentToPlaylist = await this.playlistService.insertContent(
+          createContentDto.playlistId,
+          optimalContent.id,
+        );
+      }
+      if (createContentDto.duration) {
+        await this.contentToPlaylistService.updateDuration(
+          createContentDto.playlistId,
+          optimalContent.id,
+          createContentDto.duration,
+        );
+      }
+      return { ...contentToPlaylist, ...content };
+    }
+    return content;
+  }
+
+  async getOptimalContent(
+    groupId: GroupsContent['id'],
+    playlistId: Playlist['id'],
+  ) {
+    const screen = await this.screenService.findOne({
+      where: {
+        playlistId,
+      },
+    });
+    const contentGroup = await this.repository.find({
+      where: {
+        groupId,
+      },
+    });
+
+    const minH = Math.abs(contentGroup[0].height - screen.height);
+    const minW = Math.abs(contentGroup[0].width - screen.width);
+    let optimalContent = contentGroup[0];
+    contentGroup.map((item) => {
+      if (
+        Math.abs(item.height - screen.height) <= minH &&
+        item.width - screen.width <= minW
+      ) {
+        optimalContent = item;
+      }
+    });
+
+    return optimalContent;
   }
 
   async findOne(id: Content['id']): Promise<Content | null> {
@@ -109,72 +165,8 @@ export class ContentService {
     return this.repository.save({ ...content, ...updateDto });
   }
 
-  async getOptimalContent(
-    groupId: GroupsContent['id'],
-    playlistId: Playlist['id'],
-  ): Promise<Content> {
-    const screen = await this.screenService.findOne({
-      where: {
-        playlistId,
-      },
-    });
-    const contents = await this.repository.find({
-      where: {
-        groupId,
-      },
-    });
-    const sortedContents = contents.sort(
-      (item1, item2) => item1.height - item2.height,
-    );
-
-    let idx = sortedContents.findIndex(
-      (item) => item.height === screen.height && item.width === screen.width,
-    );
-
-    if (idx === -1) {
-      idx = sortedContents.findIndex(
-        (item) => screen.height > item.height && screen.width > item.width,
-      );
-      if (idx === -1) {
-        return sortedContents[0];
-      }
-    }
-    return sortedContents[idx];
-  }
-
   async addContentIntoGroup(groupId: GroupsContent['id'], id: Content['id']) {
     const content = await this.findOne(id);
     return this.repository.save({ ...content, groupId });
-  }
-
-  async delete(id: Content['id']): Promise<Content | null> {
-    const content = await this.findOne(id);
-    if (content) {
-      // try {
-      const contentToPlaylist = await this.contentToPlaylistService.findManyByContent(
-        content.id,
-      );
-      await this.repository.delete(id);
-      await this.awsService.deleteFile(content.key);
-      console.log(contentToPlaylist);
-      await contentToPlaylist.map(async (item) => {
-        const optimalContent = await this.getOptimalContent(
-          content.groupId,
-          item.playlistId,
-        );
-        console.log(optimalContent);
-        if (item.id !== optimalContent.id) {
-          console.log(optimalContent);
-          await this.playlistService.insertContent(
-            item.playlistId,
-            optimalContent.id,
-          );
-        }
-      });
-      // } catch (e) {
-      //   throw new BadGatewayException('Failed delete');
-      // }
-    }
-    return content;
   }
 }

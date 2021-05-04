@@ -29,12 +29,14 @@ export class ContentToPlaylists {
   @ManyToOne(() => Content, (c) => c.contentToPlaylists, {
     cascade: true,
     onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   content: Content;
 
   @ManyToOne(() => Playlist, (p) => p.contentToPlaylists, {
     cascade: true,
     onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   playlist: Playlist;
 }

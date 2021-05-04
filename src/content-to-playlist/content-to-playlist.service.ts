@@ -26,7 +26,6 @@ export class ContentToPlaylistService {
   async findManyByContent(
     contentId: Content['id'],
   ): Promise<ContentToPlaylists[]> {
-    console.log(contentId)
     return this.repository.find({
       where: {
         content: {
@@ -41,12 +40,7 @@ export class ContentToPlaylistService {
     contentId: Content['id'],
     duration: number,
   ) {
-    const contentToPlaylist = this.repository.findOne({
-      where: {
-        contentId,
-        playlistId,
-      },
-    });
+    const contentToPlaylist = await this.findOne(playlistId, contentId);
 
     return this.repository.save({
       ...contentToPlaylist,
@@ -56,12 +50,11 @@ export class ContentToPlaylistService {
 
   async findOne(playlistId: Playlist['id'], contentId: Content['id']) {
     return this.repository.findOne({
-      where: {
-        contentId,
-        playlistId,
-      },
+      contentId,
+      playlistId,
     });
   }
+
   async save(
     playlistId: Playlist['id'],
     contentId: Content['id'],
@@ -113,7 +106,8 @@ export class ContentToPlaylistService {
     order: number,
   ): Promise<ContentToPlaylists[] | ContentToPlaylists> {
     const playlist = await this.findContentByPlaylistId(playlistId);
-    const content = await this.findOne(contentId, playlistId);
+    const content = await this.findOne(playlistId, contentId);
+    console.log(content);
     const oldOrder = content.order;
 
     if (order > oldOrder) {
@@ -144,8 +138,11 @@ export class ContentToPlaylistService {
   }
 
   async delete(contentId: Content['id'], playlistId: Playlist['id']) {
-    const contentToPlaylist = await this.findOne(contentId, playlistId);
+    const contentToPlaylist = await this.findOne(playlistId, contentId);
+    console.log(playlistId, contentId);
     await this.repository.delete(contentToPlaylist.id);
+    const playlistSize = await this.playlistSize(playlistId);
+    await this.moveContent(playlistId, contentId, playlistSize);
     return contentToPlaylist;
   }
 }
