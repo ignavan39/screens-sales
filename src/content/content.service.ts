@@ -58,10 +58,7 @@ export class ContentService {
           item.playlistId,
         );
         await this.contentToPlaylistService.delete(id, item.playlistId);
-        if (
-          (await this.contentToPlaylistService.playlistSize(item.playlistId)) >
-          0
-        ) {
+        if (item.contentId !== optimalContent.id) {
           await this.playlistService.insertContent(
             item.playlistId,
             optimalContent.id,

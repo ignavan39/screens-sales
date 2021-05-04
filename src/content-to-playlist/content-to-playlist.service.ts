@@ -59,7 +59,7 @@ export class ContentToPlaylistService {
     playlistId: Playlist['id'],
     contentId: Content['id'],
   ): Promise<ContentToPlaylists> {
-    const playlistSize = await this.playlistSize(playlistId);
+    const playlistSize = await this.getPlaylistSize(playlistId);
 
     const order = playlistSize + 1;
     return this.repository.save({
@@ -107,11 +107,10 @@ export class ContentToPlaylistService {
   ): Promise<ContentToPlaylists[] | ContentToPlaylists> {
     const playlist = await this.findContentByPlaylistId(playlistId);
     const content = await this.findOne(playlistId, contentId);
-    console.log(content);
     const oldOrder = content.order;
 
     if (order > oldOrder) {
-      const movedPlaylist = await this.moveContentBackSide(
+      const movedPlaylist = await this.moveContentForwardSide(
         playlist,
         contentId,
         order,
@@ -120,16 +119,17 @@ export class ContentToPlaylistService {
       return this.repository.save(movedPlaylist);
     }
 
-    const movedPlaylist = await this.moveContentForwardSide(
+    const movedPlaylist = await this.moveContentBackSide(
       playlist,
       contentId,
       order,
       oldOrder,
     );
+
     return this.repository.save(movedPlaylist);
   }
 
-  async playlistSize(playlistId: Playlist['id']): Promise<number> {
+  async getPlaylistSize(playlistId: Playlist['id']): Promise<number> {
     return this.repository.count({
       where: {
         playlistId,
@@ -139,10 +139,23 @@ export class ContentToPlaylistService {
 
   async delete(contentId: Content['id'], playlistId: Playlist['id']) {
     const contentToPlaylist = await this.findOne(playlistId, contentId);
-    console.log(playlistId, contentId);
+    const playlist = await this.findContentByPlaylistId(playlistId);
+
+    const cleanedPlaylist = playlist.filter(
+      (item) => item.contentId !== contentId,
+    );
+
+    const movedPlaylist = cleanedPlaylist.map((item) => {
+      if (item.order > contentToPlaylist.order) {
+        return {
+          ...item,
+          order: item.order - 1,
+        };
+      }
+      return item;
+    });
     await this.repository.delete(contentToPlaylist.id);
-    const playlistSize = await this.playlistSize(playlistId);
-    await this.moveContent(playlistId, contentId, playlistSize);
+    await this.repository.save(movedPlaylist);
     return contentToPlaylist;
   }
 }
