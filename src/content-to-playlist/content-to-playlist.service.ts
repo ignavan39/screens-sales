@@ -110,7 +110,7 @@ export class ContentToPlaylistService {
     const oldOrder = content.order;
 
     if (order > oldOrder) {
-      const movedPlaylist = await this.moveContentForwardSide(
+      const movedPlaylist = await this.moveContentBackSide(
         playlist,
         contentId,
         order,
@@ -119,7 +119,7 @@ export class ContentToPlaylistService {
       return this.repository.save(movedPlaylist);
     }
 
-    const movedPlaylist = await this.moveContentBackSide(
+    const movedPlaylist = await this.moveContentForwardSide(
       playlist,
       contentId,
       order,

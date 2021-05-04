@@ -11,7 +11,6 @@ import { PlaylistService } from 'src/playlists/playlists.service';
 import { GroupContentService } from 'src/group-content/group-content.service';
 import { GroupsContent } from 'src/group-content/group-content.entity';
 import { ScreensCrudService } from 'src/screens/screens.service';
-import { group } from 'node:console';
 
 @Injectable()
 export class ContentService {
@@ -63,6 +62,7 @@ export class ContentService {
           item.playlistId,
           optimalContent.id,
         );
+
         if (!contentToPlaylist) {
           await this.playlistService.insertContent(
             item.playlistId,
