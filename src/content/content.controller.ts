@@ -123,12 +123,16 @@ export class ContentController {
     return this.contentService.addContentIntoGroup(body.groupId, contentId);
   }
 
+  @ApiParam({ name: 'id', type: 'uuid' })
+  @ApiOperation({ summary: 'delete content by id' })
   @UseGuards(ContentOwnerGuard)
   @Delete(':id')
   delete(@Param('id') contentId: Content['id']) {
     return this.contentService.delete(contentId);
   }
 
+  @ApiOperation({ summary: 'get one content' })
+  @ApiParam({ name: 'id', type: 'uuid' })
   @UseGuards(ContentOwnerGuard)
   @Get(':id')
   findOne(@Param('id') id: Content['id']) {

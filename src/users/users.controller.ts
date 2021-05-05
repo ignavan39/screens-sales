@@ -84,7 +84,7 @@ import { UsersService } from './users.service';
 @ApiResponse({ status: 401, description: 'Unauthorized' })
 @ApiResponse({ status: 403, description: 'Forbidden' })
 @ApiBearerAuth()
-@ApiTags('Auth')
+@ApiTags('Users')
 @UseGuards(Auth0Guard)
 @Controller('users')
 export class UsersController implements CrudController<User> {

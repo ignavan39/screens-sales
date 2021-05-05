@@ -1,12 +1,10 @@
 import {
-  BadRequestException,
   CanActivate,
   ExecutionContext,
   Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-playlist.service';
 import { PlaylistCrudService } from './playlists.service';
 
 @Injectable()
