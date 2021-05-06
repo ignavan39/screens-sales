@@ -1,24 +1,20 @@
-import { BadGatewayException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-playlist.service';
 import { Playlist } from 'src/playlists/playlist.entity';
 import { User } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
 import { CreateContentDto, UpdateContentDto } from './content.dto';
 import { Content } from './content.entity';
 import { AwsService } from 'src/aws/aws.service';
-import { PlaylistService } from 'src/playlists/playlists.service';
 import { GroupContentService } from 'src/group-content/group-content.service';
 import { GroupsContent } from 'src/group-content/group-content.entity';
 import { ScreensCrudService } from 'src/screens/screens.service';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class ContentService {
   constructor(
     @InjectRepository(Content) private readonly repository: Repository<Content>,
-    private readonly contentToPlaylistService: ContentToPlaylistService,
     private readonly awsService: AwsService,
-    private readonly playlistService: PlaylistService,
     private readonly groupService: GroupContentService,
     private readonly screenService: ScreensCrudService,
   ) {}
@@ -46,9 +42,9 @@ export class ContentService {
   async delete(id: Content['id']) {
     const content = await this.findOne(id);
     // try {
-      await this.repository.delete({ id: content.id });
-      await this.awsService.deleteFile(content.key);
-      return content;
+    await this.repository.remove(content);
+    await this.awsService.deleteFile(content.key);
+    return content;
     // } catch (e) {
     //   throw new BadGatewayException('Failed delete');
     // }

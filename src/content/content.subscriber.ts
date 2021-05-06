@@ -1,4 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { InjectConnection } from '@nestjs/typeorm';
 import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-playlist.service';
 import {
   Connection,
@@ -11,11 +12,10 @@ import { Content } from './content.entity';
 @EventSubscriber()
 export class ContentSubscriber implements EntitySubscriberInterface<Content> {
   constructor(
-    // private readonly connection: Connection,
-    @Inject('ContentToPlaylistService')
+    @InjectConnection() readonly connection: Connection,
     private readonly contentToPlaylistService: ContentToPlaylistService,
   ) {
-    // this.connection.subscribers.push(this);
+    connection.subscribers.push(this);
   }
 
   listenTo() {
@@ -24,7 +24,6 @@ export class ContentSubscriber implements EntitySubscriberInterface<Content> {
 
   async beforeRemove(event: RemoveEvent<Content>) {
     const content = event.entity;
-    console.log(event.entity);
     const playlists = await this.contentToPlaylistService.findManyByContent(
       content.id,
     );

@@ -10,6 +10,8 @@ import { UsersModule } from 'src/users/users.module';
 import { GroupContentModule } from 'src/group-content/group-content.module';
 import { ScreensModule } from 'src/screens/screens.module';
 import { ContentSubscriber } from './content.subscriber';
+import { Connection } from 'typeorm';
+import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-playlist.service';
 
 @Module({
   controllers: [ContentController],

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Content } from 'src/content/content.entity';
-import { GroupsContent } from 'src/group-content/group-content.entity';
 import { Playlist } from 'src/playlists/playlist.entity';
 import { Repository } from 'typeorm';
 import { ContentToPlaylists } from './content-to-playlist.entity';
