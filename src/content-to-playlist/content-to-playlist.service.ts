@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Content } from 'src/content/content.entity';
+import { GroupsContent } from 'src/group-content/group-content.entity';
 import { Playlist } from 'src/playlists/playlist.entity';
 import { Repository } from 'typeorm';
 import { ContentToPlaylists } from './content-to-playlist.entity';
@@ -137,25 +138,7 @@ export class ContentToPlaylistService {
     });
   }
 
-  async delete(contentId: Content['id'], playlistId: Playlist['id']) {
-    const contentToPlaylist = await this.findOne(playlistId, contentId);
-    const playlist = await this.findContentByPlaylistId(playlistId);
-
-    const cleanedPlaylist = playlist.filter(
-      (item) => item.contentId !== contentId,
-    );
-
-    const movedPlaylist = cleanedPlaylist.map((item) => {
-      if (item.order > contentToPlaylist.order) {
-        return {
-          ...item,
-          order: item.order - 1,
-        };
-      }
-      return item;
-    });
-    await this.repository.delete(contentToPlaylist.id);
-    await this.repository.save(movedPlaylist);
-    return contentToPlaylist;
+  async saveAll(contentsToPlaylist: ContentToPlaylists[]) {
+    this.repository.save(contentsToPlaylist);
   }
 }

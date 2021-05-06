@@ -9,10 +9,11 @@ import { AwsModule } from 'src/aws/aws.module';
 import { UsersModule } from 'src/users/users.module';
 import { GroupContentModule } from 'src/group-content/group-content.module';
 import { ScreensModule } from 'src/screens/screens.module';
+import { ContentSubscriber } from './content.subscriber';
 
 @Module({
   controllers: [ContentController],
-  providers: [ContentService],
+  providers: [ContentService, ContentSubscriber],
   imports: [
     TypeOrmModule.forFeature([Content]),
     ContentToPlaylistModule,
@@ -22,6 +23,6 @@ import { ScreensModule } from 'src/screens/screens.module';
     GroupContentModule,
     ScreensModule,
   ],
-  exports: [ContentService],
+  exports: [ContentService, ContentSubscriber],
 })
 export class ContentModule {}

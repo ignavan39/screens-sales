@@ -45,37 +45,13 @@ export class ContentService {
 
   async delete(id: Content['id']) {
     const content = await this.findOne(id);
-    try {
-      const groupContents = await this.contentToPlaylistService.findManyByContent(
-        content.id,
-      );
+    // try {
+      await this.repository.delete({ id: content.id });
       await this.awsService.deleteFile(content.key);
-
-      await groupContents.map(async (item) => {
-        const optimalContent = await this.getOptimalContent(
-          content.groupId,
-          item.playlistId,
-        );
-        await this.contentToPlaylistService.delete(id, item.playlistId);
-
-        const contentToPlaylist = await this.contentToPlaylistService.findOne(
-          item.playlistId,
-          optimalContent.id,
-        );
-
-        if (!contentToPlaylist) {
-          await this.playlistService.insertContent(
-            item.playlistId,
-            optimalContent.id,
-          );
-        }
-      });
-
-      await this.repository.delete(content.id);
       return content;
-    } catch (e) {
-      throw new BadGatewayException('Failed delete');
-    }
+    // } catch (e) {
+    //   throw new BadGatewayException('Failed delete');
+    // }
   }
 
   async save(createContentDto: CreateContentDto, buffer: Buffer) {
@@ -92,7 +68,7 @@ export class ContentService {
     if (!group) {
       group = await this.groupService.save(createContentDto.userId);
     }
-    const content = await this.repository.save({
+    return this.repository.save({
       ...createContentDto,
       url,
       key,
@@ -100,32 +76,6 @@ export class ContentService {
       height,
       groupId: group.id,
     });
-    if (createContentDto.playlistId) {
-      const optimalContent = await this.getOptimalContent(
-        content.groupId,
-        createContentDto.playlistId,
-      );
-      let contentToPlaylist = await this.contentToPlaylistService.findOne(
-        createContentDto.playlistId,
-        optimalContent.id,
-      );
-
-      if (!contentToPlaylist) {
-        contentToPlaylist = await this.playlistService.insertContent(
-          createContentDto.playlistId,
-          optimalContent.id,
-        );
-      }
-      if (createContentDto.duration) {
-        await this.contentToPlaylistService.updateDuration(
-          createContentDto.playlistId,
-          optimalContent.id,
-          createContentDto.duration,
-        );
-      }
-      return { ...contentToPlaylist, ...content };
-    }
-    return content;
   }
 
   async getOptimalContent(
@@ -142,7 +92,6 @@ export class ContentService {
         groupId,
       },
     });
-
     const minH = Math.abs(contentGroup[0].height - screen.height);
     const minW = Math.abs(contentGroup[0].width - screen.width);
     let optimalContent = contentGroup[0];

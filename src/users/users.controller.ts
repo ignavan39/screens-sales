@@ -1,12 +1,5 @@
 import { Controller, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import {
-  ApiBearerAuth,
-  ApiBody,
-  ApiHeader,
-  ApiResponse,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Crud, CrudController } from '@nestjsx/crud';
 import { Auth0Guard } from 'src/auth/auth.guard';
 import { AccessGuard } from './access.guard';

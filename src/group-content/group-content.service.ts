@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
+import { Playlist } from 'src/playlists/playlist.entity';
 import { User } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
 import { GroupsContent } from './group-content.entity';
@@ -26,6 +27,16 @@ export class GroupContentService {
 
   async save(userId: User['id']) {
     return this.groupRepository.save({ userId });
+  }
+
+  async groupSize(groupId: GroupsContent['id']){
+    const group = await this.groupRepository.findOne({
+      where: {
+        id: groupId,
+      },
+      relations: ['contents']
+    })
+    return group.contents.length;
   }
 }
 
