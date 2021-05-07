@@ -187,7 +187,7 @@ export class PlaylistsController implements CrudController<Playlist> {
   @Put(':id')
   update(
     @Param('id') playlistId: Playlist['id'],
-    @Body() updatePlaylistDto: UpdatePlaylistDto,
+    @Body(CheckScreenExsists) updatePlaylistDto: UpdatePlaylistDto,
   ) {
     return this.playlistService.update(playlistId, updatePlaylistDto);
   }

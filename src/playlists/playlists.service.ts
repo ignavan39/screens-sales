@@ -44,21 +44,16 @@ export class PlaylistService {
       userId,
       ...createPlaylistDto,
     });
+
     if (createPlaylistDto.screenId) {
-      const screen = await this.screenCrudService.findOne(
+      await this.screenService.attachPlaylist(
+        playlist.id,
         createPlaylistDto.screenId,
       );
-
-      await this.screenService.save(
-        screen.name,
-        screen.width,
-        screen.height,
-        screen.userId,
-        screen.eventId,
+      await this.fillingPlaylistWithOptimalContents(
         playlist.id,
+        createPlaylistDto.screenId,
       );
-
-      await this.fillingPlaylistWithOptimalContents(playlist.id, screen.id);
     }
     return playlist;
   }
@@ -128,20 +123,11 @@ export class PlaylistService {
   async update(playlistId: Playlist['id'], updateDto: UpdatePlaylistDto) {
     const playlist = await this.repository.findOne(playlistId);
     if (updateDto.screenId) {
-      const screen = await this.screenCrudService.findOne(updateDto.screenId);
-
-      if (!screen) {
-        await this.screenService.save(
-          screen.name,
-          screen.width,
-          screen.height,
-          screen.userId,
-          screen.eventId,
-          playlist.id,
-        );
-      }
-
-      await this.fillingPlaylistWithOptimalContents(playlist.id, screen.id);
+      await this.screenService.attachPlaylist(playlist.id, updateDto.screenId);
+      await this.fillingPlaylistWithOptimalContents(
+        playlist.id,
+        updateDto.screenId,
+      );
     }
     return this.repository.save({ ...playlist, ...updateDto });
   }

@@ -2,7 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TypeOrmCrudService } from '@nestjsx/crud-typeorm';
 import { Event } from 'src/events/event.entity';
+import { Playlist } from 'src/playlists/playlist.entity';
 import { Repository } from 'typeorm';
+import { CreateScreenDto } from './screen.dto';
 import { Screen } from './screen.entity';
 
 @Injectable()
@@ -28,19 +30,19 @@ export class ScreensService {
   }
 
   async save(
-    name: Screen['id'],
-    width: Screen['width'],
-    height: Screen['height'],
-    userId: Screen['userId'],
-    eventId: Screen['eventId'],
+    CreateScreenDto: CreateScreenDto,
     playlistId: Screen['playlistId'],
   ) {
     return this.screenRepository.save({
-      name,
-      width,
-      height,
-      userId,
-      eventId,
+      ...CreateScreenDto,
+      playlistId,
+    });
+  }
+
+  async attachPlaylist(playlistId: Playlist['id'], screenId: Screen['id']) {
+    const screen = await this.screenRepository.findOne(screenId);
+    return this.screenRepository.save({
+      ...screen,
       playlistId,
     });
   }
