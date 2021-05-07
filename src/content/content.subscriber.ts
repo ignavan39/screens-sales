@@ -28,15 +28,16 @@ export class ContentSubscriber implements EntitySubscriberInterface<Content> {
       content.id,
     );
     await playlists.map(async (playlist) => {
-      const contentsToPlaylist = await this.contentToPlaylistService.findContentByPlaylistId(
-        playlist.id,
+      const includeContents = await this.contentToPlaylistService.findContentByPlaylistId(
+        playlist.playlistId,
       );
-      const contentToPlaylist = await this.contentToPlaylistService.findOne(
-        playlist.id,
+      const contentToPlaylist = await this.contentToPlaylistService.findOneByPlaylistAndContent(
+        playlist.playlistId,
         content.id,
       );
-      const cleanedPlaylist = contentsToPlaylist.filter(
-        (item) => item.contentId !== content.id,
+
+      const cleanedPlaylist = includeContents.filter(
+        (item) => item.id !== contentToPlaylist.id,
       );
 
       const movedPlaylist = cleanedPlaylist.map((item) => {

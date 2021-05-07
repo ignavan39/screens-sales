@@ -8,7 +8,8 @@ import { AwsService } from 'src/aws/aws.service';
 import { GroupContentService } from 'src/group-content/group-content.service';
 import { GroupsContent } from 'src/group-content/group-content.entity';
 import { ScreensCrudService } from 'src/screens/screens.service';
-import { Injectable } from '@nestjs/common';
+import { BadGatewayException, Injectable } from '@nestjs/common';
+import { PlaylistService } from 'src/playlists/playlists.service';
 
 @Injectable()
 export class ContentService {
@@ -17,6 +18,7 @@ export class ContentService {
     private readonly awsService: AwsService,
     private readonly groupService: GroupContentService,
     private readonly screenService: ScreensCrudService,
+    private readonly playlistsService: PlaylistService,
   ) {}
 
   async findManyByUser(userId: User['id']): Promise<Content[]> {
@@ -41,13 +43,13 @@ export class ContentService {
 
   async delete(id: Content['id']) {
     const content = await this.findOne(id);
-    // try {
-    await this.repository.remove(content);
-    await this.awsService.deleteFile(content.key);
-    return content;
-    // } catch (e) {
-    //   throw new BadGatewayException('Failed delete');
-    // }
+    try {
+      await this.repository.remove(content);
+      await this.awsService.deleteFile(content.key);
+      return content;
+    } catch (e) {
+      throw new BadGatewayException('Failed delete');
+    }
   }
 
   async save(createContentDto: CreateContentDto, buffer: Buffer) {
@@ -64,7 +66,8 @@ export class ContentService {
     if (!group) {
       group = await this.groupService.save(createContentDto.userId);
     }
-    return this.repository.save({
+
+    const content = await this.repository.save({
       ...createContentDto,
       url,
       key,
@@ -72,6 +75,22 @@ export class ContentService {
       height,
       groupId: group.id,
     });
+
+    if (createContentDto.playlistId) {
+      await this.playlistsService.insertContent(
+        createContentDto.playlistId,
+        content.id,
+      );
+      if (createContentDto.duration) {
+        await this.playlistsService.updateDuration(
+          createContentDto.playlistId,
+          content.id,
+          createContentDto.duration,
+        );
+      }
+    }
+
+    return content;
   }
 
   async getOptimalContent(
