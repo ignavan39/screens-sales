@@ -73,6 +73,18 @@ export class ContentToPlaylistService {
     });
   }
 
+  async rawSave(
+    playlistId: Playlist['id'],
+    contentId: Content['id'],
+    order: number,
+  ) {
+    return this.repository.save({
+      playlistId,
+      contentId,
+      order,
+    });
+  }
+
   moveContentBackSide(
     playlist: ContentToPlaylists[],
     contentId: Content['id'],
@@ -142,6 +154,14 @@ export class ContentToPlaylistService {
         playlistId,
       },
     });
+  }
+
+  async delete(contentToPlaylistId: ContentToPlaylists['id']) {
+    const contentToPlaylist = await this.repository.findOne(
+      contentToPlaylistId,
+    );
+    await this.repository.delete(contentToPlaylistId);
+    return contentToPlaylist;
   }
 
   async saveAll(contentsToPlaylist: ContentToPlaylists[]) {

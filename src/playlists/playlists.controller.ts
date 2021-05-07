@@ -54,25 +54,6 @@ import { Auth0Guard } from 'src/auth/auth.guard';
         }),
       ],
     },
-    updateOneBase: {
-      decorators: [
-        UseGuards(PlaylistOwnerGuard),
-        ApiResponse({
-          status: 200,
-          schema: {
-            type: 'Playlist',
-            example: {
-              id: 'id',
-              description: 'description',
-              name: 'name',
-              screenId: 'id',
-              duration: null,
-              userId: 'id',
-            },
-          },
-        }),
-      ],
-    },
     deleteOneBase: {
       decorators: [
         UseGuards(PlaylistOwnerGuard),
@@ -195,6 +176,16 @@ export class PlaylistsController implements CrudController<Playlist> {
       contentId,
       body.duration,
     );
+  }
+
+  @UseGuards(PlaylistOwnerGuard)
+  @Override('updateOneBase')
+  @Put(':id')
+  update(
+    @Param('id') playlistId: Playlist['id'],
+    @Body() updatePlaylistDto: UpdatePlaylistDto,
+  ) {
+    return this.playlistService.update(playlistId, updatePlaylistDto);
   }
 
   @ApiOperation({ summary: 'move content into playlists' })

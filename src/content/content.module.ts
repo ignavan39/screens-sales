@@ -19,7 +19,6 @@ import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-pla
   imports: [
     TypeOrmModule.forFeature([Content]),
     ContentToPlaylistModule,
-    PlaylistsModule,
     AwsModule,
     UsersModule,
     GroupContentModule,

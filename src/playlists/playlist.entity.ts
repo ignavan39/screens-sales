@@ -23,7 +23,7 @@ export class Playlist {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   screenId: string;
 
   @Column()

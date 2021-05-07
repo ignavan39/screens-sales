@@ -20,7 +20,6 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 import { Express } from 'express';
-import { CheckPlaylistExsist } from 'src/playlists/playlist.pipe';
 import { User } from 'src/users/user.decorator';
 import { ContentService } from './content.service';
 import {
@@ -81,7 +80,7 @@ export class ContentController {
   @ApiBody({ type: CreateContentDto })
   @Post()
   create(
-    @Body(CheckPlaylistExsist) body: CreateContentDto,
+    @Body() body: CreateContentDto,
     @UploadedFile() file: Express.Multer.File,
   ) {
     return this.contentService.save(body, file.buffer);
