@@ -2,7 +2,6 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { CrudConfigService } from '@nestjsx/crud';
-import { config } from 'aws-sdk';
 import { auth } from 'express-openid-connect';
 
 CrudConfigService.load({

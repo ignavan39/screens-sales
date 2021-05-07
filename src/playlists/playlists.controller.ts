@@ -178,6 +178,10 @@ export class PlaylistsController implements CrudController<Playlist> {
     );
   }
 
+  @ApiResponse({ type: Playlist })
+  @ApiOperation({ summary: 'update playlist' })
+  @ApiBody({ type: UpdatePlaylistDto })
+  @ApiParam({ name: 'id', type: 'uuid' })
   @UseGuards(PlaylistOwnerGuard)
   @Override('updateOneBase')
   @Put(':id')

@@ -1,4 +1,3 @@
-import { Inject, Injectable } from '@nestjs/common';
 import { InjectConnection } from '@nestjs/typeorm';
 import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-playlist.service';
 import {
