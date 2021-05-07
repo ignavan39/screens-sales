@@ -56,7 +56,6 @@ export class ContentService {
   async save(createContentDto: CreateContentDto, buffer: Buffer) {
     const width = Number.parseInt(createContentDto.width);
     const height = Number.parseInt(createContentDto.height);
-    console.log(createContentDto);
     const { url, key } = await this.awsService.uploadFile(
       buffer,
       createContentDto.name,

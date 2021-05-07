@@ -38,10 +38,7 @@ export class ContentToPlaylistService {
     contentId: Content['id'],
     duration: number,
   ) {
-    const contentToPlaylist = await this.findOneByPlaylistAndContent(
-      playlistId,
-      contentId,
-    );
+    const contentToPlaylist = await this.findOne(playlistId, contentId);
 
     return this.repository.save({
       ...contentToPlaylist,
@@ -49,10 +46,7 @@ export class ContentToPlaylistService {
     });
   }
 
-  async findOneByPlaylistAndContent(
-    playlistId: Playlist['id'],
-    contentId: Content['id'],
-  ) {
+  async findOne(playlistId: Playlist['id'], contentId: Content['id']) {
     return this.repository.findOne({
       contentId,
       playlistId,
@@ -66,18 +60,6 @@ export class ContentToPlaylistService {
     const playlistSize = await this.getPlaylistSize(playlistId);
 
     const order = playlistSize + 1;
-    return this.repository.save({
-      playlistId,
-      contentId,
-      order,
-    });
-  }
-
-  async rawSave(
-    playlistId: Playlist['id'],
-    contentId: Content['id'],
-    order: number,
-  ) {
     return this.repository.save({
       playlistId,
       contentId,
@@ -122,10 +104,7 @@ export class ContentToPlaylistService {
     order: number,
   ): Promise<ContentToPlaylists[] | ContentToPlaylists> {
     const playlist = await this.findContentByPlaylistId(playlistId);
-    const content = await this.findOneByPlaylistAndContent(
-      playlistId,
-      contentId,
-    );
+    const content = await this.findOne(playlistId, contentId);
     const oldOrder = content.order;
 
     if (order > oldOrder) {

@@ -28,7 +28,7 @@ export class GroupContentService {
     return this.groupRepository.save({ userId });
   }
 
-  async groupSize(groupId: GroupsContent['id']) {
+  async getGroupSize(groupId: GroupsContent['id']) {
     const group = await this.groupRepository.findOne({
       where: {
         id: groupId,

@@ -24,6 +24,6 @@ import { ContentToPlaylistService } from 'src/content-to-playlist/content-to-pla
     GroupContentModule,
     ScreensModule,
   ],
-  exports: [ContentService, ContentSubscriber],
+  exports: [ContentService],
 })
 export class ContentModule {}

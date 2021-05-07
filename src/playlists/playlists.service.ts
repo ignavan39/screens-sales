@@ -58,7 +58,7 @@ export class PlaylistService {
         playlist.id,
       );
 
-      await this.getOptimalContent(playlist.id, screen.id);
+      await this.fillingPlaylistWithOptimalContents(playlist.id, screen.id);
     }
     return playlist;
   }
@@ -93,7 +93,10 @@ export class PlaylistService {
     );
   }
 
-  async getOptimalContent(playlistId: Playlist['id'], screenId: Screen['id']) {
+  async fillingPlaylistWithOptimalContents(
+    playlistId: Playlist['id'],
+    screenId: Screen['id'],
+  ) {
     const playlist = await this.repository.findOne(playlistId);
     const contentByPlaylist = await this.contentToPlaylistService.findContentByPlaylistId(
       playlistId,
@@ -127,18 +130,20 @@ export class PlaylistService {
     if (updateDto.screenId) {
       const screen = await this.screenCrudService.findOne(updateDto.screenId);
 
-      await this.screenService.save(
-        screen.name,
-        screen.width,
-        screen.height,
-        screen.userId,
-        screen.eventId,
-        playlist.id,
-      );
+      if (!screen) {
+        await this.screenService.save(
+          screen.name,
+          screen.width,
+          screen.height,
+          screen.userId,
+          screen.eventId,
+          playlist.id,
+        );
+      }
 
-      await this.getOptimalContent(playlist.id, screen.id);
+      await this.fillingPlaylistWithOptimalContents(playlist.id, screen.id);
     }
-    return this.repository.save(playlist);
+    return this.repository.save({ ...playlist, ...updateDto });
   }
 
   async insertContent(
@@ -147,8 +152,6 @@ export class PlaylistService {
   ): Promise<ContentToPlaylists> {
     return this.contentToPlaylistService.save(playlistId, contentId);
   }
-
-  async linkToScreen(playlistId: Playlist['id'], screenId: Screen['id']) {}
 
   async findAllPlaylystByUser(userId: User['id']): Promise<Playlist[]> {
     return this.repository.find({

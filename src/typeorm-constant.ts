@@ -13,7 +13,6 @@ export const ormConfig: ConnectionOptions = {
   logging: true,
   logger: 'file',
   migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
-  // subscribers: [__dirname + '/**/*.subscriber{.ts,.js}'],
   cli: {
     migrationsDir: 'src/migrations',
   },
