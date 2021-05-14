@@ -1,7 +1,6 @@
 import {
   PipeTransform,
   Injectable,
-  ArgumentMetadata,
   Inject,
   BadRequestException,
 } from '@nestjs/common';
@@ -13,7 +12,7 @@ export class CheckUserExsists implements PipeTransform {
     @Inject('UsersService') private readonly usersService: UsersService,
   ) {}
 
-  async transform(value: any, metadata: ArgumentMetadata) {
+  async transform(value: any) {
     const user = await this.usersService.findOne({ email: value.email });
     if (user) {
       throw new BadRequestException('User with email already exsist');

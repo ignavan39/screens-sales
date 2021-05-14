@@ -27,6 +27,16 @@ export class GroupContentService {
   async save(userId: User['id']) {
     return this.groupRepository.save({ userId });
   }
+
+  async getGroupSize(groupId: GroupsContent['id']) {
+    const group = await this.groupRepository.findOne({
+      where: {
+        id: groupId,
+      },
+      relations: ['contents'],
+    });
+    return group.contents.length;
+  }
 }
 
 @Injectable()

@@ -1,11 +1,9 @@
-import { Content } from 'src/content/content.entity';
 import { ContentToPlaylists } from 'src/content-to-playlist/content-to-playlist.entity';
 import { Screen } from 'src/screens/screen.entity';
 import { User } from 'src/users/user.entity';
 import {
   Column,
   Entity,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   OneToOne,
@@ -23,7 +21,7 @@ export class Playlist {
   @Column()
   name: string;
 
-  @Column()
+  @Column({ nullable: true })
   screenId: string;
 
   @Column()

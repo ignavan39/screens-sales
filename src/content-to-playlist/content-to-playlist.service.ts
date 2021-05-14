@@ -28,9 +28,7 @@ export class ContentToPlaylistService {
   ): Promise<ContentToPlaylists[]> {
     return this.repository.find({
       where: {
-        content: {
-          id: contentId,
-        },
+        contentId,
       },
     });
   }
@@ -137,25 +135,15 @@ export class ContentToPlaylistService {
     });
   }
 
-  async delete(contentId: Content['id'], playlistId: Playlist['id']) {
-    const contentToPlaylist = await this.findOne(playlistId, contentId);
-    const playlist = await this.findContentByPlaylistId(playlistId);
-
-    const cleanedPlaylist = playlist.filter(
-      (item) => item.contentId !== contentId,
+  async delete(contentToPlaylistId: ContentToPlaylists['id']) {
+    const contentToPlaylist = await this.repository.findOne(
+      contentToPlaylistId,
     );
-
-    const movedPlaylist = cleanedPlaylist.map((item) => {
-      if (item.order > contentToPlaylist.order) {
-        return {
-          ...item,
-          order: item.order - 1,
-        };
-      }
-      return item;
-    });
-    await this.repository.delete(contentToPlaylist.id);
-    await this.repository.save(movedPlaylist);
+    await this.repository.delete(contentToPlaylistId);
     return contentToPlaylist;
+  }
+
+  async saveAll(contentsToPlaylist: ContentToPlaylists[]) {
+    this.repository.save(contentsToPlaylist);
   }
 }

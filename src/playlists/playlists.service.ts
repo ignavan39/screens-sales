@@ -6,13 +6,17 @@ import { ContentToPlaylists } from 'src/content-to-playlist/content-to-playlist.
 import { Content } from 'src/content/content.entity';
 import { User } from 'src/users/user.entity';
 import { Repository } from 'typeorm';
-import { CreatePlaylistDto } from './playlists.dto';
+import { CreatePlaylistDto, UpdatePlaylistDto } from './playlists.dto';
 import { Playlist } from './playlist.entity';
 import { MoveContentDto } from 'src/content/content.dto';
 import {
   ScreensCrudService,
   ScreensService,
 } from 'src/screens/screens.service';
+import { ContentService } from 'src/content/content.service';
+import { Screen } from 'src/screens/screen.entity';
+
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class PlaylistCrudService extends TypeOrmCrudService<Playlist> {
@@ -29,6 +33,7 @@ export class PlaylistService {
     private readonly contentToPlaylistService: ContentToPlaylistService,
     private readonly screenService: ScreensService,
     private readonly screenCrudService: ScreensCrudService,
+    private readonly contentService: ContentService,
   ) {}
 
   async save(
@@ -39,17 +44,17 @@ export class PlaylistService {
       userId,
       ...createPlaylistDto,
     });
-    const screen = await this.screenCrudService.findOne(
-      createPlaylistDto.screenId,
-    );
-    await this.screenService.save(
-      screen.name,
-      screen.width,
-      screen.height,
-      screen.userId,
-      screen.eventId,
-      playlist.id,
-    );
+
+    if (createPlaylistDto.screenId) {
+      await this.screenService.attachPlaylist(
+        playlist.id,
+        createPlaylistDto.screenId,
+      );
+      await this.fillingPlaylistWithOptimalContents(
+        playlist.id,
+        createPlaylistDto.screenId,
+      );
+    }
     return playlist;
   }
 
@@ -81,6 +86,50 @@ export class PlaylistService {
       contentId,
       dto.order,
     );
+  }
+
+  async fillingPlaylistWithOptimalContents(
+    playlistId: Playlist['id'],
+    screenId: Screen['id'],
+  ) {
+    const playlist = await this.repository.findOne(playlistId);
+    const contentByPlaylist = await this.contentToPlaylistService.findContentByPlaylistId(
+      playlistId,
+    );
+
+    const optimalPlaylist = await Promise.all(
+      contentByPlaylist.map(async (item) => {
+        const optimalContent = await this.contentService.getOptimalContent(
+          item.content.groupId,
+          screenId,
+        );
+
+        await this.contentToPlaylistService.delete(item.id);
+        const newContentToPlaylist: ContentToPlaylists = {
+          id: uuid(),
+          order: item.order,
+          duration: item.duration,
+          playlist,
+          playlistId: playlist.id,
+          content: optimalContent,
+          contentId: optimalContent.id,
+        };
+        return newContentToPlaylist;
+      }),
+    );
+    await this.contentToPlaylistService.saveAll(optimalPlaylist);
+  }
+
+  async update(playlistId: Playlist['id'], updateDto: UpdatePlaylistDto) {
+    const playlist = await this.repository.findOne(playlistId);
+    if (updateDto.screenId) {
+      await this.screenService.attachPlaylist(playlist.id, updateDto.screenId);
+      await this.fillingPlaylistWithOptimalContents(
+        playlist.id,
+        updateDto.screenId,
+      );
+    }
+    return this.repository.save({ ...playlist, ...updateDto });
   }
 
   async insertContent(

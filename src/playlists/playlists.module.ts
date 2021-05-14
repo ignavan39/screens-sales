@@ -6,6 +6,7 @@ import { Playlist } from './playlist.entity';
 import { ContentToPlaylistModule } from 'src/content-to-playlist/content-to-playlist.module';
 import { ScreensModule } from 'src/screens/screens.module';
 import { UsersModule } from 'src/users/users.module';
+import { ContentModule } from 'src/content/content.module';
 
 @Module({
   providers: [PlaylistService, PlaylistCrudService],
@@ -15,6 +16,7 @@ import { UsersModule } from 'src/users/users.module';
     ContentToPlaylistModule,
     ScreensModule,
     UsersModule,
+    ContentModule,
   ],
   exports: [PlaylistService, PlaylistCrudService],
 })

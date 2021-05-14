@@ -28,7 +28,7 @@ export class CreatePlaylistDto {
   @ApiProperty()
   @IsOptional()
   @IsUUID()
-  screenId: Screen['id'];
+  screenId?: Screen['id'];
 }
 
 export class UpdatePlaylistDto {
